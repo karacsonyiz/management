@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="/css/login.css">
+    <title>Login</title>
+</head>
+
+<body>
+<form method="post">
+
+    <div class="login">
+        <div class="login-screen">
+            <div class="login-title">
+                <h1>Login</h1>
+            </div>
+
+            <div class="login-form">
+                <div class="control-group">
+                    <input name="username" type="text" class="login-field" value="" placeholder="Felhasználónév" id="login-name">
+                </div>
+
+                <div class="control-group">
+                    <input name="password" type="password" class="login-field" value="" placeholder="Jelszó" id="login-pass">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-large btn-block" href="#">Bejelentkezés</button>
+                <h4 id="errormsg" style="display : none;">Rossz felhasználónév vagy jelszó!</h4>
+                <a class="login-link" href="#">Elfelejtette jelszavát?</a>
+                <a class="login-link" href="/register.html">Regisztráció</a>
+            </div>
+
+            <pre></pre>
+        </div>
+    </div>
+</form>
+<script src="/js/login.js"></script>
+</body>
+
+</html>

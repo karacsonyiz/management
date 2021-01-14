@@ -1,0 +1,83 @@
+
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: karacsonyiz
+      changes:
+        - createTable:
+            tableName: user
+            columns:
+              - column:
+                  name: userid
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: phone
+                  type: varchar(12)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: enabled
+                  type: int
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: karacsonyiz
+      changes:
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: name
+                  value: admin
+              - column:
+                  name: password
+                  value: $2a$10$FV9w7BuvK2gmnVPaUqQ88.d9V2C73VyTvc24DrqHZJXTGnQV5xtl.
+              - column:
+                  name: email
+                  value: admin@admin.com
+              - column:
+                  name: phone
+                  value: 061555444
+              - column:
+                  name: address
+                  value: Bajza utca 33
+              - column:
+                  name: enabled
+                  value: 1
+              - column:
+                  name: role
+                  value: ROLE_ADMIN
+
