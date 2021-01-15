@@ -92,7 +92,7 @@ databaseChangeLog:
             tableName: organization
             columns:
               - column:
-                  name: id
+                  name: organizationid
                   type: int
                   autoIncrement: true
                   constraints:
@@ -127,11 +127,11 @@ databaseChangeLog:
                     references: user(userid)
                     nullable: false
               - column:
-                  name: orgid
+                  name: organizationid
                   type: int
                   constraints:
-                    foreignKeyName: fk_orgid
-                    references: organization(id)
+                    foreignKeyName: fk_organizationid
+                    references: organization(organizationid)
                     nullable: false
 
   - changeSet:

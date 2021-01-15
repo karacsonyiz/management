@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -42,7 +43,7 @@ public class OrgController {
             System.out.println(o.getName());
         }
 
-        return new DataTable(1,4,10,new ArrayList<>(),orgEntityList);
+        return new DataTable(1,4,10,new ArrayList<>(),orgEntityList,new HashMap<>());
     }
 
 }

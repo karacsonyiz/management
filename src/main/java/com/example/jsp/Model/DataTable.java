@@ -3,10 +3,12 @@ package com.example.jsp.Model;
 import com.example.jsp.Entity.OrgEntity;
 import com.example.jsp.Entity.UserEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
+import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class DataTable implements Serializable {
 
@@ -15,15 +17,18 @@ public class DataTable implements Serializable {
     private int draw;
     private long recordsTotal;
     private long recordsFiltered;
-    private List<UserEntity> userEntities;
+    private List<GeneratedUserEntity> userEntities;
     private List<GeneratedOrganizationEntity> orgEntities;
+    private Map<String,List<String>>  userOrgs;
 
-    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<UserEntity> userEntities,List<GeneratedOrganizationEntity> orgEntities) {
+    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<GeneratedUserEntity> userEntities,List<GeneratedOrganizationEntity> orgEntities,
+                     Map<String,List<String>>  userOrgs) {
         this.draw = draw;
         this.recordsTotal = recordsTotal;
         this.recordsFiltered = recordsFiltered;
         this.userEntities = userEntities;
         this.orgEntities = orgEntities;
+        this.userOrgs = userOrgs;
     }
 
     public DataTable() {
@@ -57,11 +62,11 @@ public class DataTable implements Serializable {
         this.recordsFiltered = recordsFiltered;
     }
 
-    public List<UserEntity> getUserEntities() {
+    public List<GeneratedUserEntity> getUserEntities() {
         return userEntities;
     }
 
-    public void setUserEntities(List<UserEntity> userEntities) {
+    public void setUserEntities(List<GeneratedUserEntity> userEntities) {
         this.userEntities = userEntities;
     }
 
@@ -82,5 +87,13 @@ public class DataTable implements Serializable {
                 ", userEntities=" + userEntities +
                 ", orgEntities=" + orgEntities +
                 '}';
+    }
+
+    public Map<String,List<String>>  getUserOrgs() {
+        return userOrgs;
+    }
+
+    public void setUserOrgs(Map<String,List<String>>  userOrgs) {
+        this.userOrgs = userOrgs;
     }
 }

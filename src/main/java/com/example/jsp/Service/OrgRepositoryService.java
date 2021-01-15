@@ -1,7 +1,5 @@
 package com.example.jsp.Service;
 
-import com.example.jsp.Entity.OrgEntity;
-import com.example.jsp.Entity.OrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
@@ -27,42 +25,14 @@ public class OrgRepositoryService {
 
         GeneratedOrganizationEntity testOrgEntity = orgEntityRepository.findById(1).get();
         GeneratedOrganizationEntity testOrgEntity2 = orgEntityRepository.findById(2).get();
+        GeneratedOrganizationEntity testOrgEntity3 = orgEntityRepository.findById(3).get();
 
         GeneratedUserEntity testgeneratedUserEntity = userEntityRepository.findById(1).get();
         GeneratedUserEntity testgeneratedUserEntity2 = userEntityRepository.findById(2).get();
 
 
-        //System.out.println(testOrgEntity.toString());
-        //System.out.println(testgeneratedUserEntity.toString());
-
-        //testgeneratedUserEntity.addOrg(testOrgEntity2);
-
-
-        for(GeneratedOrganizationEntity o: testgeneratedUserEntity.getOrgs()){
-            System.out.println(o.getName());
-        }
-
-        //testOrgEntity.addUser(testgeneratedUserEntity2);
-
-        for(GeneratedUserEntity u: testOrgEntity.getUsers()){
-            System.out.println(u.getName());
-        }
-
-
-
-
-
-        List<GeneratedOrganizationEntity> orgList = orgEntityRepository.findAll();
-
-        for(GeneratedOrganizationEntity org : orgList){
-            //System.out.println(orgList.toString());
-        }
-
-        List<GeneratedUserEntity> userList = userEntityRepository.findAll();
-
-        for(GeneratedUserEntity user : userList){
-            //System.out.println(user.toString());
-        }
+        testgeneratedUserEntity2.addOrg(testOrgEntity2);
+        testgeneratedUserEntity2.addOrg(testOrgEntity3);
     }
 
     public List<GeneratedOrganizationEntity> listOrgs(){

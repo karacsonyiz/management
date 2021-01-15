@@ -1,6 +1,8 @@
 package com.example.jsp.GeneratedEntity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,20 +14,20 @@ public class GeneratedOrganizationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer organizationid;
     private String name;
     @JsonManagedReference
     @ManyToMany(mappedBy = "orgs")
     private List<GeneratedUserEntity> users;
 
 
-    @Column(name = "id")
+    @Column(name = "organizationid")
     public Integer getId() {
-        return id;
+        return organizationid;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setId(Integer organizationid) {
+        this.organizationid = organizationid;
     }
 
     @Column(name = "name")
@@ -51,7 +53,7 @@ public class GeneratedOrganizationEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GeneratedOrganizationEntity that = (GeneratedOrganizationEntity) o;
-        return id.equals(that.id) && Objects.equals(name, that.name) && Objects.equals(users, that.users);
+        return organizationid.equals(that.organizationid) && Objects.equals(name, that.name) && Objects.equals(users, that.users);
     }
 
     public void addUser(GeneratedUserEntity generatedUserEntity){
@@ -66,7 +68,7 @@ public class GeneratedOrganizationEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, users);
+        return Objects.hash(organizationid, name, users);
     }
 
 }

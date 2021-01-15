@@ -44,7 +44,7 @@ public class GeneratedOrgusersEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "orgid", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "organizationid", referencedColumnName = "organizationid", nullable = false)
     public GeneratedOrganizationEntity getOrganizationByOrgid() {
         return organizationByOrgid;
     }

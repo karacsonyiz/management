@@ -1,6 +1,8 @@
 package com.example.jsp.Controller;
 
 import com.example.jsp.Entity.UserEntity;
+import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
+import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.DataTable;
 import com.example.jsp.Model.Response;
 import com.example.jsp.Model.Session;
@@ -19,7 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RestController
@@ -58,8 +62,26 @@ public class ManageController {
 
 
         //List<User> userList = userService.listUsers();
-        List<UserEntity> userEntityList = userRepositoryService.listUsers();
+        //List<UserEntity> userEntityList = userRepositoryService.listUsers();
+        List<GeneratedUserEntity> userEntityList = userRepositoryService.listUsers();
         long userCount = userRepositoryService.countUsers();
+
+        Map<String,List<String>> userOrgs = new HashMap<>();
+
+
+        for(GeneratedUserEntity u : userEntityList){
+            List<String> orgNames = new ArrayList<>();
+            System.out.println("userek");
+            System.out.println(u.getName());
+
+
+            for(GeneratedOrganizationEntity o : u.getOrgs()){
+                System.out.println("orgok");
+                System.out.println(o.getName());
+                orgNames.add(o.getName());
+            }
+            userOrgs.put(u.getName(),orgNames);
+        }
         /*
 
         int pageid = 1;
@@ -78,7 +100,7 @@ public class ManageController {
 
         List<User> userListByPage = userService.listUsersByPage(offset,total);
         */
-        return new DataTable(1,userCount,10,userEntityList,new ArrayList<>());
+        return new DataTable(1,userCount,10,userEntityList,new ArrayList<>(),userOrgs);
 
     }
 

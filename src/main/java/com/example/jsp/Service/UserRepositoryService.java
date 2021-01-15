@@ -1,7 +1,11 @@
 package com.example.jsp.Service;
 import com.example.jsp.Entity.UserEntity;
+import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
+import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
+import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -16,13 +20,19 @@ public class UserRepositoryService {
 
     private UserRepository userRepository;
 
+    @Autowired
+    private UserEntityRepository userEntityRepository;
+
     public UserRepositoryService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
 
-    public List<UserEntity> listUsers() {
-        return userRepository.findAll();
+    public List<GeneratedUserEntity> listUsers() {
+
+        List<GeneratedUserEntity> users = userEntityRepository.findAll();
+        return users;
+        //return userRepository.findAll();
     }
 
     public Optional<UserEntity> findUserByUserName(String name){
