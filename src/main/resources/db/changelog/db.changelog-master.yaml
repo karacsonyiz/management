@@ -1,4 +1,3 @@
-
 databaseChangeLog:
   - changeSet:
       id: 1
@@ -52,6 +51,11 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: orgs
+                  type: BIGINT
+                  constraints:
+                    nullable: true
   - changeSet:
       id: 2
       author: karacsonyiz
@@ -80,4 +84,77 @@ databaseChangeLog:
               - column:
                   name: role
                   value: ROLE_ADMIN
+  - changeSet:
+      id: 3
+      author: karacsonyiz
+      changes:
+        - createTable:
+            tableName: organization
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: users
+                  type: BIGINT
+                  constraints:
+                    nullable: true
+        - createTable:
+            tableName: orgusers
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: userid
+                  type: int
+                  constraints:
+                    foreignKeyName : fk_userid
+                    references: user(userid)
+                    nullable: false
+              - column:
+                  name: orgid
+                  type: int
+                  constraints:
+                    foreignKeyName: fk_orgid
+                    references: organization(id)
+                    nullable: false
+
+  - changeSet:
+      id: 4
+      author: karacsonyiz
+      changes:
+        - insert:
+            tableName: organization
+            columns:
+              - column:
+                  name: name
+                  value: konzorcia
+        - insert:
+            tableName: organization
+            columns:
+              - column:
+                  name: name
+                  value: telekom
+        - insert:
+            tableName: organization
+            columns:
+              - column:
+                  name: name
+                  value: otp
+
 

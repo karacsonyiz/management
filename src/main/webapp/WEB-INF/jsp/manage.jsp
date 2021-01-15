@@ -27,6 +27,7 @@
                 <th>delete</th>
                 <th>update</th>
             </tr>
+        </thead>
             <tfoot>
                 <tr>
                     <th>id</th>
@@ -39,7 +40,6 @@
                     <th style="display:none;">update</th>
                 </tr>
             </tfoot>
-        </thead>
 </table>
 <button class="btn btn-success" id="adduserbutton" onclick="adduser()">Add new user</button>
 

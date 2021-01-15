@@ -1,6 +1,8 @@
 package com.example.jsp.Model;
 
+import com.example.jsp.Entity.OrgEntity;
 import com.example.jsp.Entity.UserEntity;
+import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -14,12 +16,17 @@ public class DataTable implements Serializable {
     private long recordsTotal;
     private long recordsFiltered;
     private List<UserEntity> userEntities;
+    private List<GeneratedOrganizationEntity> orgEntities;
 
-    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<UserEntity> userEntities) {
+    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<UserEntity> userEntities,List<GeneratedOrganizationEntity> orgEntities) {
         this.draw = draw;
         this.recordsTotal = recordsTotal;
         this.recordsFiltered = recordsFiltered;
         this.userEntities = userEntities;
+        this.orgEntities = orgEntities;
+    }
+
+    public DataTable() {
     }
 
     public static long getSerialVersionUID() {
@@ -56,5 +63,24 @@ public class DataTable implements Serializable {
 
     public void setUserEntities(List<UserEntity> userEntities) {
         this.userEntities = userEntities;
+    }
+
+    public List<GeneratedOrganizationEntity> getOrgEntities() {
+        return orgEntities;
+    }
+
+    public void setOrgEntities(List<GeneratedOrganizationEntity> orgEntities) {
+        this.orgEntities = orgEntities;
+    }
+
+    @Override
+    public String toString() {
+        return "DataTable{" +
+                "draw=" + draw +
+                ", recordsTotal=" + recordsTotal +
+                ", recordsFiltered=" + recordsFiltered +
+                ", userEntities=" + userEntities +
+                ", orgEntities=" + orgEntities +
+                '}';
     }
 }

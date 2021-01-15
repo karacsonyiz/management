@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -77,7 +78,7 @@ public class ManageController {
 
         List<User> userListByPage = userService.listUsersByPage(offset,total);
         */
-        return new DataTable(1,userCount,10,userEntityList);
+        return new DataTable(1,userCount,10,userEntityList,new ArrayList<>());
 
     }
 

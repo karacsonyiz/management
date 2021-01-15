@@ -1,5 +1,8 @@
 package com.example.jsp.Controller;
 
+import com.example.jsp.Entity.OrgEntity;
+import com.example.jsp.Model.DataTable;
+import com.example.jsp.Service.OrgRepositoryService;
 import com.example.jsp.Service.UserRepositoryService;
 import com.example.jsp.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @Controller
@@ -18,6 +23,9 @@ public class HelloController {
     //private UserService userService;
     @Autowired
     private UserRepositoryService userRepositoryService;
+    @Autowired
+    private OrgRepositoryService orgRepositoryService;
+
 
     @GetMapping("/hello")
     public ModelAndView hello(Model model, HttpSession session) {
@@ -33,6 +41,22 @@ public class HelloController {
     public void generateUsers() {
         //userService.generateUsers();
         userRepositoryService.generateUsers();
+    }
+
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public String test() {
+        /*
+        List<OrgEntity> orgEntityList =  orgRepositoryService.listOrgs();
+
+        for(OrgEntity o :orgEntityList){
+            System.out.println(o.toString());
+        }
+        */
+         orgRepositoryService.testMtoM();
+
+         return "";
+
+        //return new DataTable(1,4,10,new ArrayList<>(),orgEntityList);
     }
 
 

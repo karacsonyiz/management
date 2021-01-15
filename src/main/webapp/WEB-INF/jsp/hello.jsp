@@ -12,7 +12,9 @@
     <h2 class="hello-title mt-2">Hello ${sessionBean.getLogin().getUsername()}!</h2>
     <button onclick="location.href='manage';" class="btn btn-success mt-3">Manage Users</button>
     <br>
-    <button onclick="generate()" class="btn btn-primary mt-3">GenerateUsers</button>
+    <button onclick="location.href='manageorgs';" class="btn btn-info mt-3">Manage Organizations</button>
+    <br>
+    <button onclick="generate()" class="btn btn-primary mt-3" disabled>GenerateUsers</button>
     <br>
     <button onclick="test()" class="btn btn-warning mt-3">Test</button>
     <script src="/js/hello.js"></script>
