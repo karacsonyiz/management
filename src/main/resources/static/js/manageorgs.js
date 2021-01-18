@@ -30,15 +30,14 @@ function generateAjaxDataTable(dataTable){
             },
             "recordsTotal": dataTable.recordsTotal,
             "recordsFiltered": dataTable.recordsFiltered,
-            //"rowId" : "id",
             "filter":false,
             "searching":true,
             "pagingType": "numbers",
 
             data : dataTable.orgEntities,
                 columns: [
-                    //{data : "id"},
                     {data : "name"},
+                    {data : function (data){return data.users.map(user => user.name).join("<br>");}},
                     {"defaultContent" : "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
                     {"defaultContent" : "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
                     ]

@@ -65,6 +65,7 @@ function generateAjaxDataTable(dataTable){
                     {data : "address"},
                     {data : "phone"},
                     {data : "role"},
+                    {data : function (data){return data.orgs.map(org => org.name).join("<br>");}},
                     {"defaultContent" : "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
                     {"defaultContent" : "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
                     ]

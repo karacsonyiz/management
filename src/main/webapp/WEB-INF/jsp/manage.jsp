@@ -24,6 +24,7 @@
                 <th>address</th>
                 <th>phone</th>
                 <th>role</th>
+                <th>orgs</th>
                 <th>delete</th>
                 <th>update</th>
             </tr>
@@ -36,6 +37,7 @@
                     <th>address</th>
                     <th>phone</th>
                     <th>role</th>
+                    <th>orgs</th>
                     <th style="display:none;">delete</th>
                     <th style="display:none;">update</th>
                 </tr>

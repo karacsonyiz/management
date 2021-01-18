@@ -14,6 +14,7 @@
             <thead>
                 <tr>
                     <th>name</th>
+                    <th>users</th>
                     <th>delete</th>
                     <th>update</th>
                 </tr>
@@ -21,6 +22,7 @@
             <tfoot>
                 <tr>
                     <th>name</th>
+                    <th>users</th>
                     <th style="display:none;">delete</th>
                     <th style="display:none;">update</th>
                 </tr>

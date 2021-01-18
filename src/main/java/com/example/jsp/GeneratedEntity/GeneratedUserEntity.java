@@ -1,9 +1,6 @@
 package com.example.jsp.GeneratedEntity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,7 +21,7 @@ public class GeneratedUserEntity {
     private String address;
     private int enabled;
     private String role;
-    @JsonBackReference
+    @JsonIgnoreProperties("users")
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "orgusers", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "organizationid"))
     private List<GeneratedOrganizationEntity> orgs = new ArrayList<>();

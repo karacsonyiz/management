@@ -1,6 +1,7 @@
 package com.example.jsp.GeneratedEntity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -16,7 +17,7 @@ public class GeneratedOrganizationEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer organizationid;
     private String name;
-    @JsonManagedReference
+    @JsonIgnoreProperties("orgs")
     @ManyToMany(mappedBy = "orgs")
     private List<GeneratedUserEntity> users;
 
