@@ -19,8 +19,6 @@ import java.util.List;
 @Controller
 public class HelloController {
 
-    //@Autowired
-    //private UserService userService;
     @Autowired
     private UserRepositoryService userRepositoryService;
     @Autowired
@@ -33,30 +31,19 @@ public class HelloController {
         ModelAndView modelAndView = new ModelAndView("hello");
         Object sessionBean =  session.getAttribute("sessionBean");
         model.addAttribute("sessionBean",sessionBean);
-
         return modelAndView;
     }
 
     @RequestMapping(value = "/generate", method = RequestMethod.GET)
     public void generateUsers() {
-        //userService.generateUsers();
         userRepositoryService.generateUsers();
     }
 
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public String test() {
-        /*
-        List<OrgEntity> orgEntityList =  orgRepositoryService.listOrgs();
-
-        for(OrgEntity o :orgEntityList){
-            System.out.println(o.toString());
-        }
-        */
-         orgRepositoryService.testMtoM();
-
+         //orgRepositoryService.testMtoM();
+        orgRepositoryService.testOrgUsersAdd();
          return "";
-
-        //return new DataTable(1,4,10,new ArrayList<>(),orgEntityList);
     }
 
 

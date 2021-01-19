@@ -29,7 +29,6 @@ import java.util.Map;
 @RestController
 public class ManageController {
 
-    //private UserService userService;
     private UserRepositoryService userRepositoryService;
 
     public ManageController(UserService userService, UserRepositoryService userRepositoryService) {
@@ -38,7 +37,7 @@ public class ManageController {
     }
 
     @GetMapping("/manage")
-    public ModelAndView manage(@ModelAttribute("user") User user, Model model, HttpSession session) {
+    public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession session) {
 
         ModelAndView modelAndView = new ModelAndView("manage");
         Object name = session.getAttribute("name");
@@ -60,71 +59,20 @@ public class ManageController {
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
     public DataTable getUsers(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-
-        //List<User> userList = userService.listUsers();
-        //List<UserEntity> userEntityList = userRepositoryService.listUsers();
         List<GeneratedUserEntity> userEntityList = userRepositoryService.listUsers();
         long userCount = userRepositoryService.countUsers();
-
-        Map<String,List<String>> userOrgs = new HashMap<>();
-
-
-        for(GeneratedUserEntity u : userEntityList){
-            List<String> orgNames = new ArrayList<>();
-            System.out.println("userek");
-            System.out.println(u.getName());
-
-
-            for(GeneratedOrganizationEntity o : u.getOrgs()){
-                System.out.println("orgok");
-                System.out.println(o.getName());
-                orgNames.add(o.getName());
-            }
-            userOrgs.put(u.getName(),orgNames);
-        }
-        /*
-
-        int pageid = 1;
-        int offset = 0;
-        int total=10;
-        if (request.getParameter("page") != null){
-            pageid = Integer.parseInt(request.getParameter("page") );
-        }
-
-
-        if(pageid==1){}
-        else{
-            offset=(pageid-1)*total;
-        }
-
-
-        List<User> userListByPage = userService.listUsersByPage(offset,total);
-        */
-        return new DataTable(1,userCount,10,userEntityList,new ArrayList<>(),userOrgs);
+        return new DataTable(1,userCount,10,userEntityList,new ArrayList<>());
 
     }
-
-    /*
-    //This code is for later use.
-    @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String id = request.getParameter("id");
-        userService.deleteUser(Integer.parseInt(id));
-        response.sendRedirect("manage");
-    }
-    */
-
 
     @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.GET)
     public void delete(@PathVariable String id, HttpServletResponse response) throws IOException {
-        //userService.deleteUser(Integer.parseInt(id));
         userRepositoryService.deleteUser(Integer.parseInt(id));
     }
 
     @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
-    public UserEntity getUser(@PathVariable String id) {
+    public GeneratedUserEntity getUser(@PathVariable String id) {
         return userRepositoryService.findUserById(Integer.parseInt(id)).get();
-        //return userService.findUserById(Integer.parseInt(id));
     }
 
     @RequestMapping(value = "/updateUser/{id}", method = RequestMethod.POST)
@@ -138,8 +86,21 @@ public class ManageController {
         //return userService.countUsers();
     }
 
+    @RequestMapping(value = "/addOrgs/{id}", method = RequestMethod.POST)
+    public void addOrgs(@RequestBody Map<String,List<String>> orgs,@PathVariable String id,Errors errors){
+        List<String> orgValues = orgs.get("org");
+
+        if(orgValues.size() != 0){
+            userRepositoryService.addOrgs(orgValues,Integer.parseInt(id));
+        }
+
+
+        //return userRepositoryService.countUsers();
+        //return userService.countUsers();
+    }
+
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView save(@ModelAttribute("user") UserEntity user,HttpServletResponse response, Errors errors) throws IOException {
+    public ModelAndView save(@ModelAttribute("user") GeneratedUserEntity user,HttpServletResponse response, Errors errors) throws IOException {
         ModelAndView modelAndView = new ModelAndView("manage");
         userRepositoryService.addUser(user,errors);
         //checkIfAddOrUpdate(user.getUserid(),user,errors);

@@ -9,7 +9,25 @@
 
 </head>
 <body class="container-fluid">
-    <h2 class="hello-title mt-2">Hello ${sessionBean.getLogin().getUsername()}!</h2>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="hello">Hello ${sessionBean.getLogin().getUsername()}!</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="manage">Manage Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageorgs">Manage Orgs</a>
+                </li>
+            </ul>
+        </div>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="login">LoginPage</a>
+            </li>
+        </ul>
+    </nav>
+    <h2 class="hello-title mt-2"></h2>
     <button onclick="location.href='manage';" class="btn btn-success mt-3">Manage Users</button>
     <br>
     <button onclick="location.href='manageorgs';" class="btn btn-info mt-3">Manage Organizations</button>

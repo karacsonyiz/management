@@ -1,10 +1,6 @@
 package com.example.jsp.GeneratedEntity;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -21,6 +17,13 @@ public class GeneratedOrganizationEntity {
     @ManyToMany(mappedBy = "orgs")
     private List<GeneratedUserEntity> users;
 
+    public GeneratedOrganizationEntity() {
+    }
+
+    public GeneratedOrganizationEntity(String name,List<GeneratedUserEntity> users) {
+        this.name = name;
+        this.users = users;
+    }
 
     @Column(name = "organizationid")
     public Integer getId() {

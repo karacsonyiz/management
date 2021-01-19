@@ -1,25 +1,30 @@
 package com.example.jsp.Service;
 
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
+import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
+import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
-import com.example.jsp.Repository.OrgRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.util.List;
 
+@Transactional
 @Service
 public class OrgRepositoryService {
-
 
     @Autowired
     private OrgEntityRepository orgEntityRepository;
     @Autowired
     private UserEntityRepository userEntityRepository;
     @Autowired
-    private OrgRepository orgRepository;
+    private OrgUsersEntityRepository orgUsersEntityRepository;
+    @PersistenceContext
+    private EntityManager em;
 
     public void testMtoM(){
 
@@ -28,14 +33,22 @@ public class OrgRepositoryService {
         GeneratedOrganizationEntity testOrgEntity3 = orgEntityRepository.findById(3).get();
 
         GeneratedUserEntity testgeneratedUserEntity = userEntityRepository.findById(1).get();
-        GeneratedUserEntity testgeneratedUserEntity2 = userEntityRepository.findById(2).get();
+        GeneratedUserEntity testgeneratedUserEntity2 = userEntityRepository.findById(1).get();
 
 
-        testgeneratedUserEntity2.addOrg(testOrgEntity2);
+        testgeneratedUserEntity2.addOrg(testOrgEntity);
         testgeneratedUserEntity2.addOrg(testOrgEntity3);
     }
 
     public List<GeneratedOrganizationEntity> listOrgs(){
         return orgEntityRepository.findAll();
+    }
+
+
+    public void testOrgUsersAdd(){
+        GeneratedUserEntity user = userEntityRepository.findById(5).get();
+        em.merge(new GeneratedOrgusersEntity(user,orgEntityRepository.findById(1).get()));
+        em.merge(new GeneratedOrgusersEntity(user, orgEntityRepository.findById(2).get()));
+        em.merge(new GeneratedOrgusersEntity(user,orgEntityRepository.findById(3).get()));
     }
 }

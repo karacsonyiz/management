@@ -9,11 +9,28 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body class="container-fluid">
-<h1>User List</h1>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="hello">Hello ${sessionBean.getLogin().getUsername()}!</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="manage">Manage Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="manageorgs">Manage Orgs</a>
+            </li>
+        </ul>
+    </div>
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a class="nav-link" href="login">LoginPage</a>
+        </li>
+    </ul>
+</nav>
+<h1>Manage Users</h1>
 <div style="text-align: center;">
     <h5 style="${successStyle}" id="successMessage">Save Successful!</h5>
 </div>
-
 <div>
 <table id="userTable" class="table table-striped">
         <thead>
@@ -44,7 +61,6 @@
             </tfoot>
 </table>
 <button class="btn btn-success" id="adduserbutton" onclick="adduser()">Add new user</button>
-
 <div id="adduserdiv" style="${userTableStyle}">
 <jsp:include page="adduser.jsp"></jsp:include>
 </div>
@@ -58,6 +74,7 @@
       </div>
     </div>
 </div>
+
 <script src="/js/manage.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>

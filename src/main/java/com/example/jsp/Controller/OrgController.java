@@ -27,8 +27,7 @@ public class OrgController {
     }
 
     @GetMapping("/manageorgs")
-    public ModelAndView manage(@ModelAttribute("user") User user, Model model, HttpSession session) {
-
+    public ModelAndView manage(Model model, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("manageorgs");
         Object name = session.getAttribute("name");
         model.addAttribute("name", name);
@@ -38,12 +37,7 @@ public class OrgController {
     @RequestMapping(value = "/getOrgs", method = RequestMethod.GET)
     public DataTable getOrgs() {
         List<GeneratedOrganizationEntity> orgEntityList =  orgRepositoryService.listOrgs();
-
-        for(GeneratedOrganizationEntity o : orgEntityList){
-            System.out.println(o.getName());
-        }
-
-        return new DataTable(1,4,10,new ArrayList<>(),orgEntityList,new HashMap<>());
+        return new DataTable(1,4,10,new ArrayList<>(),orgEntityList);
     }
 
 }

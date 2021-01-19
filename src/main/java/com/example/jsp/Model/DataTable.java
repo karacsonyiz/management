@@ -19,16 +19,13 @@ public class DataTable implements Serializable {
     private long recordsFiltered;
     private List<GeneratedUserEntity> userEntities;
     private List<GeneratedOrganizationEntity> orgEntities;
-    private Map<String,List<String>>  userOrgs;
 
-    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<GeneratedUserEntity> userEntities,List<GeneratedOrganizationEntity> orgEntities,
-                     Map<String,List<String>>  userOrgs) {
+    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<GeneratedUserEntity> userEntities,List<GeneratedOrganizationEntity> orgEntities) {
         this.draw = draw;
         this.recordsTotal = recordsTotal;
         this.recordsFiltered = recordsFiltered;
         this.userEntities = userEntities;
         this.orgEntities = orgEntities;
-        this.userOrgs = userOrgs;
     }
 
     public DataTable() {
@@ -87,13 +84,5 @@ public class DataTable implements Serializable {
                 ", userEntities=" + userEntities +
                 ", orgEntities=" + orgEntities +
                 '}';
-    }
-
-    public Map<String,List<String>>  getUserOrgs() {
-        return userOrgs;
-    }
-
-    public void setUserOrgs(Map<String,List<String>>  userOrgs) {
-        this.userOrgs = userOrgs;
     }
 }

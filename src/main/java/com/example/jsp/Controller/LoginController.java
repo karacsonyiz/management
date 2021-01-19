@@ -1,6 +1,7 @@
 package com.example.jsp.Controller;
 
 import com.example.jsp.Entity.UserEntity;
+import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
@@ -36,9 +37,7 @@ public class LoginController {
 
         Session sessionBean = new Session(new Login(login.getUsername(), login.getPassword()));
         ModelAndView modelAndView = null;
-        UserEntity user = userRepositoryService.validateUserForLogin(login, result);
-
-        if(user == null){
+        if(!userRepositoryService.validateUserForLogin(login,result)){
             modelAndView = new ModelAndView("login");
         } else {
             request.getSession().setAttribute("sessionBean",sessionBean);

@@ -23,7 +23,7 @@ function deleteUser(id){
         })
         .catch(error => location.href = "manage");
          return false;
-    }
+}
 
 function getUsers(){
         fetch("/getUsers/")
@@ -100,6 +100,7 @@ function getUser(id){
 
 function filluserDiv(user,id){
     //document.querySelector("#userH1").innerHTML = "Update User"
+    console.log(user);
     let adduserdiv = document.querySelector("#adduserdiv");
     adduserdiv.setAttribute("style","display:block");
     document.querySelector("#idInput").value = user.userid;
@@ -109,7 +110,65 @@ function filluserDiv(user,id){
     document.querySelector("#emailInput").value = user.email;
     document.querySelector("#addressInput").value = user.address;
     document.querySelector("#roleInput").value = user.role;
+    //document.querySelector("#orgModal").setAttribute("userId",user.userid);
+    document.querySelector("#orgModal").addEventListener("click", function(){getDataForModal(user.orgs,user.userid);}, false);
+    document.querySelector("#orgModal").setAttribute("userId",user.userid);
+}
+
+function getDataForModal(userOrgs,userid){
+    fetch("/getOrgs/")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (orgs) {
+            populateOrgModal(userOrgs,orgs.orgEntities,userid)
+        });
+}
+
+function populateOrgModal(userOrgs,allOrgs,userid){
+    let orgModalBody = document.querySelector("#orgModalBody");
+    let orgSelect = document.querySelector("#orgSelect");
+    orgSelect.setAttribute("userID",userid);
+    orgSelect.innerHTML = "";
+    orgModalBody.innerHTML = "";
+    for(i in userOrgs){
+        let orgBadge = document.createElement("button");
+        orgBadge.setAttribute("class","btn btn-success p-2 m-2");
+        orgBadge.innerHTML = userOrgs[i].name;
+        orgModalBody.appendChild(orgBadge);
     }
+    for(k in allOrgs){
+        let option = document.createElement("option");
+        option.setAttribute("value",allOrgs[k].name);
+        option.innerHTML = allOrgs[k].name;
+        orgSelect.appendChild(option);
+    }
+}
+
+function addOrg(){
+    var values = $('#orgSelect').val();
+    var userid = document.querySelector("#orgModal").getAttribute("userid");
+    let orgs = {
+        "org": values,
+    }
+
+    fetch("/addOrgs/"+userid, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(orgs)
+    }).then(function(response) {
+        return response.json();
+    })
+        .then(function(jsonData) {
+            console.log(jsonData);
+        })
+        .catch(error => console.log(error));
+    return false;
+
+}
+
 
 function generateSaveButton(id){
     let savebutton = document.querySelector("#savebutton");
@@ -145,6 +204,13 @@ function hideSuccessMessage(){
         successMessage.style="display:none;";
     },
     6000);
+}
+
+function addOrgs() {
+    let name = document.querySelector("#user-name").value;
+    let password = document.querySelector("#user-password").value;
+
+
 }
 
 

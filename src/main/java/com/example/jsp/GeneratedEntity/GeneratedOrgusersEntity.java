@@ -6,11 +6,21 @@ import java.util.Objects;
 @Entity
 @Table(name = "orgusers", schema = "demo")
 public class GeneratedOrgusersEntity {
+
     private Integer id;
     private GeneratedUserEntity userByUserid;
     private GeneratedOrganizationEntity organizationByOrgid;
 
+    public GeneratedOrgusersEntity(GeneratedUserEntity userByUserid, GeneratedOrganizationEntity organizationByOrgid) {
+        this.userByUserid = userByUserid;
+        this.organizationByOrgid = organizationByOrgid;
+    }
+
+    public GeneratedOrgusersEntity() {
+    }
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     public Integer getId() {
         return id;

@@ -26,6 +26,19 @@ public class GeneratedUserEntity {
     @JoinTable(name = "orgusers", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "organizationid"))
     private List<GeneratedOrganizationEntity> orgs = new ArrayList<>();
 
+    public GeneratedUserEntity() {
+    }
+
+    public GeneratedUserEntity(String name, String password, String email, String phone, String address, String role, List<GeneratedOrganizationEntity> orgs) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.role = role;
+        this.orgs = orgs;
+    }
+
     public void addOrg(GeneratedOrganizationEntity generatedOrganizationEntity){
         orgs.add(generatedOrganizationEntity);
         generatedOrganizationEntity.getUsers().add(this);
@@ -34,6 +47,13 @@ public class GeneratedUserEntity {
     public void removeOrg(GeneratedOrganizationEntity generatedOrganizationEntity) {
         orgs.remove(generatedOrganizationEntity);
         generatedOrganizationEntity.getUsers().remove(this);
+    }
+
+    public void addMultipleOrgs(List<GeneratedOrganizationEntity> generatedOrganizationEntityList){
+        orgs.addAll(generatedOrganizationEntityList);
+        for(GeneratedOrganizationEntity org : generatedOrganizationEntityList){
+            org.getUsers().add(this);
+        }
     }
 
 
@@ -46,7 +66,6 @@ public class GeneratedUserEntity {
         this.userid = userid;
     }
 
-    @Basic
     @Column(name = "name")
     public String getName() {
         return name;
@@ -56,7 +75,6 @@ public class GeneratedUserEntity {
         this.name = name;
     }
 
-    @Basic
     @Column(name = "password")
     public String getPassword() {
         return password;
@@ -66,7 +84,6 @@ public class GeneratedUserEntity {
         this.password = password;
     }
 
-    @Basic
     @Column(name = "email")
     public String getEmail() {
         return email;
@@ -76,7 +93,6 @@ public class GeneratedUserEntity {
         this.email = email;
     }
 
-    @Basic
     @Column(name = "phone")
     public String getPhone() {
         return phone;
@@ -86,7 +102,6 @@ public class GeneratedUserEntity {
         this.phone = phone;
     }
 
-    @Basic
     @Column(name = "address")
     public String getAddress() {
         return address;
@@ -96,7 +111,6 @@ public class GeneratedUserEntity {
         this.address = address;
     }
 
-    @Basic
     @Column(name = "enabled")
     public int getEnabled() {
         return enabled;
@@ -106,7 +120,6 @@ public class GeneratedUserEntity {
         this.enabled = enabled;
     }
 
-    @Basic
     @Column(name = "role")
     public String getRole() {
         return role;
@@ -136,5 +149,20 @@ public class GeneratedUserEntity {
     @Override
     public int hashCode() {
         return Objects.hash(userid, name, password, email, phone, address, enabled, role, orgs);
+    }
+
+    @Override
+    public String toString() {
+        return "GeneratedUserEntity{" +
+                "userid=" + userid +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", enabled=" + enabled +
+                ", role='" + role + '\'' +
+                ", orgs=" + orgs +
+                '}';
     }
 }

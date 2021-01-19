@@ -1,7 +1,9 @@
 package com.example.jsp.Service;
+import com.example.jsp.Entity.OrganizationEntity;
 import com.example.jsp.Entity.UserEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
+import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Repository.UserRepository;
@@ -10,6 +12,11 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -20,36 +27,31 @@ public class UserRepositoryService {
 
     private UserRepository userRepository;
 
+
     @Autowired
     private UserEntityRepository userEntityRepository;
-
-    public UserRepositoryService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private EntityManager em;
+    @Autowired
+    private OrgEntityRepository orgEntityRepository;
 
 
     public List<GeneratedUserEntity> listUsers() {
 
         List<GeneratedUserEntity> users = userEntityRepository.findAll();
         return users;
-        //return userRepository.findAll();
     }
 
-    public Optional<UserEntity> findUserByUserName(String name){
-        UserEntity entity = new UserEntity();
-        entity.setName(name);
-        Example<UserEntity> example = Example.of(entity);
-        return userRepository.findOne(example);
+    public Long findIdByName(String name){
+        return userEntityRepository.findIdByName(name);
     }
 
-    public UserEntity validateUserForLogin(Login login, Errors errors){
-        Optional<UserEntity> entity = findUserByUserName(login.getUsername());
-
-        if(entity.isEmpty()){
+    public boolean validateUserForLogin(Login login, Errors errors){
+        if(findIdByName(login.getUsername()) == null){
             errors.rejectValue("username","Invalid Username!","Invalid Username!");
-            return null;
+            return false;
         }
-        return entity.get();
+        return true;
     }
 
     private boolean isEmailValid(String email){
@@ -69,7 +71,7 @@ public class UserRepositoryService {
         return userRepository.findOne(example);
     }
 
-    public void validateAddUser(UserEntity user,Errors errors){
+    public void validateAddUser(GeneratedUserEntity user,Errors errors){
         if(user.getName().equals("")){
             errors.rejectValue("name","Username can not be empty!","Username can not be empty!");
         }
@@ -87,15 +89,15 @@ public class UserRepositoryService {
         }
     }
 
-    public void addUser(UserEntity user, Errors errors) {
+    public void addUser(GeneratedUserEntity user, Errors errors) {
         validateAddUser(user,errors);
         handleErrors(user,errors);
     }
 
-    private void handleErrors(UserEntity user, Errors errors){
+    private void handleErrors(GeneratedUserEntity user, Errors errors){
         if(!errors.hasErrors()){
             try{
-                userRepository.save(user);
+                userEntityRepository.save(user);
             } catch (DataIntegrityViolationException e){
                 String cause = e.getMostSpecificCause().getMessage();
                 if(cause.contains("key 'email'")){
@@ -108,17 +110,18 @@ public class UserRepositoryService {
         }
     }
 
-    public Optional<UserEntity> findUserById(int id) {
-        return userRepository.findById(id);
+    public Optional<GeneratedUserEntity> findUserById(int id) {
+        return userEntityRepository.findById(id);
     }
 
     public void deleteUser(int id) {
-        Optional<UserEntity> user = findUserById(id);
-        user.ifPresent(userEntity -> userRepository.delete(userEntity));
+        Optional<GeneratedUserEntity> user = userEntityRepository.findById(id);
+        //Optional<UserEntity> user = findUserById(id);
+        user.ifPresent(userEntity -> userEntityRepository.delete(userEntity));
     }
 
     public long countUsers() {
-        return userRepository.count();
+        return userEntityRepository.count();
     }
 
     public void generateUsers(){
@@ -131,9 +134,28 @@ public class UserRepositoryService {
             password = name;
             email = name + "@" + i + name + ".hu";
             address = "Pálya utca " + i;
-            UserEntity u = new UserEntity(name,password,email,"555555",address,"ROLE_USER");
-            userRepository.save(u);
+            GeneratedUserEntity g = new GeneratedUserEntity(name,password,email,"061555555",address,"ROLE_USER",new ArrayList<>());
+            //UserEntity u = new UserEntity(name,password,email,"555555",address,"ROLE_USER");
+            userEntityRepository.save(g);
         }
     }
 
+    public void addOrgs(List<String> orgs,Integer userid){
+        Optional<GeneratedUserEntity> user = findUserById(userid);
+
+        List<GeneratedOrganizationEntity> orgList = new ArrayList<>();
+
+
+
+        if(user.isPresent()){
+            for(String orgName : orgs){
+                GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(orgName);
+                orgList.add(org);
+                System.out.println(org.getId());
+                System.out.println(org.getName());
+            }
+            user.get().addMultipleOrgs(orgList);
+
+        }
+    }
 }

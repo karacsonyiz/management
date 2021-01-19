@@ -6,6 +6,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
 <body>
 
@@ -21,18 +23,18 @@
                 <td style="color:red;"><form:errors path="userid"/></td>
             </tr>
               <tr>
-                  <td>name :</td>
-                  <td><form:input path="name" id="nameInput"/> *</td>
+                  <td>name :  *</td>
+                  <td><form:input path="name" id="nameInput"/></td>
                   <td style="color:red;" id="nameError"><form:errors path="name"/></td>
               </tr>
               <tr>
-                  <td>password :</td>
-                  <td><form:input path="password" id="passwordInput"/> *</td>
+                  <td>password :  *</td>
+                  <td><form:input path="password" id="passwordInput"/></td>
                   <td style="color:red;"><form:errors path="password"/></td>
               </tr>
               <tr>
-                  <td>email :</td>
-                  <td><form:input path="email" id="emailInput"/> *</td>
+                  <td>email :  *</td>
+                  <td><form:input path="email" id="emailInput"/></td>
                   <td style="color:red;" id="emailError"><form:errors path="email"/></td>
               </tr>
               <tr>
@@ -46,25 +48,56 @@
                   <td style="color:red;" id="addressError"><form:errors path="address"/></td>
               </tr>
               <tr>
-                  <td>role :</td>
+                  <td>role :  *</td>
                   <td><form:select path="role" id="roleInput">
                       <form:option value="ROLE_ADMIN"></form:option>
                       <form:option value="ROLE_USER"></form:option>
-                      </form:select> *
+                      </form:select>
                   </td>
                   <td style="color:red;"><form:errors path="role"/></td>
               </tr>
+                <tr>
+                    <td>organizations :</td>
+                    <td><button style="margin-left : 30px;" type="button" class="btn btn-warning" id="orgModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Manage Orgs</button></td>
+                </tr>
               <tr>
                   <td colspan="3">
                       <input type="submit" value="Save user" id="savebutton" class="btn btn-success" />
-                      <a style="margin-left : 107px;"> * = Kötelező</a>
+                      <a style="margin-left : 500px;"> * = required</a>
                   </td>
               </tr>
           </tbody>
       </table>
   </div>
 </div>
-  </form:form>
-  <script src="/js/manage.js"></script>
+</form:form>
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add/Remove Organizations</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="orgModalBody">
+
+            </div>
+            <div class="modal-footer">
+                <p>Add Organization :</p>
+                <select class="form-select" id="orgSelect" multiple></select>
+                <button type="button" class="btn btn-success" onclick="addOrg()">Add</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/js/manage.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous">
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 </body>
 </html>
