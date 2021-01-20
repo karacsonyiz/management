@@ -179,6 +179,12 @@ databaseChangeLog:
               - column:
                   name: updatedby
                   type: varchar(255)
+              - column:
+                  name: createdtimestamp
+                  type: varchar(255)
+              - column:
+                  name: updatedtimestamp
+                  type: varchar(255)
 
 
 

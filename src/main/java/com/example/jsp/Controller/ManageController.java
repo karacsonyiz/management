@@ -6,8 +6,10 @@ import com.example.jsp.Model.User;
 import com.example.jsp.Service.UserRepositoryService;
 import com.example.jsp.Service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
@@ -41,11 +43,9 @@ public class ManageController {
 
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
     public DataTable getUsers(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         List<GeneratedUserEntity> userEntityList = userRepositoryService.listUsers();
         long userCount = userRepositoryService.countUsers();
         return new DataTable(1,userCount,10,userEntityList,new ArrayList<>());
-
     }
 
     @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.GET)
@@ -84,6 +84,7 @@ public class ManageController {
         if(errors.hasErrors()){
             modelAndView.addObject("userTableStyle","display:block;");
             modelAndView.addObject("successStyle","display:none;");
+            modelAndView.addObject("errorMsg", "Error: " +errors.getAllErrors().get(0).getDefaultMessage());
         } else {
             modelAndView.addObject("successStyle","display:block;color:green;");
             modelAndView.addObject("userTableStyle","display:none;");

@@ -61,10 +61,9 @@
                     <td><button style="margin-left : 30px;" type="button" class="btn btn-warning" id="orgModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Manage Orgs</button></td>
                 </tr>
               <tr>
-                  <td colspan="3">
-                      <input type="submit" value="Save user" id="savebutton" class="btn btn-success" />
-                      <a style="margin-left : 500px;"> * = required</a>
-                  </td>
+                  <td><input type="submit" value="Save user" id="savebutton" class="btn btn-success"/></td>
+                  <td><p style="color:red;margin-bottom: 0;padding:0;">${errorMsg}</p></td>
+                  <td><p style="margin-bottom: 0;padding:0;"> * = required</p></td>
               </tr>
           </tbody>
       </table>
