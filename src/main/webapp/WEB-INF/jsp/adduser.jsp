@@ -83,10 +83,9 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="orgModalBody">
-
             </div>
             <div class="modal-footer">
-                <p>Add Organization :</p>
+                <p style="margin-right:70%;">Add Organization :</p>
                 <select class="form-select" id="orgSelect" multiple></select>
                 <button type="button" class="btn btn-success" onclick="addOrg()">Add</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

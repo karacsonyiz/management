@@ -156,5 +156,30 @@ databaseChangeLog:
               - column:
                   name: name
                   value: otp
+  - changeSet:
+      id: 5
+      author: karacsonyiz
+      changes:
+        - createTable:
+            tableName: log
+            columns:
+              - column:
+                  name: logid
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: logtext
+                  type: LONGTEXT
+              - column:
+                  name: createdby
+                  type: varchar(255)
+              - column:
+                  name: updatedby
+                  type: varchar(255)
+
+
 
 
