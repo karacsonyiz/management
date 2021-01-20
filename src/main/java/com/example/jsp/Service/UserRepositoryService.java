@@ -2,8 +2,10 @@ package com.example.jsp.Service;
 import com.example.jsp.Entity.OrganizationEntity;
 import com.example.jsp.Entity.UserEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
+import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
+import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Repository.UserRepository;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
 import javax.persistence.EntityManager;
@@ -22,6 +25,7 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Transactional
 @Service
 public class UserRepositoryService {
 
@@ -34,6 +38,8 @@ public class UserRepositoryService {
     private EntityManager em;
     @Autowired
     private OrgEntityRepository orgEntityRepository;
+    @Autowired
+    private OrgUsersEntityRepository orgUsersEntityRepository;
 
 
     public List<GeneratedUserEntity> listUsers() {
@@ -141,21 +147,32 @@ public class UserRepositoryService {
     }
 
     public void addOrgs(List<String> orgs,Integer userid){
-        Optional<GeneratedUserEntity> user = findUserById(userid);
-
         List<GeneratedOrganizationEntity> orgList = new ArrayList<>();
-
-
+        Optional<GeneratedUserEntity> user = userEntityRepository.findById(userid);
 
         if(user.isPresent()){
             for(String orgName : orgs){
                 GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(orgName);
-                orgList.add(org);
-                System.out.println(org.getId());
-                System.out.println(org.getName());
+                if(org != null && !user.get().getOrgs().contains(org)){
+                    em.merge(new GeneratedOrgusersEntity(user.get(),org));
+                }
             }
-            user.get().addMultipleOrgs(orgList);
-
         }
+    }
+
+    public void deleteOrgForUser(Integer userid,String orgName){
+        Optional<GeneratedUserEntity> user = userEntityRepository.findById(userid);
+        GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(orgName);
+        Optional<GeneratedOrgusersEntity> orguser = Optional.empty();
+
+        if(user.isPresent() && org != null) {
+            GeneratedOrgusersEntity probeOrgUser;
+            probeOrgUser = new GeneratedOrgusersEntity(user.get(), org);
+            Example<GeneratedOrgusersEntity> exampleOrgUser = Example.of(probeOrgUser);
+            orguser = orgUsersEntityRepository.findOne(exampleOrgUser);
+        }
+
+        orguser.ifPresent(generatedOrgusersEntity -> orgUsersEntityRepository.delete(generatedOrgusersEntity));
+
     }
 }

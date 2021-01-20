@@ -8,9 +8,10 @@ import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Transactional
@@ -46,9 +47,10 @@ public class OrgRepositoryService {
 
 
     public void testOrgUsersAdd(){
+
         GeneratedUserEntity user = userEntityRepository.findById(5).get();
         em.merge(new GeneratedOrgusersEntity(user,orgEntityRepository.findById(1).get()));
-        em.merge(new GeneratedOrgusersEntity(user, orgEntityRepository.findById(2).get()));
+        em.merge(new GeneratedOrgusersEntity(user, orgEntityRepository.findById(7).get()));
         em.merge(new GeneratedOrgusersEntity(user,orgEntityRepository.findById(3).get()));
     }
 }

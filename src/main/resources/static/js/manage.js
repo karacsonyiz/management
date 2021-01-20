@@ -110,7 +110,6 @@ function filluserDiv(user,id){
     document.querySelector("#emailInput").value = user.email;
     document.querySelector("#addressInput").value = user.address;
     document.querySelector("#roleInput").value = user.role;
-    //document.querySelector("#orgModal").setAttribute("userId",user.userid);
     document.querySelector("#orgModal").addEventListener("click", function(){getDataForModal(user.orgs,user.userid);}, false);
     document.querySelector("#orgModal").setAttribute("userId",user.userid);
 }
@@ -133,7 +132,8 @@ function populateOrgModal(userOrgs,allOrgs,userid){
     orgModalBody.innerHTML = "";
     for(i in userOrgs){
         let orgBadge = document.createElement("button");
-        orgBadge.setAttribute("class","btn btn-success p-2 m-2");
+        orgBadge.setAttribute("class","btn btn-success p-2 m-2 orgBadge");
+        orgBadge.addEventListener("click",function(){deleteOrgForUser(this,userid)})
         orgBadge.innerHTML = userOrgs[i].name;
         orgModalBody.appendChild(orgBadge);
     }
@@ -143,6 +143,27 @@ function populateOrgModal(userOrgs,allOrgs,userid){
         option.innerHTML = allOrgs[k].name;
         orgSelect.appendChild(option);
     }
+}
+
+function deleteOrgForUser(element,userid){
+
+    let orgName = element.innerHTML;
+    fetch("/deleteOrgForUser/"+userid, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: orgName
+    }).then(function(response) {
+        return response.json();
+    })
+        .then(function(jsonData) {
+            console.log(jsonData);
+            refreshOrgModal(userid);
+        })
+        .catch(error => refreshOrgModal(userid));
+    return false;
+
 }
 
 function addOrg(){
@@ -163,10 +184,34 @@ function addOrg(){
     })
         .then(function(jsonData) {
             console.log(jsonData);
+            refreshOrgModal(userid);
+
         })
-        .catch(error => console.log(error));
+        .catch(error => refreshOrgModal(userid));
     return false;
 
+}
+
+function refreshOrgModal(userid){
+    fetch("/getUser/" + userid)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (user) {
+            refreshUserOrgList(user.orgs,userid);
+        });
+}
+
+function refreshUserOrgList(userOrgs,userid){
+    let orgModalBody = document.querySelector("#orgModalBody");
+    orgModalBody.innerHTML = "";
+    for(i in userOrgs){
+        let orgBadge = document.createElement("button");
+        orgBadge.setAttribute("class","btn btn-success p-2 m-2 orgBadge");
+        orgBadge.addEventListener("click",function(){deleteOrgForUser(this,userid)})
+        orgBadge.innerHTML = userOrgs[i].name;
+        orgModalBody.appendChild(orgBadge);
+    }
 }
 
 
@@ -204,13 +249,6 @@ function hideSuccessMessage(){
         successMessage.style="display:none;";
     },
     6000);
-}
-
-function addOrgs() {
-    let name = document.querySelector("#user-name").value;
-    let password = document.querySelector("#user-password").value;
-
-
 }
 
 
