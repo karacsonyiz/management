@@ -21,6 +21,9 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
+import javax.persistence.metamodel.EntityType;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
@@ -29,6 +32,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static org.springframework.boot.origin.Origin.from;
 
 
 @Service
@@ -136,7 +141,6 @@ public class UserRepositoryService {
     @Transactional
     public GeneratedUserEntity findUserById(int id) {
         return em.find(GeneratedUserEntity.class,id);
-        //return userEntityRepository.findById(id);
     }
 
     @Transactional
@@ -182,18 +186,28 @@ public class UserRepositoryService {
     }
 
     @Transactional
-    public void deleteOrgForUser(Integer userid,String orgName){
+    public void deleteOrgs(List<String> orgs,Integer userid){
         GeneratedUserEntity user = em.find(GeneratedUserEntity.class,userid);
-        GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(orgName);
-        Optional<GeneratedOrgusersEntity> orguser = Optional.empty();
-
-        if(user != null && org != null) {
-            GeneratedOrgusersEntity probeOrgUser;
-            probeOrgUser = new GeneratedOrgusersEntity(user, org);
-            Example<GeneratedOrgusersEntity> exampleOrgUser = Example.of(probeOrgUser);
-            orguser = orgUsersEntityRepository.findOne(exampleOrgUser);
+        if(user != null){
+            for(String orgName : orgs){
+                GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(orgName);
+                if(org != null){
+                    Integer orgusersEntityId = getOrgUsersEntityIdByUserAndOrg(user.getUserid(),org.getId());
+                    em.remove(em.find(GeneratedOrgusersEntity.class,orgusersEntityId));
+                }
+            }
         }
+    }
 
-        orguser.ifPresent(generatedOrgusersEntity -> orgUsersEntityRepository.delete(generatedOrgusersEntity));
+    @Transactional
+    public Integer getOrgUsersEntityIdByUserAndOrg(Integer userid,Integer orgid){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedOrgusersEntity> query = cb.createQuery(GeneratedOrgusersEntity.class);
+        Root<GeneratedOrgusersEntity> root  =  query.from(GeneratedOrgusersEntity.class);
+        Predicate predicateForUserid = cb.equal(root.get("userByUserid"),userid);
+        Predicate predicateForOrgid = cb.equal(root.get("organizationByOrgid"),orgid);
+        Predicate finalPredicate = cb.and(predicateForUserid,predicateForOrgid);
+        query.where(finalPredicate);
+        return em.createQuery(query).getResultList().get(0).getId();
     }
 }

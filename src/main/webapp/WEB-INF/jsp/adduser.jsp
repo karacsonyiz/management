@@ -84,6 +84,7 @@
             <div class="modal-body" id="orgModalBody">
             </div>
             <div class="modal-footer">
+                <button id="deleteSelectedOrgs" class="btn btn-danger" disabled>Delete Org(s)</button>
                 <p style="margin-right:70%;">Add Organization :</p>
                 <select class="form-select" id="orgSelect" multiple></select>
                 <button type="button" class="btn btn-success" onclick="addOrg()">Add</button>

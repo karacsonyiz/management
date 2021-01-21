@@ -5,6 +5,7 @@ window.onload = function(){
     initErrorCss();
     hideSuccessMessage();
     document.querySelector("#closeModalButton").addEventListener("click",function(){location.reload()})
+    document.querySelector("#deleteSelectedOrgs").addEventListener("click",function() {deleteSelectedOrgs()})
 }
 
 function initColSearch(){
@@ -95,12 +96,11 @@ function getUser(id){
                 return response.json();
             })
             .then(function (user) {
-                filluserDiv(user,id);
+                filluserDiv(user);
             });
 }
 
-function filluserDiv(user,id){
-    //document.querySelector("#userH1").innerHTML = "Update User"
+function filluserDiv(user){
     console.log(user);
     let adduserdiv = document.querySelector("#adduserdiv");
     adduserdiv.setAttribute("style","display:block");
@@ -134,7 +134,8 @@ function populateOrgModal(userOrgs,allOrgs,userid){
     for(i in userOrgs){
         let orgBadge = document.createElement("button");
         orgBadge.setAttribute("class","btn btn-success p-2 m-2 orgBadge");
-        orgBadge.addEventListener("click",function(){deleteOrgForUser(this,userid)})
+        orgBadge.setAttribute("value","false");
+        orgBadge.addEventListener("click",function(){selectDeletableOrg(this,userid)})
         orgBadge.innerHTML = userOrgs[i].name;
         orgModalBody.appendChild(orgBadge);
     }
@@ -146,15 +147,45 @@ function populateOrgModal(userOrgs,allOrgs,userid){
     }
 }
 
-function deleteOrgForUser(element,userid){
+function selectDeletableOrg(element,userid){
+    document.querySelector("#deleteSelectedOrgs").disabled = false;
+    document.querySelector("#deleteSelectedOrgs").userid = userid;
+    console.log(element);
+    if(element.getAttribute("value") === "false"){
+        element.setAttribute("value","true");
+        element.style = "background-color : red;"
+    } else {
+        element.setAttribute("value","false");
+        element.style = "background-color : green;"
+    }
 
-    let orgName = element.innerHTML;
+}
+
+function deleteSelectedOrgs(){
+    let selectedOrgs = document.querySelectorAll(".orgBadge");
+    let userid = document.querySelector("#deleteSelectedOrgs").userid;
+    let orglist = [];
+    for(let i in selectedOrgs){
+        if(selectedOrgs[i].value === "true"){
+            orglist.push(selectedOrgs[i].innerHTML);
+        }
+    }
+    let confirm = window.confirm("Biztos, hogy törölni szeretné ezeket a szervezeteket?");
+    if(confirm){
+        deleteOrgForUser(orglist,userid)
+    }
+}
+
+function deleteOrgForUser(orglist,userid){
+
     fetch("/deleteOrgForUser/"+userid, {
         method: "POST",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
-        body: orgName
+        body: JSON.stringify({
+            orgs: orglist
+        }),
     }).then(function(response) {
         return response.json();
     })
@@ -209,7 +240,8 @@ function refreshUserOrgList(userOrgs,userid){
     for(i in userOrgs){
         let orgBadge = document.createElement("button");
         orgBadge.setAttribute("class","btn btn-success p-2 m-2 orgBadge");
-        orgBadge.addEventListener("click",function(){deleteOrgForUser(this,userid)})
+        orgBadge.setAttribute("value","false");
+        orgBadge.addEventListener("click",function(){selectDeletableOrg(this,userid)})
         orgBadge.innerHTML = userOrgs[i].name;
         orgModalBody.appendChild(orgBadge);
     }

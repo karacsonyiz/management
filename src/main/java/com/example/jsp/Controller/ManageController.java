@@ -4,6 +4,7 @@ import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.DataTable;
 import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
+import netscape.javascript.JSObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Propagation;
@@ -100,7 +101,9 @@ public class ManageController {
     }
 
     @RequestMapping(value = "/deleteOrgForUser/{id}", method = RequestMethod.POST)
-    public void deleteOrgForUser(@RequestBody String org,@PathVariable String id) throws IOException {
-        userRepositoryService.deleteOrgForUser(Integer.parseInt(id),org);
+    public void deleteOrgForUser(@RequestBody Map<String,List<String>> orgs,@PathVariable String id) throws IOException {
+        List<String> orgNames = orgs.get("orgs");
+        userRepositoryService.deleteOrgs(orgNames,Integer.parseInt(id));
+        //userRepositoryService.deleteOrgForUser(Integer.parseInt(id),org);
     }
 }
