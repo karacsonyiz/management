@@ -1,4 +1,4 @@
-
+/*
 package com.example.jsp.Entity;
 
 import javax.persistence.*;
@@ -108,3 +108,4 @@ public class UserEntity {
                 '}';
     }
 }
+*/

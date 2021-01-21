@@ -1,4 +1,4 @@
-
+/*
 package com.example.jsp.Entity;
 
 
@@ -52,3 +52,4 @@ public class OrgEntity {
     }
 
 }
+*/

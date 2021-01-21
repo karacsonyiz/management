@@ -1,4 +1,4 @@
-
+/*
 package com.example.jsp.Entity;
 
 import javax.persistence.Column;
@@ -35,3 +35,4 @@ public class OrgusersEntity {
         return Objects.hash(id);
     }
 }
+*/

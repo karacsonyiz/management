@@ -4,6 +4,7 @@ window.onload = function(){
     initAddUserButton();
     initErrorCss();
     hideSuccessMessage();
+    document.querySelector("#closeModalButton").addEventListener("click",function(){location.reload()})
 }
 
 function initColSearch(){

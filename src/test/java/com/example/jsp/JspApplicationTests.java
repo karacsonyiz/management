@@ -1,3 +1,4 @@
+/*
 package com.example.jsp;
 
 import com.example.jsp.Controller.ManageController;
@@ -31,3 +32,4 @@ class JspApplicationTests {
 	}
 
 }
+*/

@@ -3,7 +3,6 @@ package com.example.jsp.Controller;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
-import com.example.jsp.Service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;

@@ -1,14 +1,11 @@
 package com.example.jsp.Model;
 
-import com.example.jsp.Entity.OrgEntity;
-import com.example.jsp.Entity.UserEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 public class DataTable implements Serializable {
 

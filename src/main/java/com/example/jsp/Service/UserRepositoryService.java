@@ -9,14 +9,20 @@ import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.mapping.Constraint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import javax.persistence.EntityManager;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -35,23 +41,25 @@ public class UserRepositoryService {
     private OrgEntityRepository orgEntityRepository;
     private OrgUsersEntityRepository orgUsersEntityRepository;
     private LoggerRepository loggerRepository;
+    private LoggerService loggerService;
+    private GeneratedUserEntity generatedUserEntity;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryService.class);
 
-    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, LoggerRepository loggerRepository) {
+    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, LoggerRepository loggerRepository, LoggerService loggerService) {
         this.userEntityRepository = userEntityRepository;
         this.em = em;
         this.orgEntityRepository = orgEntityRepository;
         this.orgUsersEntityRepository = orgUsersEntityRepository;
         this.loggerRepository = loggerRepository;
+        this.loggerService = loggerService;
     }
 
     public List<GeneratedUserEntity> listUsers() {
         return userEntityRepository.findAll();
     }
 
-    public void log(String message){
-        loggerRepository.save(new LoggerEntity(message,new Date().toString()));
-    }
+
+
 
     public Long findIdByName(String name){
         return userEntityRepository.findIdByName(name);
@@ -93,55 +101,57 @@ public class UserRepositoryService {
         }
     }
 
-
-
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addUser(GeneratedUserEntity user, Errors errors) {
         validateAddUser(user,errors);
         handleErrors(user, errors);
         if(!errors.hasErrors()){
             LOGGER.info("User with name : " + user.getName() + " has been succesfully saved!");
-            log("User with name : " + user.getName() + " has been succesfully saved!");
+            loggerService.log("User with name : " + user.getName() + " has been succesfully saved!");
         }
     }
 
-    @Transactional
     public void handleErrors(GeneratedUserEntity user, Errors errors){
-        if(!errors.hasErrors()){
+        if(!errors.hasErrors()) {
             try {
-                userEntityRepository.save(user);
-                System.out.println(user.getUserid());
-            } catch (DataIntegrityViolationException e){
-                String cause = e.getMostSpecificCause().getMessage();
-                System.out.println(cause);
-                if(cause.contains("key 'email'")){
-                    errors.rejectValue("email","This email is not available!","This email is not available!");
-                    log("Duplicate entry on email for user: " + user.getName());
+                em.merge(user);
+            } catch (Exception e) {
+                String cause = e.getCause().getCause().getMessage();
+                if (cause.contains("key 'email'")) {
+                    errors.rejectValue("email", "This email is not available!", "This email is not available!");
+                    loggerService.log("Duplicate entry on email for user: " + user.getName());
                 }
-                if(cause.contains("key 'name'")){
-                    errors.rejectValue("name","This name is not available!","This name is not available!");
-                    log("Duplicate entry on name for user: " + user.getName());
+                if (cause.contains("key 'name'")) {
+                    errors.rejectValue("name", "This name is not available!", "This name is not available!");
+                    loggerService.log("Duplicate entry on name for user: " + user.getName());
                 } else {
-                    errors.reject(e.getLocalizedMessage(),e.getMostSpecificCause().getMessage());
-                    log("Unexpected error happened : " +e.getMostSpecificCause().getMessage());
+                    errors.reject(e.getLocalizedMessage(), e.getCause().getCause().getMessage());
+                    loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
                 }
             }
         }
 
     }
 
-    public Optional<GeneratedUserEntity> findUserById(int id) {
-        return userEntityRepository.findById(id);
+    @Transactional
+    public GeneratedUserEntity findUserById(int id) {
+        return em.find(GeneratedUserEntity.class,id);
+        //return userEntityRepository.findById(id);
     }
 
+    @Transactional
     public void deleteUser(int id) {
-        Optional<GeneratedUserEntity> user = userEntityRepository.findById(id);
-        user.ifPresent(userEntity -> userEntityRepository.delete(userEntity));
+        GeneratedUserEntity user = em.find(GeneratedUserEntity.class,id);
+        if(user != null){
+            em.remove(user);
+        }
     }
 
     public long countUsers() {
         return userEntityRepository.count();
     }
 
+    @Transactional
     public void generateUsers(){
         String name;
         String password;
@@ -153,38 +163,37 @@ public class UserRepositoryService {
             email = name + "@" + i + name + ".hu";
             address = "Pálya utca " + i;
             GeneratedUserEntity g = new GeneratedUserEntity(name,password,email,"061555555",address,"ROLE_USER",new ArrayList<>());
-            userEntityRepository.save(g);
+            em.persist(g);
         }
     }
 
     @Transactional
     public void addOrgs(List<String> orgs,Integer userid){
-        List<GeneratedOrganizationEntity> orgList = new ArrayList<>();
-        Optional<GeneratedUserEntity> user = userEntityRepository.findById(userid);
+        GeneratedUserEntity user = em.find(GeneratedUserEntity.class,userid);
 
-        if(user.isPresent()){
+        if(user != null){
             for(String orgName : orgs){
                 GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(orgName);
-                if(org != null && !user.get().getOrgs().contains(org)){
-                    em.merge(new GeneratedOrgusersEntity(user.get(),org));
+                if(org != null && !user.getOrgs().contains(org)){
+                    em.merge(new GeneratedOrgusersEntity(user,org));
                 }
             }
         }
     }
 
+    @Transactional
     public void deleteOrgForUser(Integer userid,String orgName){
-        Optional<GeneratedUserEntity> user = userEntityRepository.findById(userid);
+        GeneratedUserEntity user = em.find(GeneratedUserEntity.class,userid);
         GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(orgName);
         Optional<GeneratedOrgusersEntity> orguser = Optional.empty();
 
-        if(user.isPresent() && org != null) {
+        if(user != null && org != null) {
             GeneratedOrgusersEntity probeOrgUser;
-            probeOrgUser = new GeneratedOrgusersEntity(user.get(), org);
+            probeOrgUser = new GeneratedOrgusersEntity(user, org);
             Example<GeneratedOrgusersEntity> exampleOrgUser = Example.of(probeOrgUser);
             orguser = orgUsersEntityRepository.findOne(exampleOrgUser);
         }
 
         orguser.ifPresent(generatedOrgusersEntity -> orgUsersEntityRepository.delete(generatedOrgusersEntity));
-
     }
 }

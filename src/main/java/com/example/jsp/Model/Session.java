@@ -1,5 +1,7 @@
 package com.example.jsp.Model;
 
+import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -8,18 +10,18 @@ public class Session implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     private Login login;
-    private User user;
+    private GeneratedUserEntity user;
     private Response response;
 
     public Session() {
     }
 
-    public Session(Login login, User user) {
+    public Session(Login login, GeneratedUserEntity user) {
         this.login = login;
         this.user = user;
     }
 
-    public Session(Login login, User user, Response response) {
+    public Session(Login login, GeneratedUserEntity user, Response response) {
         this.login = login;
         this.user = user;
         this.response = response;
@@ -37,11 +39,11 @@ public class Session implements Serializable {
         this.login = login;
     }
 
-    public User getUser() {
+    public GeneratedUserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(GeneratedUserEntity user) {
         this.user = user;
     }
 

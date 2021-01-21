@@ -1,4 +1,4 @@
-
+/*
 package com.example.jsp.Entity;
 
 import javax.persistence.*;
@@ -54,3 +54,4 @@ public class OrganizationEntity {
         return Objects.hash(id, name, users);
     }
 }
+*/

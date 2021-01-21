@@ -87,7 +87,7 @@
                 <p style="margin-right:70%;">Add Organization :</p>
                 <select class="form-select" id="orgSelect" multiple></select>
                 <button type="button" class="btn btn-success" onclick="addOrg()">Add</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModalButton">Close</button>
             </div>
         </div>
     </div>

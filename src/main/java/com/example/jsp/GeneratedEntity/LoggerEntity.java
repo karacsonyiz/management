@@ -18,7 +18,6 @@ public class LoggerEntity {
     @Column(name = "updatedtimestamp")
     private String updatedTimeStamp;
 
-
     public LoggerEntity(String logText, String createdTimeStamp) {
         this.logText = logText;
         this.createdTimeStamp = createdTimeStamp;

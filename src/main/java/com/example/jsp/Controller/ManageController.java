@@ -2,8 +2,12 @@ package com.example.jsp.Controller;
 
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.DataTable;
+import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +25,12 @@ import java.util.Map;
 public class ManageController {
 
     private UserRepositoryService userRepositoryService;
+    private LoggerService loggerService;
 
-    public ManageController(UserRepositoryService userRepositoryService) {
+    public ManageController(UserRepositoryService userRepositoryService,LoggerService loggerService) {
         this.userRepositoryService = userRepositoryService;
+        this.loggerService = loggerService;
+
     }
 
     @GetMapping("/manage")
@@ -51,7 +58,7 @@ public class ManageController {
 
     @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
     public GeneratedUserEntity getUser(@PathVariable String id) {
-        return userRepositoryService.findUserById(Integer.parseInt(id)).get();
+        return userRepositoryService.findUserById(Integer.parseInt(id));
     }
 
     @RequestMapping(value = "/countusers", method = RequestMethod.GET)
@@ -68,10 +75,15 @@ public class ManageController {
         }
     }
 
+    @Transactional
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView save(@ModelAttribute("user") GeneratedUserEntity user,HttpServletResponse response, Errors errors) throws IOException {
         ModelAndView modelAndView = new ModelAndView("manage");
-        userRepositoryService.addUser(user,errors);
+        try {
+            userRepositoryService.addUser(user, errors);
+        } catch (UnexpectedRollbackException e){
+            loggerService.log(e.getMessage());
+        }
         handleErrors(modelAndView,errors,response);
         return modelAndView;
     }
