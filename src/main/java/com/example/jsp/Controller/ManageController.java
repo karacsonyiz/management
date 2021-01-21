@@ -2,14 +2,10 @@ package com.example.jsp.Controller;
 
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.DataTable;
-import com.example.jsp.Model.User;
 import com.example.jsp.Service.UserRepositoryService;
-import com.example.jsp.Service.UserService;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;

@@ -6,7 +6,6 @@ import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,14 +17,17 @@ import java.util.List;
 @Service
 public class OrgRepositoryService {
 
-    @Autowired
     private OrgEntityRepository orgEntityRepository;
-    @Autowired
     private UserEntityRepository userEntityRepository;
-    @Autowired
     private OrgUsersEntityRepository orgUsersEntityRepository;
     @PersistenceContext
     private EntityManager em;
+
+    public OrgRepositoryService(OrgEntityRepository orgEntityRepository, UserEntityRepository userEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository) {
+        this.orgEntityRepository = orgEntityRepository;
+        this.userEntityRepository = userEntityRepository;
+        this.orgUsersEntityRepository = orgUsersEntityRepository;
+    }
 
     public void testMtoM(){
 

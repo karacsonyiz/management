@@ -1,7 +1,5 @@
 package com.example.jsp.Controller;
 
-import com.example.jsp.Entity.UserEntity;
-import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
@@ -17,11 +15,9 @@ import java.io.IOException;
 @Controller
 public class LoginController {
 
-    //private UserService userService;
     private UserRepositoryService userRepositoryService;
 
-    public LoginController(UserService userService, UserRepositoryService userRepositoryService) {
-        //this.userService = userService;
+    public LoginController(UserRepositoryService userRepositoryService) {
         this.userRepositoryService = userRepositoryService;
     }
 
@@ -43,14 +39,7 @@ public class LoginController {
             request.getSession().setAttribute("sessionBean",sessionBean);
             response.sendRedirect("hello");
         }
-
         return modelAndView;
     }
-
-
-
-
-
-
 
 }

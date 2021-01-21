@@ -1,6 +1,5 @@
 package com.example.jsp.Service;
 
-import com.example.jsp.Entity.UserEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
@@ -10,23 +9,14 @@ import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
-import com.example.jsp.Repository.UserRepository;
-import com.sun.jdi.InvalidStackFrameException;
-import liquibase.pro.packaged.D;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
-import org.hibernate.exception.spi.SQLExceptionConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.UnexpectedRollbackException;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import javax.persistence.EntityManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,28 +28,27 @@ import java.util.regex.Pattern;
 @Service
 public class UserRepositoryService {
 
-    private UserRepository userRepository;
-    private SqlExceptionHelper sqlExceptionHelper;
 
-    @Autowired
+
     private UserEntityRepository userEntityRepository;
-    @Autowired
     private EntityManager em;
-    @Autowired
     private OrgEntityRepository orgEntityRepository;
-    @Autowired
     private OrgUsersEntityRepository orgUsersEntityRepository;
-    @Autowired
     private LoggerRepository loggerRepository;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryService.class);
 
+    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, LoggerRepository loggerRepository) {
+        this.userEntityRepository = userEntityRepository;
+        this.em = em;
+        this.orgEntityRepository = orgEntityRepository;
+        this.orgUsersEntityRepository = orgUsersEntityRepository;
+        this.loggerRepository = loggerRepository;
+    }
 
     public List<GeneratedUserEntity> listUsers() {
         return userEntityRepository.findAll();
     }
 
-
-    //@Transactional(noRollbackFor = { SQLException.class },propagation = Propagation.REQUIRES_NEW)
     public void log(String message){
         loggerRepository.save(new LoggerEntity(message,new Date().toString()));
     }
@@ -84,13 +73,6 @@ public class UserRepositoryService {
             return true;
         }
         return false;
-    }
-
-    public Optional<UserEntity> findUserByEmail(String email) {
-        UserEntity entity = new UserEntity();
-        entity.setEmail(email);
-        Example<UserEntity> example = Example.of(entity);
-        return userRepository.findOne(example);
     }
 
     public void validateAddUser(GeneratedUserEntity user,Errors errors){
@@ -153,7 +135,6 @@ public class UserRepositoryService {
 
     public void deleteUser(int id) {
         Optional<GeneratedUserEntity> user = userEntityRepository.findById(id);
-        //Optional<UserEntity> user = findUserById(id);
         user.ifPresent(userEntity -> userEntityRepository.delete(userEntity));
     }
 
@@ -172,11 +153,11 @@ public class UserRepositoryService {
             email = name + "@" + i + name + ".hu";
             address = "Pálya utca " + i;
             GeneratedUserEntity g = new GeneratedUserEntity(name,password,email,"061555555",address,"ROLE_USER",new ArrayList<>());
-            //UserEntity u = new UserEntity(name,password,email,"555555",address,"ROLE_USER");
             userEntityRepository.save(g);
         }
     }
 
+    @Transactional
     public void addOrgs(List<String> orgs,Integer userid){
         List<GeneratedOrganizationEntity> orgList = new ArrayList<>();
         Optional<GeneratedUserEntity> user = userEntityRepository.findById(userid);

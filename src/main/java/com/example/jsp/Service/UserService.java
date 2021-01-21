@@ -1,15 +1,10 @@
 package com.example.jsp.Service;
+
 import com.example.jsp.Dao.UserDao;
 import com.example.jsp.Model.Login;
-
 import com.example.jsp.Model.User;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
