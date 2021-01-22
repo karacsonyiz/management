@@ -2,6 +2,17 @@ window.onload = function(){
    // getUser();
 }
 
+function complexCriteriaSelect(){
+    fetch("/complexCriteriaSelect")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function(jsonData) {
+            console.log(jsonData)
+            document.querySelector("#complexCriteriaSelectAnswer").innerHTML = jsonData;
+        });
+}
+
 function generate(){
      fetch("/generate")
              .then(function (response) {

@@ -1,5 +1,8 @@
 package com.example.jsp.Controller;
 
+import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
+import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
+import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Service.OrgRepositoryService;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +10,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
 @Controller
 public class HelloController {
 
+    @PersistenceContext
+    private EntityManager em;
     @Autowired
     private UserRepositoryService userRepositoryService;
     @Autowired
@@ -36,6 +48,48 @@ public class HelloController {
     @RequestMapping(value = "/test", method = RequestMethod.GET)
     public void test() {
         orgRepositoryService.testOrgUsersAdd();
+    }
+
+    @RequestMapping(value = "/complexCriteriaSelect", method = RequestMethod.GET)
+    public int complexCriteriaSelect() {
+
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedUserEntity> userQuery = cb.createQuery(GeneratedUserEntity.class);
+        Root<GeneratedUserEntity> userRoot = userQuery.from(GeneratedUserEntity.class);
+
+
+        Join<GeneratedUserEntity,GeneratedOrgusersEntity> orguser = userRoot.join("orgs");
+        orguser.on(cb.equal(cb.substring(userRoot.get("email"),-3),".hu"));
+        Join<GeneratedOrgusersEntity,GeneratedOrganizationEntity> org = orguser.join("users");
+        org.on(cb.equal(cb.substring(orguser.get("name"),1,1),"k"));
+
+
+
+        //org.on(cb.equal(org.get("name"),"konzorcia"));
+        //userQuery.where(cb.equal((orgRoot.get("name")),"konzorcia"));
+
+        //userQuery.where(cb.equal(cb.substring(org.get("name"),1,1),"k"));
+
+        //cb.equal(cb.substring(org.get("name"),1,1),"k")
+
+        System.out.println(org.getAttribute());
+        //System.out.println(orguser.getAttribute());
+
+
+        List<GeneratedUserEntity> result = em.createQuery(userQuery).getResultList();
+
+        for(GeneratedUserEntity user1 : result){
+            System.out.println(user1.getName());
+            System.out.println(user1.getOrgs());
+        }
+
+
+
+
+
+
+        return result.size();
     }
 
 

@@ -1,5 +1,6 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <jsp:useBean id="sessionBean" class="com.example.jsp.Model.Session" scope="session"/>
+<%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,6 +36,12 @@
     <button onclick="generate()" class="btn btn-primary mt-3" disabled>GenerateUsers</button>
     <br>
     <button onclick="test()" class="btn btn-warning mt-3">Test</button>
+    <br>
+    <button onclick="complexCriteriaSelect()" class="btn btn-warning mt-3">complexCriteriaSelect</button>
+    <br>
+    <a>Hány .hu-s email címre végződő user van a K-val kezdődő szervezetek között?</a>
+    <br>
+    <a>Válasz : <a id="complexCriteriaSelectAnswer"></a></a>
     <script src="/js/hello.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 </body>
