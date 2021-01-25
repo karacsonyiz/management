@@ -19,8 +19,10 @@ public class GeneratedUserEntity {
     private String email;
     private String phone;
     private String address;
-    private int enabled;
+    private int enabled = 1;
     private String role;
+    @Version
+    private Integer version = 1;
     @JsonIgnoreProperties("users")
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "orgusers", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "organizationid"))
@@ -111,7 +113,7 @@ public class GeneratedUserEntity {
         this.address = address;
     }
 
-    @Column(name = "enabled")
+    @Column(name = "enabled", columnDefinition = "integer default 1")
     public int getEnabled() {
         return enabled;
     }
@@ -136,6 +138,15 @@ public class GeneratedUserEntity {
 
     public void setOrgs(List<GeneratedOrganizationEntity> orgs) {
         this.orgs = orgs;
+    }
+
+    @Column(name = "version", columnDefinition = "integer default 1")
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     @Override

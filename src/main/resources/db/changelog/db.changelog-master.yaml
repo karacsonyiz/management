@@ -56,6 +56,12 @@ databaseChangeLog:
                   type: BIGINT
                   constraints:
                     nullable: true
+              - column:
+                  name: version
+                  type: int
+                  defaultValue: 1
+                  constraints:
+                    nullable: true
   - changeSet:
       id: 2
       author: karacsonyiz

@@ -3,71 +3,62 @@ package com.example.jsp.Service;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
-import com.example.jsp.GeneratedEntity.LoggerEntity;
-import com.example.jsp.GeneratedEntityRepository.LoggerRepository;
 import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
-import org.hibernate.exception.ConstraintViolationException;
-import org.hibernate.mapping.Constraint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
+import javax.persistence.NoResultException;
 import javax.persistence.criteria.*;
-import javax.persistence.metamodel.EntityType;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.springframework.boot.origin.Origin.from;
-
-
 @Service
 public class UserRepositoryService {
-
-
 
     private UserEntityRepository userEntityRepository;
     private EntityManager em;
     private OrgEntityRepository orgEntityRepository;
     private OrgUsersEntityRepository orgUsersEntityRepository;
-    private LoggerRepository loggerRepository;
     private LoggerService loggerService;
-    private GeneratedUserEntity generatedUserEntity;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryService.class);
 
-    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, LoggerRepository loggerRepository, LoggerService loggerService) {
+    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, LoggerService loggerService) {
         this.userEntityRepository = userEntityRepository;
         this.em = em;
         this.orgEntityRepository = orgEntityRepository;
         this.orgUsersEntityRepository = orgUsersEntityRepository;
-        this.loggerRepository = loggerRepository;
         this.loggerService = loggerService;
     }
 
     public List<GeneratedUserEntity> listUsers() {
-        return userEntityRepository.findAll();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
+        Root<GeneratedUserEntity> root  =  query.from(GeneratedUserEntity.class);
+        return em.createQuery(query).getResultList();
     }
 
-
-
-
-    public Long findIdByName(String name){
-        return userEntityRepository.findIdByName(name);
+    public Integer findIdByName(String name){
+        GeneratedUserEntity entity;
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
+        Root<GeneratedUserEntity> root  =  query.from(GeneratedUserEntity.class);
+        query.where(cb.equal(root.get("name"),name));
+        try {
+            entity = em.createQuery(query).getSingleResult();
+        } catch (NoResultException e){
+            loggerService.log("No user found with this name :" + name);
+            return null;
+        }
+        return entity.getUserid();
     }
 
     public boolean validateUserForLogin(Login login, Errors errors){

@@ -12,5 +12,6 @@ public interface UserEntityRepository extends JpaRepository<GeneratedUserEntity,
     @Query(value = "SELECT userid FROM USER WHERE name = ?1", nativeQuery = true)
     Long findIdByName(String name);
 
+    List<GeneratedUserEntity> findByName(String name);
 
 }

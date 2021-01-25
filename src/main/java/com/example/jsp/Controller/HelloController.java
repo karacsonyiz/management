@@ -10,13 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,11 +23,13 @@ public class HelloController {
 
     @PersistenceContext
     private EntityManager em;
-    @Autowired
     private UserRepositoryService userRepositoryService;
-    @Autowired
     private OrgRepositoryService orgRepositoryService;
 
+    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService) {
+        this.userRepositoryService = userRepositoryService;
+        this.orgRepositoryService = orgRepositoryService;
+    }
 
     @GetMapping("/hello")
     public ModelAndView hello(Model model, HttpSession session) {
@@ -53,8 +52,6 @@ public class HelloController {
     @RequestMapping(value = "/complexCriteriaSelect", method = RequestMethod.GET)
     public int complexCriteriaSelect() {
 
-
-
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> userQuery = cb.createQuery(GeneratedUserEntity.class).distinct(true);
         Root<GeneratedUserEntity> userRoot = userQuery.from(GeneratedUserEntity.class);
@@ -63,7 +60,7 @@ public class HelloController {
         Join<GeneratedOrgusersEntity,GeneratedOrganizationEntity> org = orguser.join("users");
         org.on(cb.equal(cb.substring(orguser.get("name"),1,1),"k"));
         List<GeneratedUserEntity> result = em.createQuery(userQuery).getResultList();
-        
+
         return result.size();
     }
 
