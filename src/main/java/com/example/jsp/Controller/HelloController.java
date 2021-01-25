@@ -54,41 +54,16 @@ public class HelloController {
     public int complexCriteriaSelect() {
 
 
+
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<GeneratedUserEntity> userQuery = cb.createQuery(GeneratedUserEntity.class);
+        CriteriaQuery<GeneratedUserEntity> userQuery = cb.createQuery(GeneratedUserEntity.class).distinct(true);
         Root<GeneratedUserEntity> userRoot = userQuery.from(GeneratedUserEntity.class);
-
-
         Join<GeneratedUserEntity,GeneratedOrgusersEntity> orguser = userRoot.join("orgs");
         orguser.on(cb.equal(cb.substring(userRoot.get("email"),-3),".hu"));
         Join<GeneratedOrgusersEntity,GeneratedOrganizationEntity> org = orguser.join("users");
         org.on(cb.equal(cb.substring(orguser.get("name"),1,1),"k"));
-
-
-
-        //org.on(cb.equal(org.get("name"),"konzorcia"));
-        //userQuery.where(cb.equal((orgRoot.get("name")),"konzorcia"));
-
-        //userQuery.where(cb.equal(cb.substring(org.get("name"),1,1),"k"));
-
-        //cb.equal(cb.substring(org.get("name"),1,1),"k")
-
-        System.out.println(org.getAttribute());
-        //System.out.println(orguser.getAttribute());
-
-
         List<GeneratedUserEntity> result = em.createQuery(userQuery).getResultList();
-
-        for(GeneratedUserEntity user1 : result){
-            System.out.println(user1.getName());
-            System.out.println(user1.getOrgs());
-        }
-
-
-
-
-
-
+        
         return result.size();
     }
 
