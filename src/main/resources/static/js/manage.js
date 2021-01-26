@@ -111,6 +111,7 @@ function filluserDiv(user){
     document.querySelector("#emailInput").value = user.email;
     document.querySelector("#addressInput").value = user.address;
     document.querySelector("#roleInput").value = user.role;
+    document.querySelector("#versionInput").value = user.version;
     document.querySelector("#orgModal").addEventListener("click", function(){getDataForModal(user.orgs,user.userid);}, false);
     document.querySelector("#orgModal").setAttribute("userId",user.userid);
 }

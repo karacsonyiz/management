@@ -68,7 +68,6 @@ public class ManageController {
     @RequestMapping(value = "/addOrgs/{id}", method = RequestMethod.POST)
     public void addOrgs(@RequestBody Map<String,List<String>> orgs,@PathVariable String id,Errors errors){
         List<String> orgValues = orgs.get("org");
-
         if(orgValues.size() != 0){
             userRepositoryService.addOrgs(orgValues,Integer.parseInt(id));
         }
@@ -80,14 +79,14 @@ public class ManageController {
         ModelAndView modelAndView = new ModelAndView("manage");
         try {
             userRepositoryService.addUser(user, errors);
-        } catch (UnexpectedRollbackException e){
-            loggerService.log(e.getMessage());
+        } catch (Exception e) {
+            userRepositoryService.handleErrors(errors, user,e);
         }
-        handleErrors(modelAndView,errors,response);
+        createErrorMessages(modelAndView, errors);
         return modelAndView;
     }
 
-    private void handleErrors(ModelAndView modelAndView,Errors errors,HttpServletResponse response) throws IOException {
+    private void createErrorMessages(ModelAndView modelAndView,Errors errors) throws IOException {
         if(errors.hasErrors()){
             modelAndView.addObject("userTableStyle","display:block;");
             modelAndView.addObject("successStyle","display:none;");
@@ -102,6 +101,5 @@ public class ManageController {
     public void deleteOrgForUser(@RequestBody Map<String,List<String>> orgs,@PathVariable String id) throws IOException {
         List<String> orgNames = orgs.get("orgs");
         userRepositoryService.deleteOrgs(orgNames,Integer.parseInt(id));
-        //userRepositoryService.deleteOrgForUser(Integer.parseInt(id),org);
     }
 }

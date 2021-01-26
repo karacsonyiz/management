@@ -180,16 +180,16 @@ databaseChangeLog:
                   name: logtext
                   type: LONGTEXT
               - column:
-                  name: createdby
+                  name: created_by
                   type: varchar(255)
               - column:
-                  name: updatedby
+                  name: lastupdated_by
                   type: varchar(255)
               - column:
-                  name: createdtimestamp
+                  name: creation_timestamp
                   type: varchar(255)
               - column:
-                  name: updatedtimestamp
+                  name: updated_timestamp
                   type: varchar(255)
 
 

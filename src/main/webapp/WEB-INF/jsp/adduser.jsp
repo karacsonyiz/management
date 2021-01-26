@@ -47,6 +47,9 @@
                   <td><form:input path="address" id="addressInput"/></td>
                   <td style="color:red;" id="addressError"><form:errors path="address"/></td>
               </tr>
+            <tr style="display:none;">
+                <td><form:input path="version" id="versionInput"/></td>
+            </tr>
               <tr>
                   <td>role :  *</td>
                   <td><form:select path="role" id="roleInput">

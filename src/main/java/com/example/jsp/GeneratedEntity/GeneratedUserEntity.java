@@ -22,7 +22,7 @@ public class GeneratedUserEntity {
     private int enabled = 1;
     private String role;
     @Version
-    private Integer version = 1;
+    private Integer version;
     @JsonIgnoreProperties("users")
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "orgusers", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "organizationid"))
@@ -140,6 +140,7 @@ public class GeneratedUserEntity {
         this.orgs = orgs;
     }
 
+
     @Column(name = "version", columnDefinition = "integer default 1")
     public Integer getVersion() {
         return version;
@@ -148,6 +149,8 @@ public class GeneratedUserEntity {
     public void setVersion(Integer version) {
         this.version = version;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

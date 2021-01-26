@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.util.Date;
 
 @Transactional(propagation = Propagation.REQUIRES_NEW)
 @Service
@@ -23,6 +22,6 @@ public class LoggerService {
     }
 
     public void log(String message){
-        em.persist(new LoggerEntity(message,new Date().toString()));
+        em.persist(new LoggerEntity(message));
     }
 }

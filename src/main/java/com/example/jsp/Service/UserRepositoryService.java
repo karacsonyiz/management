@@ -7,8 +7,10 @@ import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,33 +102,26 @@ public class UserRepositoryService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addUser(GeneratedUserEntity user, Errors errors) {
         validateAddUser(user,errors);
-        handleErrors(user, errors);
-        if(!errors.hasErrors()){
-            LOGGER.info("User with name : " + user.getName() + " has been succesfully saved!");
-            loggerService.log("User with name : " + user.getName() + " has been succesfully saved!");
+        if(!errors.hasErrors()) {
+            em.merge(user);
         }
     }
 
-    public void handleErrors(GeneratedUserEntity user, Errors errors){
+    public void handleErrors(Errors errors,GeneratedUserEntity user,Exception e){
         if(!errors.hasErrors()) {
-            try {
-                em.merge(user);
-            } catch (Exception e) {
-                String cause = e.getCause().getCause().getMessage();
-                if (cause.contains("key 'email'")) {
-                    errors.rejectValue("email", "This email is not available!", "This email is not available!");
-                    loggerService.log("Duplicate entry on email for user: " + user.getName());
-                }
-                if (cause.contains("key 'name'")) {
-                    errors.rejectValue("name", "This name is not available!", "This name is not available!");
-                    loggerService.log("Duplicate entry on name for user: " + user.getName());
-                } else {
-                    errors.reject(e.getLocalizedMessage(), e.getCause().getCause().getMessage());
-                    loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
-                }
+            String cause = e.getCause().getCause().getMessage();
+            if (cause.contains("key 'email'")) {
+                errors.rejectValue("email", "This email is not available!", "This email is not available!");
+                loggerService.log("Duplicate entry on email for user: " + user.getName());
+            }
+            if (cause.contains("key 'name'")) {
+                errors.rejectValue("name", "This name is not available!", "This name is not available!");
+                loggerService.log("Duplicate entry on name for user: " + user.getName());
+            } else {
+                errors.reject(e.getLocalizedMessage(), e.getCause().getCause().getMessage());
+                loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
             }
         }
-
     }
 
     @Transactional
