@@ -11,15 +11,15 @@ import java.util.Locale;
 @SpringBootApplication
 public class JspApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(JspApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(JspApplication.class, args);
+    }
 
-	@Bean
-	public LocaleResolver localeResolver() {
-		SessionLocaleResolver slr = new SessionLocaleResolver();
-		slr.setDefaultLocale(Locale.US);
-		return slr;
-	}
+    @Bean
+    public LocaleResolver localeResolver() {
+        SessionLocaleResolver slr = new SessionLocaleResolver();
+        slr.setDefaultLocale(Locale.US);
+        return slr;
+    }
 
 }

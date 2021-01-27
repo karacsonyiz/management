@@ -21,7 +21,7 @@ public class LoggerService {
         this.em = em;
     }
 
-    public void log(String message){
+    public void log(String message) {
         em.persist(new LoggerEntity(message));
     }
 }

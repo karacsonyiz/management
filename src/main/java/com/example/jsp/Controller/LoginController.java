@@ -5,8 +5,11 @@ import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,10 +35,10 @@ public class LoginController {
 
         Session sessionBean = new Session(login);
         ModelAndView modelAndView = null;
-        if(!userRepositoryService.validateUserForLogin(login,result)){
+        if (!userRepositoryService.validateUserForLogin(login, result)) {
             modelAndView = new ModelAndView("login");
         } else {
-            request.getSession().setAttribute("sessionBean",sessionBean);
+            request.getSession().setAttribute("sessionBean", sessionBean);
             response.sendRedirect("hello");
         }
         return modelAndView;

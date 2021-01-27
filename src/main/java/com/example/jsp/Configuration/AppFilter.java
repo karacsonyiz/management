@@ -1,15 +1,16 @@
 package com.example.jsp.Configuration;
 
 import javax.servlet.*;
-import java.io.IOException;
 import javax.servlet.annotation.WebFilter;
+import java.io.IOException;
 
 @WebFilter("/")
 public class AppFilter implements Filter {
 
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException { }
+    public void init(FilterConfig filterConfig) throws ServletException {
+    }
 
     @Override
     public void doFilter(ServletRequest request,
@@ -20,5 +21,6 @@ public class AppFilter implements Filter {
     }
 
     @Override
-    public void destroy() { }
+    public void destroy() {
+    }
 }

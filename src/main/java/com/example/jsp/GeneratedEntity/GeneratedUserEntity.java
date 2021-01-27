@@ -1,6 +1,6 @@
 package com.example.jsp.GeneratedEntity;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class GeneratedUserEntity {
         this.orgs = orgs;
     }
 
-    public void addOrg(GeneratedOrganizationEntity generatedOrganizationEntity){
+    public void addOrg(GeneratedOrganizationEntity generatedOrganizationEntity) {
         orgs.add(generatedOrganizationEntity);
         generatedOrganizationEntity.getUsers().add(this);
     }
@@ -51,9 +51,9 @@ public class GeneratedUserEntity {
         generatedOrganizationEntity.getUsers().remove(this);
     }
 
-    public void addMultipleOrgs(List<GeneratedOrganizationEntity> generatedOrganizationEntityList){
+    public void addMultipleOrgs(List<GeneratedOrganizationEntity> generatedOrganizationEntityList) {
         orgs.addAll(generatedOrganizationEntityList);
-        for(GeneratedOrganizationEntity org : generatedOrganizationEntityList){
+        for (GeneratedOrganizationEntity org : generatedOrganizationEntityList) {
             org.getUsers().add(this);
         }
     }

@@ -6,12 +6,18 @@ import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.OrgRepositoryService;
 import com.example.jsp.Service.UserRepositoryService;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.persistence.EntityManager;
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 
 @RestController
@@ -21,18 +27,18 @@ public class HelloController {
     private UserRepositoryService userRepositoryService;
     private OrgRepositoryService orgRepositoryService;
 
-    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService,EntityManager em) {
+    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService, EntityManager em) {
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
         this.em = em;
     }
 
-    @GetMapping(value={"/hello","/"})
+    @GetMapping(value = {"/hello", "/"})
     public ModelAndView hello(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("hello");
         Session sessionBean = (Session) session.getAttribute("sessionBean");
         sessionBean.setActionMessage("display:none;");
-        session.setAttribute("sessionBean",sessionBean);
+        session.setAttribute("sessionBean", sessionBean);
         return modelAndView;
     }
 
@@ -51,10 +57,10 @@ public class HelloController {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Long> query = cb.createQuery(Long.class);
         Root<GeneratedUserEntity> userRoot = query.from(GeneratedUserEntity.class);
-        Join<GeneratedUserEntity,GeneratedOrgusersEntity> orguser = userRoot.join("orgs");
-        orguser.on(cb.equal(cb.substring(userRoot.get("email"),-3),".hu"));
-        Join<GeneratedOrgusersEntity,GeneratedOrganizationEntity> org = orguser.join("users");
-        org.on(cb.equal(cb.substring(orguser.get("name"),1,1),"k"));
+        Join<GeneratedUserEntity, GeneratedOrgusersEntity> orguser = userRoot.join("orgs");
+        orguser.on(cb.equal(cb.substring(userRoot.get("email"), -3), ".hu"));
+        Join<GeneratedOrgusersEntity, GeneratedOrganizationEntity> org = orguser.join("users");
+        org.on(cb.equal(cb.substring(orguser.get("name"), 1, 1), "k"));
         query.select(cb.countDistinct(userRoot.get("userid")));
         return em.createQuery(query).getSingleResult();
     }

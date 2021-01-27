@@ -1,119 +1,122 @@
-window.onload = function(){
+window.onload = function () {
     initColSearch();
     getUsers();
     initAddUserButton();
     initErrorCss();
     hideSuccessMessage();
-    document.querySelector("#closeModalButton").addEventListener("click",function(){location.reload()})
-    document.querySelector("#deleteSelectedOrgs").addEventListener("click",function() {deleteSelectedOrgs()})
+    document.querySelector("#closeModalButton").addEventListener("click", function () {
+        location.reload()
+    })
+    document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
+        deleteSelectedOrgs()
+    })
 }
 
-function initColSearch(){
-    $('#userTable tfoot th').each( function () {
+function initColSearch() {
+    $('#userTable tfoot th').each(function () {
         var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="Search '+title+'" />' );
-    } );
+        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    });
 }
 
-function deleteUser(id){
-        fetch("/deleteUser/"+id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (response) {
-                showDeleteSuccessAndReload();
+function deleteUser(id) {
+    fetch("/deleteUser/" + id)
+        .then(function (response) {
+            showDeleteSuccessAndReload();
         })
         .catch(error => console.log(error));
-         return false;
+    return false;
 }
 
-function showDeleteSuccessAndReload(){
-    document.querySelector("#deleteMessage").setAttribute("style","display:block;color:green;");
-    //$('#userTable').data.reload();
+function showDeleteSuccessAndReload() {
+    document.querySelector("#deleteMessage").setAttribute("style", "display:block;color:green;");
     $('#userTable').DataTable().destroy();
     getUsers();
-    setTimeout(function(){
-        document.querySelector("#deleteMessage").setAttribute("style","display:none;");
-    },4000);
-
+    setTimeout(function () {
+        document.querySelector("#deleteMessage").setAttribute("style", "display:none;");
+    }, 4000);
 }
 
-function getUsers(){
-        fetch("/getUsers/")
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (data) {
-                console.log(data)
-                generateAjaxDataTable(data);
+function getUsers() {
+    fetch("/getUsers/")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data)
+            generateAjaxDataTable(data);
         });
 }
 
-function generateAjaxDataTable(dataTable){
+function generateAjaxDataTable(dataTable) {
 
-        $('#userTable').DataTable({
-            initComplete: function () {
-                this.api().columns().every( function () {
-                    var that = this;
-                    $( 'input', this.footer() ).on( 'keyup change clear', function () {
-                        if ( that.search() !== this.value ) {
-                            that
-                                .search( this.value )
-                                .draw();
-                        }
-                    } );
-                } );
+    $('#userTable').DataTable({
+        initComplete: function () {
+            this.api().columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('keyup change clear', function () {
+                    if (that.search() !== this.value) {
+                        that
+                            .search(this.value)
+                            .draw();
+                    }
+                });
+            });
+        },
+        "recordsTotal": dataTable.recordsTotal,
+        "recordsFiltered": dataTable.recordsFiltered,
+        "rowId": "userid",
+        "filter": false,
+        "searching": true,
+        "pagingType": "numbers",
+        data: dataTable.userEntities,
+        columns: [
+            {data: "userid"},
+            {data: "name"},
+            {data: "email"},
+            {data: "address"},
+            {data: "phone"},
+            {data: "role"},
+            {
+                data: function (data) {
+                    return data.orgs.map(org => org.name).join("<br>");
+                }
             },
-            "recordsTotal": dataTable.recordsTotal,
-            "recordsFiltered": dataTable.recordsFiltered,
-            "rowId" : "userid",
-            "filter":false,
-            "searching":true,
-            "pagingType": "numbers",
-            data : dataTable.userEntities,
-                columns: [
-                    {data : "userid"},
-                    {data : "name"},
-                    {data : "email"},
-                    {data : "address"},
-                    {data : "phone"},
-                    {data : "role"},
-                    {data : function (data){return data.orgs.map(org => org.name).join("<br>");}},
-                    {"defaultContent" : "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
-                    {"defaultContent" : "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
-                    ]
-            });
+            {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
+            {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
+        ]
+    });
 }
 
-function adduser(){
+function adduser() {
     adduserdiv = document.querySelector("#adduserdiv");
-    adduserdiv.setAttribute("style","display:block;")
+    adduserdiv.setAttribute("style", "display:block;")
 }
 
-function initAddUserPanel(){
-        document.querySelector("#idInput").value = "";
-        document.querySelector("#nameInput").value = "";
-        document.querySelector("#emailInput").value = "";
-        document.querySelector("#phoneInput").value = "";
-        document.querySelector("#emailInput").value = "";
-        document.querySelector("#addressInput").value = "";
-        document.querySelector("#roleInput").value = "";
+function initAddUserPanel() {
+    document.querySelector("#idInput").value = "";
+    document.querySelector("#nameInput").value = "";
+    document.querySelector("#emailInput").value = "";
+    document.querySelector("#phoneInput").value = "";
+    document.querySelector("#emailInput").value = "";
+    document.querySelector("#addressInput").value = "";
+    document.querySelector("#roleInput").value = "";
 }
 
-function getUser(id){
-        fetch("/getUser/" + id)
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (user) {
-                filluserDiv(user);
-            });
+function getUser(id) {
+    fetch("/getUser/" + id)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (user) {
+            filluserDiv(user);
+        });
 }
 
-function filluserDiv(user){
+function filluserDiv(user) {
     console.log(user);
     let adduserdiv = document.querySelector("#adduserdiv");
-    adduserdiv.setAttribute("style","display:block");
+    adduserdiv.setAttribute("style", "display:block");
     document.querySelector("#idInput").value = user.userid;
     document.querySelector("#nameInput").value = user.name;
     document.querySelector("#emailInput").value = user.email;
@@ -121,73 +124,76 @@ function filluserDiv(user){
     document.querySelector("#emailInput").value = user.email;
     document.querySelector("#addressInput").value = user.address;
     document.querySelector("#roleInput").value = user.role;
-    document.querySelector("#orgModal").addEventListener("click", function(){getDataForModal(user.orgs,user.userid);}, false);
-    document.querySelector("#orgModal").setAttribute("userId",user.userid);
+    document.querySelector("#orgModal").addEventListener("click", function () {
+        getDataForModal(user.orgs, user.userid);
+    }, false);
+    document.querySelector("#orgModal").setAttribute("userId", user.userid);
 }
 
-function getDataForModal(userOrgs,userid){
+function getDataForModal(userOrgs, userid) {
     fetch("/getOrgs/")
         .then(function (response) {
             return response.json();
         })
         .then(function (orgs) {
-            populateOrgModal(userOrgs,orgs.orgEntities,userid)
+            populateOrgModal(userOrgs, orgs.orgEntities, userid)
         });
 }
 
-function populateOrgModal(userOrgs,allOrgs,userid){
+function populateOrgModal(userOrgs, allOrgs, userid) {
     let orgModalBody = document.querySelector("#orgModalBody");
     let orgSelect = document.querySelector("#orgSelect");
-    orgSelect.setAttribute("userID",userid);
+    orgSelect.setAttribute("userID", userid);
     orgSelect.innerHTML = "";
     orgModalBody.innerHTML = "";
-    for(i in userOrgs){
+    for (i in userOrgs) {
         let orgBadge = document.createElement("button");
-        orgBadge.setAttribute("class","btn btn-success p-2 m-2 orgBadge");
-        orgBadge.setAttribute("value","false");
-        orgBadge.addEventListener("click",function(){selectDeletableOrg(this,userid)})
+        orgBadge.setAttribute("class", "btn btn-success p-2 m-2 orgBadge");
+        orgBadge.setAttribute("value", "false");
+        orgBadge.addEventListener("click", function () {
+            selectDeletableOrg(this, userid)
+        })
         orgBadge.innerHTML = userOrgs[i].name;
         orgModalBody.appendChild(orgBadge);
     }
-    for(k in allOrgs){
+    for (k in allOrgs) {
         let option = document.createElement("option");
-        option.setAttribute("value",allOrgs[k].name);
+        option.setAttribute("value", allOrgs[k].name);
         option.innerHTML = allOrgs[k].name;
         orgSelect.appendChild(option);
     }
 }
 
-function selectDeletableOrg(element,userid){
+function selectDeletableOrg(element, userid) {
     document.querySelector("#deleteSelectedOrgs").disabled = false;
     document.querySelector("#deleteSelectedOrgs").userid = userid;
     console.log(element);
-    if(element.getAttribute("value") === "false"){
-        element.setAttribute("value","true");
+    if (element.getAttribute("value") === "false") {
+        element.setAttribute("value", "true");
         element.style = "background-color : red;"
     } else {
-        element.setAttribute("value","false");
+        element.setAttribute("value", "false");
         element.style = "background-color : green;"
     }
 }
 
-function deleteSelectedOrgs(){
+function deleteSelectedOrgs() {
     let selectedOrgs = document.querySelectorAll(".orgBadge");
     let userid = document.querySelector("#deleteSelectedOrgs").userid;
     let orglist = [];
-    for(let i in selectedOrgs){
-        if(selectedOrgs[i].value === "true"){
+    for (let i in selectedOrgs) {
+        if (selectedOrgs[i].value === "true") {
             orglist.push(selectedOrgs[i].innerHTML);
         }
     }
     let confirm = window.confirm("Biztos, hogy törölni szeretné ezeket a szervezeteket?");
-    if(confirm){
-        deleteOrgForUser(orglist,userid)
+    if (confirm) {
+        deleteOrgForUser(orglist, userid)
     }
 }
 
-function deleteOrgForUser(orglist,userid){
-
-    fetch("/deleteOrgForUser/"+userid, {
+function deleteOrgForUser(orglist, userid) {
+    fetch("/deleteOrgForUser/" + userid, {
         method: "POST",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
@@ -195,11 +201,10 @@ function deleteOrgForUser(orglist,userid){
         body: JSON.stringify({
             orgs: orglist
         }),
-    }).then(function(response) {
+    }).then(function (response) {
         return response.json();
     })
-        .then(function(jsonData) {
-            console.log(jsonData);
+        .then(function (jsonData) {
             refreshOrgModal(userid);
         })
         .catch(error => refreshOrgModal(userid));
@@ -207,23 +212,23 @@ function deleteOrgForUser(orglist,userid){
 
 }
 
-function addOrg(){
+function addOrg() {
     var values = $('#orgSelect').val();
     var userid = document.querySelector("#orgModal").getAttribute("userid");
     let orgs = {
         "org": values,
     }
 
-    fetch("/addOrgs/"+userid, {
+    fetch("/addOrgs/" + userid, {
         method: "POST",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
         body: JSON.stringify(orgs)
-    }).then(function(response) {
+    }).then(function (response) {
         return response.json();
     })
-        .then(function(jsonData) {
+        .then(function (jsonData) {
             console.log(jsonData);
             refreshOrgModal(userid);
 
@@ -233,70 +238,50 @@ function addOrg(){
 
 }
 
-function refreshOrgModal(userid){
+function refreshOrgModal(userid) {
     fetch("/getUser/" + userid)
         .then(function (response) {
             return response.json();
         })
         .then(function (user) {
-            refreshUserOrgList(user.orgs,userid);
+            refreshUserOrgList(user.orgs, userid);
         });
 }
 
-function refreshUserOrgList(userOrgs,userid){
+function refreshUserOrgList(userOrgs, userid) {
     let orgModalBody = document.querySelector("#orgModalBody");
     orgModalBody.innerHTML = "";
-    for(i in userOrgs){
+    for (i in userOrgs) {
         let orgBadge = document.createElement("button");
-        orgBadge.setAttribute("class","btn btn-success p-2 m-2 orgBadge");
-        orgBadge.setAttribute("value","false");
-        orgBadge.addEventListener("click",function(){selectDeletableOrg(this,userid)})
+        orgBadge.setAttribute("class", "btn btn-success p-2 m-2 orgBadge");
+        orgBadge.setAttribute("value", "false");
+        orgBadge.addEventListener("click", function () {
+            selectDeletableOrg(this, userid)
+        })
         orgBadge.innerHTML = userOrgs[i].name;
         orgModalBody.appendChild(orgBadge);
     }
 }
 
-
-function generateSaveButton(id){
-    let savebutton = document.querySelector("#savebutton");
-    savebutton.style="display:block;"
-    savebutton.addEventListener("click",saveUser);
-    savebutton.userId = id;
+function initAddUserButton() {
+    let adduserbutton = document.querySelector("#adduserbutton");
+    adduserbutton.addEventListener("click", initAddUserPanel);
 }
 
-function countusers(){
-     fetch("/countusers")
-             .then(function (response) {
-                 return response.json();
-             })
-             .then(function(jsonData) {
-                console.log(jsonData);
-             });
+function initErrorCss() {
+    let style = "border: 1px solid red;";
+    document.querySelector('#nameError').innerHTML === "" ? document.querySelector('#nameInput').style = "" : document.querySelector('#nameInput').style = style;
+    document.querySelector("#emailError").innerHTML === "" ? document.querySelector("#emailInput").style = "" : document.querySelector("#emailInput").style = style;
 }
 
-function initAddUserButton(){
-let adduserbutton = document.querySelector("#adduserbutton");
-adduserbutton.addEventListener("click",initAddUserPanel);
-}
-
-function initErrorCss(){
-let style = "border: 1px solid red;";
-document.querySelector('#nameError').innerHTML === "" ? document.querySelector('#nameInput').style = "" : document.querySelector('#nameInput').style = style;
-document.querySelector("#emailError").innerHTML === "" ? document.querySelector("#emailInput").style = "" : document.querySelector("#emailInput").style = style;
-}
-
-function hideSuccessMessage(){
+function hideSuccessMessage() {
     let successMessage = document.querySelector("#successMessage");
-    setTimeout(function(){
-        successMessage.style="display:none;";
+    setTimeout(function () {
+            successMessage.style = "display:none;";
             fetch("/resetActionMessage")
-                .then(function (response) {
-                    return response.json();
-                })
-                .then(function(jsonData) {
-                }).catch(error => console.log(error));
-    },
-    4000);
+                .catch(error => console.log(error));
+        },
+        4000);
 }
 
 

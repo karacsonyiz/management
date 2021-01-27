@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Transactional
@@ -20,16 +19,16 @@ public class OrgRepositoryService {
     private OrgEntityRepository orgEntityRepository;
     private UserEntityRepository userEntityRepository;
     private OrgUsersEntityRepository orgUsersEntityRepository;
-    @PersistenceContext
     private EntityManager em;
 
-    public OrgRepositoryService(OrgEntityRepository orgEntityRepository, UserEntityRepository userEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository) {
+    public OrgRepositoryService(OrgEntityRepository orgEntityRepository, UserEntityRepository userEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, EntityManager em) {
         this.orgEntityRepository = orgEntityRepository;
         this.userEntityRepository = userEntityRepository;
         this.orgUsersEntityRepository = orgUsersEntityRepository;
+        this.em = em;
     }
 
-    public void testMtoM(){
+    public void testMtoM() {
 
         GeneratedOrganizationEntity testOrgEntity = orgEntityRepository.findById(1).get();
         GeneratedOrganizationEntity testOrgEntity2 = orgEntityRepository.findById(2).get();
@@ -43,16 +42,16 @@ public class OrgRepositoryService {
         testgeneratedUserEntity2.addOrg(testOrgEntity3);
     }
 
-    public List<GeneratedOrganizationEntity> listOrgs(){
+    public List<GeneratedOrganizationEntity> listOrgs() {
         return orgEntityRepository.findAll();
     }
 
 
-    public void testOrgUsersAdd(){
+    public void testOrgUsersAdd() {
 
         GeneratedUserEntity user = userEntityRepository.findById(5).get();
-        em.merge(new GeneratedOrgusersEntity(user,orgEntityRepository.findById(1).get()));
+        em.merge(new GeneratedOrgusersEntity(user, orgEntityRepository.findById(1).get()));
         em.merge(new GeneratedOrgusersEntity(user, orgEntityRepository.findById(7).get()));
-        em.merge(new GeneratedOrgusersEntity(user,orgEntityRepository.findById(3).get()));
+        em.merge(new GeneratedOrgusersEntity(user, orgEntityRepository.findById(3).get()));
     }
 }

@@ -129,7 +129,7 @@ databaseChangeLog:
                   name: userid
                   type: int
                   constraints:
-                    foreignKeyName : fk_userid
+                    foreignKeyName: fk_userid
                     references: user(userid)
                     nullable: false
               - column:
