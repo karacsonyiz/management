@@ -79,17 +79,17 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Add/Remove Organizations</h5>
+                <h5 class="modal-title" id="exampleModalLabel"><spring:message code="addremoveorg" text="default"/></h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="orgModalBody">
             </div>
             <div class="modal-footer">
-                <button id="deleteSelectedOrgs" class="btn btn-danger" disabled>Delete Org(s)</button>
+                <button id="deleteSelectedOrgs" class="btn btn-danger" disabled><spring:message code="deleteorg" text="default"/></button>
                 <p style="margin-right:70%;">Add Organization :</p>
                 <select class="form-select" id="orgSelect" multiple></select>
-                <button type="button" class="btn btn-success" onclick="addOrg()">Add</button>
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModalButton">Close</button>
+                <button type="button" class="btn btn-success" onclick="addOrg()"><spring:message code="add" text="default"/></button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModalButton"><spring:message code="close" text="default"/></button>
             </div>
         </div>
     </div>

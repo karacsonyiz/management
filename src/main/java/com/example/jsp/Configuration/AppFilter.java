@@ -1,4 +1,4 @@
-package com.example.jsp;
+package com.example.jsp.Configuration;
 
 import javax.servlet.*;
 import java.io.IOException;

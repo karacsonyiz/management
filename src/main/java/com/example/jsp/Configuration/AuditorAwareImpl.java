@@ -1,4 +1,4 @@
-package com.example.jsp;
+package com.example.jsp.Configuration;
 
 import com.example.jsp.Model.Session;
 import org.springframework.data.domain.AuditorAware;

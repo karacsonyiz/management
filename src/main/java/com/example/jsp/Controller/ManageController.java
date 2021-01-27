@@ -8,6 +8,7 @@ import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -85,8 +86,12 @@ public class ManageController {
 
     private void createErrorMessages(ModelAndView modelAndView,Errors errors,HttpSession httpSession,HttpServletResponse response) throws IOException {
         if(errors.hasErrors()){
-            modelAndView.addObject("userTableStyle","display:block;");
-            modelAndView.addObject("errorMsg", "Error: " +errors.getAllErrors().get(0).getDefaultMessage());
+            ModelMap modelMap = new ModelMap()
+                    .addAttribute("userTableStyle","display:block;")
+                    .addAttribute("errorMsg","Error: " +errors.getAllErrors().get(0).getDefaultMessage());
+            modelAndView.addAllObjects(modelMap);
+            //modelAndView.addObject("userTableStyle","display:block;");
+            //modelAndView.addObject("errorMsg", "Error: " +errors.getAllErrors().get(0).getDefaultMessage());
             Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
             sessionBean.setActionMessage("display:none;");
             httpSession.setAttribute("sessionBean",sessionBean);

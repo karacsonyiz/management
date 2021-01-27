@@ -47,19 +47,15 @@ public class HelloController {
     }
 
     @RequestMapping(value = "/complexCriteriaSelect", method = RequestMethod.GET)
-    public int complexCriteriaSelect() {
-
+    public Long complexCriteriaSelect() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<GeneratedUserEntity> userQuery = cb.createQuery(GeneratedUserEntity.class).distinct(true);
-        Root<GeneratedUserEntity> userRoot = userQuery.from(GeneratedUserEntity.class);
+        CriteriaQuery<Long> query = cb.createQuery(Long.class);
+        Root<GeneratedUserEntity> userRoot = query.from(GeneratedUserEntity.class);
         Join<GeneratedUserEntity,GeneratedOrgusersEntity> orguser = userRoot.join("orgs");
         orguser.on(cb.equal(cb.substring(userRoot.get("email"),-3),".hu"));
         Join<GeneratedOrgusersEntity,GeneratedOrganizationEntity> org = orguser.join("users");
         org.on(cb.equal(cb.substring(orguser.get("name"),1,1),"k"));
-        List<GeneratedUserEntity> result = em.createQuery(userQuery).getResultList();
-
-        return result.size();
+        query.select(cb.countDistinct(userRoot.get("userid")));
+        return em.createQuery(query).getSingleResult();
     }
-
-
 }

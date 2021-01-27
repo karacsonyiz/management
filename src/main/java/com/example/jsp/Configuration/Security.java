@@ -1,4 +1,4 @@
-package com.example.jsp;
+package com.example.jsp.Configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
