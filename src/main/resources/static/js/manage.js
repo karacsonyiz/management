@@ -111,8 +111,6 @@ function filluserDiv(user){
     document.querySelector("#emailInput").value = user.email;
     document.querySelector("#addressInput").value = user.address;
     document.querySelector("#roleInput").value = user.role;
-    document.querySelector("#versionInput").value = user.version;
-    //document.querySelector("#orgInput").value = JSON.stringify(user.orgs);
     document.querySelector("#orgModal").addEventListener("click", function(){getDataForModal(user.orgs,user.userid);}, false);
     document.querySelector("#orgModal").setAttribute("userId",user.userid);
     console.log(user.orgs);
@@ -305,10 +303,9 @@ function hideSuccessMessage(){
                     return response.json();
                 })
                 .then(function(jsonData) {
-                    console.log(jsonData);
-                });
+                }).catch(error => console.log(error));;
     },
-    6000);
+    4000);
 }
 
 

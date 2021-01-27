@@ -3,15 +3,14 @@ package com.example.jsp.Controller;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.DataTable;
 import com.example.jsp.Model.Session;
+import com.example.jsp.Model.UserForm;
 import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -41,14 +40,14 @@ public class ManageController {
     }
 
     @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
-    public DataTable getUsers(HttpServletRequest request, HttpServletResponse response){
+    public DataTable getUsers(){
         List<GeneratedUserEntity> userEntityList = userRepositoryService.listUsers();
         long userCount = userRepositoryService.countUsers();
         return new DataTable(1,userCount,10,userEntityList,new ArrayList<>());
     }
 
     @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.GET)
-    public void delete(@PathVariable String id, HttpServletResponse response){
+    public void delete(@PathVariable String id){
         userRepositoryService.deleteUser(Integer.parseInt(id));
     }
 
@@ -63,7 +62,7 @@ public class ManageController {
     }
 
     @RequestMapping(value = "/addOrgs/{id}", method = RequestMethod.POST)
-    public void addOrgs(@RequestBody Map<String,List<String>> orgs,@PathVariable String id,Errors errors){
+    public void addOrgs(@RequestBody Map<String,List<String>> orgs,@PathVariable String id){
         List<String> orgValues = orgs.get("org");
         if(orgValues.size() != 0){
             userRepositoryService.addOrgs(orgValues,Integer.parseInt(id));
@@ -72,38 +71,31 @@ public class ManageController {
 
     @Transactional
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView save(@ModelAttribute("user") GeneratedUserEntity user,HttpServletResponse response, Errors errors,HttpSession httpSession) throws IOException {
+    public ModelAndView save(@ModelAttribute("user") UserForm userForm, HttpServletResponse response, Errors errors, HttpSession httpSession) throws IOException {
         ModelAndView modelAndView = new ModelAndView("manage");
-        if(user.getUserid() != null) {
-            user.setOrgs(userRepositoryService.findUserById(user.getUserid()).getOrgs());
-        }
+        GeneratedUserEntity user = matchFormDataToUserEntity(userForm);
         try {
             userRepositoryService.addUser(user, errors);
         } catch (Exception e) {
             userRepositoryService.handleErrors(errors, user,e);
         }
-        createErrorMessages(modelAndView, errors);
-        if(!errors.hasErrors()){
+        createErrorMessages(modelAndView, errors,httpSession,response);
+        return modelAndView;
+    }
+
+    private void createErrorMessages(ModelAndView modelAndView,Errors errors,HttpSession httpSession,HttpServletResponse response) throws IOException {
+        if(errors.hasErrors()){
+            modelAndView.addObject("userTableStyle","display:block;");
+            modelAndView.addObject("errorMsg", "Error: " +errors.getAllErrors().get(0).getDefaultMessage());
+            Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
+            sessionBean.setActionMessage("display:none;");
+            httpSession.setAttribute("sessionBean",sessionBean);
+        } else {
+            modelAndView.addObject("userTableStyle","display:none;");
             Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
             sessionBean.setActionMessage("display:block;color:green;");
             httpSession.setAttribute("sessionBean",sessionBean);
             response.sendRedirect("/manage");
-        } else {
-            Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
-            sessionBean.setActionMessage("display:none;");
-            httpSession.setAttribute("sessionBean",sessionBean);
-        }
-        return modelAndView;
-    }
-
-    private void createErrorMessages(ModelAndView modelAndView,Errors errors) {
-        if(errors.hasErrors()){
-            modelAndView.addObject("userTableStyle","display:block;");
-            modelAndView.addObject("successStyle","display:none;");
-            modelAndView.addObject("errorMsg", "Error: " +errors.getAllErrors().get(0).getDefaultMessage());
-        } else {
-            modelAndView.addObject("successStyle","display:block;color:green;");
-            modelAndView.addObject("userTableStyle","display:none;");
         }
     }
 
@@ -118,6 +110,22 @@ public class ManageController {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
         sessionBean.setActionMessage("display:none;");
         session.setAttribute("sessionBean",sessionBean);
+    }
 
+    private GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm){
+        GeneratedUserEntity userEntity = new GeneratedUserEntity();
+        if(userForm.getUserid() != null){
+            userEntity.setUserid(userForm.getUserid());
+            userEntity.setVersion(userRepositoryService.findUserById(userForm.getUserid()).getVersion());
+            userEntity.setOrgs(userRepositoryService.findUserById(userEntity.getUserid()).getOrgs());
+            userEntity.setEnabled(userRepositoryService.findUserById(userEntity.getUserid()).getEnabled());
+        }
+        userEntity.setName(userForm.getName());
+        userEntity.setAddress(userForm.getAddress());
+        userEntity.setEmail(userForm.getEmail());
+        userEntity.setPassword(userForm.getPassword());
+        userEntity.setPhone(userForm.getPhone());
+        userEntity.setRole(userForm.getRole());
+        return userEntity;
     }
 }
