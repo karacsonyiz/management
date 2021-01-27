@@ -12,6 +12,7 @@ public class Session implements Serializable {
     private Login login;
     private GeneratedUserEntity user;
     private Response response;
+    private String actionMessage;
 
     public Session() {
     }
@@ -21,10 +22,10 @@ public class Session implements Serializable {
         this.user = user;
     }
 
-    public Session(Login login, GeneratedUserEntity user, Response response) {
+    public Session(Login login, GeneratedUserEntity user, String actionMessage) {
         this.login = login;
         this.user = user;
-        this.response = response;
+        this.actionMessage = actionMessage;
     }
 
     public Session(Login login) {
@@ -55,13 +56,18 @@ public class Session implements Serializable {
         this.response = response;
     }
 
+    public String getActionMessage() {
+        return actionMessage;
+    }
 
-    @Override
-    public String toString() {
-        return "Session{" +
-                "login=" + login +
-                ", user=" + user +
-                ", response=" + response +
-                '}';
+    public void setActionMessage(String actionMessage) {
+        this.actionMessage = actionMessage;
+    }
+
+    public Session(Login login, GeneratedUserEntity user, Response response, String actionMessage) {
+        this.login = login;
+        this.user = user;
+        this.response = response;
+        this.actionMessage = actionMessage;
     }
 }

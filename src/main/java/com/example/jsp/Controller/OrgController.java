@@ -3,7 +3,6 @@ package com.example.jsp.Controller;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.Model.DataTable;
 import com.example.jsp.Service.OrgRepositoryService;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
 @RestController
 public class OrgController {
 
@@ -21,7 +19,7 @@ public class OrgController {
         this.orgRepositoryService = orgRepositoryService;
     }
 
-    @GetMapping("/manageorgs")
+    @RequestMapping("/manageorgs")
     public ModelAndView manage(Model model, HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("manageorgs");
         Object name = session.getAttribute("name");
@@ -34,6 +32,5 @@ public class OrgController {
         List<GeneratedOrganizationEntity> orgEntityList =  orgRepositoryService.listOrgs();
         return new DataTable(1,4,10,new ArrayList<>(),orgEntityList);
     }
-
 
 }

@@ -147,6 +147,7 @@ public class UserRepositoryService {
         String password;
         String email;
         String address;
+        StringBuilder sb = new StringBuilder();
         for(int i =0;i<99998;i++){
             name = "user" + i;
             password = name;

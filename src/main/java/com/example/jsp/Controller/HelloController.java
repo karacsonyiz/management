@@ -3,6 +3,7 @@ package com.example.jsp.Controller;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
+import com.example.jsp.Model.Session;
 import com.example.jsp.Service.OrgRepositoryService;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,29 +14,30 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
 
 @RestController
-@Controller
 public class HelloController {
 
-    @PersistenceContext
     private EntityManager em;
     private UserRepositoryService userRepositoryService;
     private OrgRepositoryService orgRepositoryService;
 
-    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService) {
+    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService,EntityManager em) {
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
+        this.em = em;
     }
 
-    @GetMapping("/hello")
-    public ModelAndView hello(Model model, HttpSession session) {
+    @GetMapping(value={"/hello","/"})
+    public ModelAndView hello(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("hello");
-        Object sessionBean =  session.getAttribute("sessionBean");
-        model.addAttribute("sessionBean",sessionBean);
+        Session sessionBean = (Session) session.getAttribute("sessionBean");
+        sessionBean.setActionMessage("display:none;");
+        session.setAttribute("sessionBean",sessionBean);
         return modelAndView;
     }
 

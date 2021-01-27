@@ -20,8 +20,8 @@ public class LoginController {
         this.userRepositoryService = userRepositoryService;
     }
 
-    @GetMapping("/login")
-    public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping("/login")
+    public ModelAndView showLogin() {
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("login", new Login());
         return modelAndView;
@@ -30,7 +30,7 @@ public class LoginController {
     @RequestMapping(value = "/hello", method = RequestMethod.POST)
     public ModelAndView hello(@ModelAttribute("login") Login login, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        Session sessionBean = new Session(new Login(login.getUsername(), login.getPassword()));
+        Session sessionBean = new Session(login);
         ModelAndView modelAndView = null;
         if(!userRepositoryService.validateUserForLogin(login,result)){
             modelAndView = new ModelAndView("login");

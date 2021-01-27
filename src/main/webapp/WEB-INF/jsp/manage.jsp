@@ -29,7 +29,7 @@
 </nav>
 <h1>Manage Users</h1>
 <div style="text-align: center;">
-    <h5 style="${successStyle}" id="successMessage">Save Successful!</h5>
+    <h5 style="${sessionBean.getActionMessage()}" id="successMessage">Save Successful!</h5>
 </div>
 <div>
 <table id="userTable" class="table table-striped">

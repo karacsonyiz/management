@@ -112,8 +112,27 @@ function filluserDiv(user){
     document.querySelector("#addressInput").value = user.address;
     document.querySelector("#roleInput").value = user.role;
     document.querySelector("#versionInput").value = user.version;
+    //document.querySelector("#orgInput").value = JSON.stringify(user.orgs);
     document.querySelector("#orgModal").addEventListener("click", function(){getDataForModal(user.orgs,user.userid);}, false);
     document.querySelector("#orgModal").setAttribute("userId",user.userid);
+    console.log(user.orgs);
+}
+
+function generateOrgList(orgs){
+    let value = "[";
+    console.log(JSON.stringify(orgs));
+    console.log(orgs.length)
+    for(i in orgs){
+        value +='{"name":"'+orgs[i].name+'",'
+        + ' "id": "'+orgs[i].id+'"}';
+        console.log(i)
+        if(parseInt(i) !== orgs.length-1){
+            console.log("aqq")
+            value += ",";
+        }
+    }
+    value += "]";
+    return value;
 }
 
 function getDataForModal(userOrgs,userid){
@@ -273,14 +292,21 @@ adduserbutton.addEventListener("click",initAddUserPanel);
 
 function initErrorCss(){
 let style = "border: 1px solid red;";
-document.querySelector('#nameError').innerHTML == "" ? document.querySelector('#nameInput').style = "" : document.querySelector('#nameInput').style = style;
-document.querySelector("#emailError").innerHTML == "" ? document.querySelector("#emailInput").style = "" : document.querySelector("#emailInput").style = style;
+document.querySelector('#nameError').innerHTML === "" ? document.querySelector('#nameInput').style = "" : document.querySelector('#nameInput').style = style;
+document.querySelector("#emailError").innerHTML === "" ? document.querySelector("#emailInput").style = "" : document.querySelector("#emailInput").style = style;
 }
 
 function hideSuccessMessage(){
     let successMessage = document.querySelector("#successMessage");
     setTimeout(function(){
         successMessage.style="display:none;";
+            fetch("/resetActionMessage")
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function(jsonData) {
+                    console.log(jsonData);
+                });
     },
     6000);
 }
