@@ -38,21 +38,26 @@
 <div style="text-align: center;">
     <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message code="savesuccess" text="default"/></h5>
 </div>
+<div style="text-align: center;">
+    <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess" text="default"/></h5>
+</div>
 <div>
 <table id="userTable" class="table table-striped">
-        <thead>
-            <tr>
-                <th>id</th>
-                <th><spring:message code="name" text="default"/></th>
-                <th>email</th>
-                <th><spring:message code="address" text="default"/></th>
-                <th><spring:message code="phone" text="default"/></th>
-                <th><spring:message code="role" text="default"/></th>
-                <th><spring:message code="orgs" text="default"/></th>
-                <th><spring:message code="delete" text="default"/></th>
-                <th><spring:message code="update" text="default"/></th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th><spring:message code="name" text="default"/></th>
+                    <th>email</th>
+                    <th><spring:message code="address" text="default"/></th>
+                    <th><spring:message code="phone" text="default"/></th>
+                    <th><spring:message code="role" text="default"/></th>
+                    <th><spring:message code="orgs" text="default"/></th>
+                    <th><spring:message code="delete" text="default"/></th>
+                    <th><spring:message code="update" text="default"/></th>
+                </tr>
+            </thead>
+            <tbody id="dataTableTbody">
+            </tbody>
             <tfoot>
                 <tr>
                     <th>id</th>

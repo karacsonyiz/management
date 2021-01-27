@@ -150,8 +150,6 @@ public class GeneratedUserEntity {
         this.version = version;
     }
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

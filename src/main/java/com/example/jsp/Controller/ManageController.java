@@ -6,6 +6,7 @@ import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
 import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -50,6 +51,7 @@ public class ManageController {
     @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.GET)
     public void delete(@PathVariable String id){
         userRepositoryService.deleteUser(Integer.parseInt(id));
+        ResponseEntity.noContent();
     }
 
     @RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
@@ -90,8 +92,6 @@ public class ManageController {
                     .addAttribute("userTableStyle","display:block;")
                     .addAttribute("errorMsg","Error: " +errors.getAllErrors().get(0).getDefaultMessage());
             modelAndView.addAllObjects(modelMap);
-            //modelAndView.addObject("userTableStyle","display:block;");
-            //modelAndView.addObject("errorMsg", "Error: " +errors.getAllErrors().get(0).getDefaultMessage());
             Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
             sessionBean.setActionMessage("display:none;");
             httpSession.setAttribute("sessionBean",sessionBean);
@@ -115,6 +115,7 @@ public class ManageController {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
         sessionBean.setActionMessage("display:none;");
         session.setAttribute("sessionBean",sessionBean);
+        ResponseEntity.noContent();
     }
 
 }

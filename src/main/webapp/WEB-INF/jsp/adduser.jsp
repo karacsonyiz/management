@@ -86,7 +86,7 @@
             </div>
             <div class="modal-footer">
                 <button id="deleteSelectedOrgs" class="btn btn-danger" disabled><spring:message code="deleteorg" text="default"/></button>
-                <p style="margin-right:70%;">Add Organization :</p>
+                <p style="margin-right:70%;"><spring:message code="addorganization" text="default"/> :</p>
                 <select class="form-select" id="orgSelect" multiple></select>
                 <button type="button" class="btn btn-success" onclick="addOrg()"><spring:message code="add" text="default"/></button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeModalButton"><spring:message code="close" text="default"/></button>

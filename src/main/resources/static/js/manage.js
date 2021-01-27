@@ -21,10 +21,21 @@ function deleteUser(id){
                 return response.json();
             })
             .then(function (response) {
-                location.href = "manage";
+                showDeleteSuccessAndReload();
         })
-        .catch(error => location.href = "manage");
+        .catch(error => console.log(error));
          return false;
+}
+
+function showDeleteSuccessAndReload(){
+    document.querySelector("#deleteMessage").setAttribute("style","display:block;color:green;");
+    //$('#userTable').data.reload();
+    $('#userTable').DataTable().destroy();
+    getUsers();
+    setTimeout(function(){
+        document.querySelector("#deleteMessage").setAttribute("style","display:none;");
+    },4000);
+
 }
 
 function getUsers(){
@@ -157,7 +168,6 @@ function selectDeletableOrg(element,userid){
         element.setAttribute("value","false");
         element.style = "background-color : green;"
     }
-
 }
 
 function deleteSelectedOrgs(){
@@ -265,7 +275,7 @@ function countusers(){
 }
 
 function initAddUserButton(){
-let adduserbutton = document.querySelector("#adduserbutton")
+let adduserbutton = document.querySelector("#adduserbutton");
 adduserbutton.addEventListener("click",initAddUserPanel);
 }
 
@@ -284,7 +294,7 @@ function hideSuccessMessage(){
                     return response.json();
                 })
                 .then(function(jsonData) {
-                }).catch(error => console.log(error));;
+                }).catch(error => console.log(error));
     },
     4000);
 }
