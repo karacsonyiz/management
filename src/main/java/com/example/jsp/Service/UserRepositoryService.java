@@ -7,6 +7,7 @@ import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
+import com.example.jsp.Model.UserForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -193,6 +194,23 @@ public class UserRepositoryService {
         Predicate predicateForOrgid = cb.equal(root.get("organizationByOrgid"),orgid);
         Predicate finalPredicate = cb.and(predicateForUserid,predicateForOrgid);
         query.where(finalPredicate);
-        return em.createQuery(query).getResultList().get(0).getId();
+        return em.createQuery(query).getSingleResult().getId();
+    }
+
+    public GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm){
+        GeneratedUserEntity userEntity = new GeneratedUserEntity();
+        if(userForm.getUserid() != null){
+            userEntity.setUserid(userForm.getUserid());
+            userEntity.setVersion(findUserById(userForm.getUserid()).getVersion());
+            userEntity.setOrgs(findUserById(userEntity.getUserid()).getOrgs());
+            userEntity.setEnabled(findUserById(userEntity.getUserid()).getEnabled());
+        }
+        userEntity.setName(userForm.getName());
+        userEntity.setAddress(userForm.getAddress());
+        userEntity.setEmail(userForm.getEmail());
+        userEntity.setPassword(userForm.getPassword());
+        userEntity.setPhone(userForm.getPhone());
+        userEntity.setRole(userForm.getRole());
+        return userEntity;
     }
 }

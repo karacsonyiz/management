@@ -73,7 +73,7 @@ public class ManageController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView save(@ModelAttribute("user") UserForm userForm, HttpServletResponse response, Errors errors, HttpSession httpSession) throws IOException {
         ModelAndView modelAndView = new ModelAndView("manage");
-        GeneratedUserEntity user = matchFormDataToUserEntity(userForm);
+        GeneratedUserEntity user = userRepositoryService.matchFormDataToUserEntity(userForm);
         try {
             userRepositoryService.addUser(user, errors);
         } catch (Exception e) {
@@ -112,20 +112,4 @@ public class ManageController {
         session.setAttribute("sessionBean",sessionBean);
     }
 
-    private GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm){
-        GeneratedUserEntity userEntity = new GeneratedUserEntity();
-        if(userForm.getUserid() != null){
-            userEntity.setUserid(userForm.getUserid());
-            userEntity.setVersion(userRepositoryService.findUserById(userForm.getUserid()).getVersion());
-            userEntity.setOrgs(userRepositoryService.findUserById(userEntity.getUserid()).getOrgs());
-            userEntity.setEnabled(userRepositoryService.findUserById(userEntity.getUserid()).getEnabled());
-        }
-        userEntity.setName(userForm.getName());
-        userEntity.setAddress(userForm.getAddress());
-        userEntity.setEmail(userForm.getEmail());
-        userEntity.setPassword(userForm.getPassword());
-        userEntity.setPhone(userForm.getPhone());
-        userEntity.setRole(userForm.getRole());
-        return userEntity;
-    }
 }

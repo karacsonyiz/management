@@ -1,4 +1,4 @@
-<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <jsp:useBean id="sessionBean" class="com.example.jsp.Model.Session" scope="session"/>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <title>Hello ${name}!</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-
 </head>
 <body class="container-fluid">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -20,9 +19,18 @@
                 <li class="nav-item">
                     <a class="nav-link" href="manageorgs">Manage Orgs</a>
                 </li>
+                <li>
+                    <a class="nav-link"><spring:message code="greeting" text="default"/></a>
+                </li>
             </ul>
         </div>
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="hello?lang=hu">Hu</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="hello?lang=eng">Eng</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="login">LoginPage</a>
             </li>
