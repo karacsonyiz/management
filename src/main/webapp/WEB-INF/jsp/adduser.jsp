@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <jsp:useBean id="user" class="com.example.jsp.Model.User" scope="session"/>
 <jsp:useBean id="sessionBean" class="com.example.jsp.Model.Session" scope="session"/>
@@ -16,19 +17,19 @@
     <div class="col-6">
       <table class="table table-striped" id="usercontroltable">
         <tbody>
-        <h1>Save User</h1>
+        <h1><spring:message code="saveuser" text="default"/></h1>
             <tr id="idInputTr">
                 <td>id :</td>
                 <td><form:input path="userid" id="idInput" readOnly="true" style="color:grey;"/></td>
                 <td style="color:red;"><form:errors path="userid"/></td>
             </tr>
               <tr>
-                  <td>name :  *</td>
+                  <td><spring:message code="name" text="default"/> :  *</td>
                   <td><form:input path="name" id="nameInput"/></td>
                   <td style="color:red;" id="nameError"><form:errors path="name"/></td>
               </tr>
               <tr>
-                  <td>password :  *</td>
+                  <td><spring:message code="password" text="default"/>:  *</td>
                   <td><form:input path="password" type="password" id="passwordInput"/></td>
                   <td style="color:red;"><form:errors path="password"/></td>
               </tr>
@@ -38,17 +39,17 @@
                   <td style="color:red;" id="emailError"><form:errors path="email"/></td>
               </tr>
               <tr>
-                  <td>phone :</td>
+                  <td><spring:message code="phone" text="default"/> :</td>
                   <td><form:input path="phone" id="phoneInput"/></td>
                   <td style="color:red;" id="phoneError"><form:errors path="phone"/></td>
               </tr>
               <tr>
-                  <td>address :</td>
+                  <td><spring:message code="address" text="default"/> :</td>
                   <td><form:input path="address" id="addressInput"/></td>
                   <td style="color:red;" id="addressError"><form:errors path="address"/></td>
               </tr>
               <tr>
-                  <td>role :  *</td>
+                  <td><spring:message code="role" text="default"/> :  *</td>
                   <td><form:select path="role" id="roleInput">
                       <form:option value="ROLE_ADMIN"></form:option>
                       <form:option value="ROLE_USER"></form:option>
@@ -57,13 +58,13 @@
                   <td style="color:red;"><form:errors path="role"/></td>
               </tr>
                 <tr>
-                    <td>organizations :</td>
-                    <td><button style="margin-left : 30px;" type="button" class="btn btn-warning" id="orgModal" data-bs-toggle="modal" data-bs-target="#exampleModal">Manage Orgs</button></td>
+                    <td><spring:message code="organizations" text="default"/> :</td>
+                    <td><button style="margin-left : 30px;" type="button" class="btn btn-warning" id="orgModal" data-bs-toggle="modal" data-bs-target="#exampleModal"><spring:message code="manageorgs" text="default"/></button></td>
                 </tr>
               <tr>
-                  <td><input type="submit" value="Save user" id="savebutton" class="btn btn-success"/></td>
+                  <td><input type="submit" value="<spring:message code="saveuser" text="default"/>" id="savebutton" class="btn btn-success"/></td>
                   <td><p style="color:red;margin-bottom: 0;padding:0;">${errorMsg}</p></td>
-                  <td><p style="margin-bottom: 0;padding:0;"> * = required</p></td>
+                  <td><p style="margin-bottom: 0;padding:0;"> * = <spring:message code="required" text="default"/></p></td>
               </tr>
           </tbody>
       </table>

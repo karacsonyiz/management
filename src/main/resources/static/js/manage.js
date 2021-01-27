@@ -80,7 +80,6 @@ function adduser(){
 }
 
 function initAddUserPanel(){
-        //document.querySelector("#userH1").innerHTML = "Add User"
         document.querySelector("#idInput").value = "";
         document.querySelector("#nameInput").value = "";
         document.querySelector("#emailInput").value = "";
@@ -113,24 +112,6 @@ function filluserDiv(user){
     document.querySelector("#roleInput").value = user.role;
     document.querySelector("#orgModal").addEventListener("click", function(){getDataForModal(user.orgs,user.userid);}, false);
     document.querySelector("#orgModal").setAttribute("userId",user.userid);
-    console.log(user.orgs);
-}
-
-function generateOrgList(orgs){
-    let value = "[";
-    console.log(JSON.stringify(orgs));
-    console.log(orgs.length)
-    for(i in orgs){
-        value +='{"name":"'+orgs[i].name+'",'
-        + ' "id": "'+orgs[i].id+'"}';
-        console.log(i)
-        if(parseInt(i) !== orgs.length-1){
-            console.log("aqq")
-            value += ",";
-        }
-    }
-    value += "]";
-    return value;
 }
 
 function getDataForModal(userOrgs,userid){

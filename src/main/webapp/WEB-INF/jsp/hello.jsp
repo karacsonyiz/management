@@ -14,10 +14,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="manage">Manage Users</a>
+                    <a class="nav-link" href="manage"><spring:message code="manageusers" text="default"/></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="manageorgs">Manage Orgs</a>
+                    <a class="nav-link" href="manageorgs"><spring:message code="manageorgs" text="default"/></a>
                 </li>
                 <li>
                     <a class="nav-link"><spring:message code="greeting" text="default"/></a>
@@ -32,7 +32,7 @@
                 <a class="nav-link" href="hello?lang=eng">Eng</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="login">LoginPage</a>
+                <a class="nav-link" href="login"><spring:message code="loginpage" text="default"/></a>
             </li>
         </ul>
     </nav>

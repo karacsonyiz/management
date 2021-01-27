@@ -18,7 +18,7 @@ public class JspApplication {
 	@Bean
 	public LocaleResolver localeResolver() {
 		SessionLocaleResolver slr = new SessionLocaleResolver();
-		slr.setDefaultLocale(Locale.ENGLISH);
+		slr.setDefaultLocale(Locale.US);
 		return slr;
 	}
 
