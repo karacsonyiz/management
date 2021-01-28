@@ -12,10 +12,13 @@ public class GeneratedOrganizationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "organizationid")
     private Integer organizationid;
+    @Column(name = "name")
     private String name;
     @JsonIgnoreProperties("orgs")
     @ManyToMany(mappedBy = "orgs")
+    @Column(name = "users")
     private List<GeneratedUserEntity> users;
 
     public GeneratedOrganizationEntity() {
@@ -26,7 +29,6 @@ public class GeneratedOrganizationEntity {
         this.users = users;
     }
 
-    @Column(name = "organizationid")
     public Integer getId() {
         return organizationid;
     }
@@ -35,7 +37,6 @@ public class GeneratedOrganizationEntity {
         this.organizationid = organizationid;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -44,7 +45,6 @@ public class GeneratedOrganizationEntity {
         this.name = name;
     }
 
-    @Column(name = "users")
     public List<GeneratedUserEntity> getUsers() {
         return users;
     }

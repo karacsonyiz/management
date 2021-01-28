@@ -13,16 +13,25 @@ public class GeneratedUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "userid")
     private Integer userid;
+    @Column(name = "name")
     private String name;
+    @Column(name = "password")
     private String password;
+    @Column(name = "email")
     private String email;
+    @Column(name = "phone")
     private String phone;
+    @Column(name = "address")
     private String address;
+    @Column(name = "enabled")
     private int enabled = 1;
+    @Column(name = "role")
     private String role;
     @Version
     private Integer version;
+    @Column(name = "orgs")
     @JsonIgnoreProperties("users")
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "orgusers", joinColumns = @JoinColumn(name = "userid"), inverseJoinColumns = @JoinColumn(name = "organizationid"))
@@ -58,8 +67,6 @@ public class GeneratedUserEntity {
         }
     }
 
-
-    @Column(name = "userid")
     public Integer getUserid() {
         return userid;
     }
@@ -68,7 +75,6 @@ public class GeneratedUserEntity {
         this.userid = userid;
     }
 
-    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -77,7 +83,6 @@ public class GeneratedUserEntity {
         this.name = name;
     }
 
-    @Column(name = "password")
     public String getPassword() {
         return password;
     }
@@ -86,7 +91,6 @@ public class GeneratedUserEntity {
         this.password = password;
     }
 
-    @Column(name = "email")
     public String getEmail() {
         return email;
     }
@@ -95,7 +99,6 @@ public class GeneratedUserEntity {
         this.email = email;
     }
 
-    @Column(name = "phone")
     public String getPhone() {
         return phone;
     }
@@ -104,7 +107,6 @@ public class GeneratedUserEntity {
         this.phone = phone;
     }
 
-    @Column(name = "address")
     public String getAddress() {
         return address;
     }
@@ -113,7 +115,6 @@ public class GeneratedUserEntity {
         this.address = address;
     }
 
-    @Column(name = "enabled", columnDefinition = "integer default 1")
     public int getEnabled() {
         return enabled;
     }
@@ -122,7 +123,6 @@ public class GeneratedUserEntity {
         this.enabled = enabled;
     }
 
-    @Column(name = "role")
     public String getRole() {
         return role;
     }
@@ -131,7 +131,6 @@ public class GeneratedUserEntity {
         this.role = role;
     }
 
-    @Column(name = "orgs")
     public List<GeneratedOrganizationEntity> getOrgs() {
         return orgs;
     }
@@ -140,7 +139,6 @@ public class GeneratedUserEntity {
         this.orgs = orgs;
     }
 
-    @Column(name = "version")
     public Integer getVersion() {
         return version;
     }

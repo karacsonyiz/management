@@ -30,10 +30,10 @@
             <a class="nav-link" href="hello?lang=hu">Hu</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="hello?lang=eng">Eng</a>
+            <a class="nav-link" href="hello?lang=en">Eng</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="login"><spring:message code="loginpage" text="default"/></a>
+            <a class="nav-link" href="login">loginPage</a>
         </li>
     </ul>
 </nav>

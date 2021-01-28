@@ -191,6 +191,590 @@ databaseChangeLog:
               - column:
                   name: updated_timestamp
                   type: varchar(255)
+  - changeSet:
+      id: 6
+      author: karacsonyiz
+      changes:
+        - createTable:
+            tableName: languages
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: locale
+                  type: varchar(2)
+              - column:
+                  name: messagekey
+                  type: varchar(255)
+              - column:
+                  name: messagecontent
+                  type: varchar(255)
+  - changeSet:
+      id: 7
+      author: karacsonyiz
+      changes:
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: greeting
+              - column:
+                  name: messagecontent
+                  value: Hello! welcome to our website!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: greeting
+              - column:
+                  name: messagecontent
+                  value: Szia! Üdv az oldalon!
+  - changeSet:
+      id: 8
+      author: karacsonyiz
+      changes:
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: name
+              - column:
+                  name: messagecontent
+                  value: name
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: name
+              - column:
+                  name: messagecontent
+                  value: név
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: address
+              - column:
+                  name: messagecontent
+                  value: address
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: address
+              - column:
+                  name: messagecontent
+                  value: cím
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: phone
+              - column:
+                  name: messagecontent
+                  value: phone
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: phone
+              - column:
+                  name: messagecontent
+                  value: telefonszám
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: role
+              - column:
+                  name: messagecontent
+                  value: role
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: role
+              - column:
+                  name: messagecontent
+                  value: szerepkör
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: orgs
+              - column:
+                  name: messagecontent
+                  value: orgs
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: orgs
+              - column:
+                  name: messagecontent
+                  value: szervezetek
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: delete
+              - column:
+                  name: messagecontent
+                  value: delete
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: delete
+              - column:
+                  name: messagecontent
+                  value: törlés
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: update
+              - column:
+                  name: messagecontent
+                  value: update
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: update
+              - column:
+                  name: messagecontent
+                  value: frissítés
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: adduser
+              - column:
+                  name: messagecontent
+                  value: Add User
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: adduser
+              - column:
+                  name: messagecontent
+                  value: Új felszanáló hozzáadása
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: saveuser
+              - column:
+                  name: messagecontent
+                  value: Save User
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: saveuser
+              - column:
+                  name: messagecontent
+                  value: Felhasználó mentése
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: manageorgs
+              - column:
+                  name: messagecontent
+                  value: Manage Orgs
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: manageorgs
+              - column:
+                  name: messagecontent
+                  value: Szervezetkezelés
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: manageusers
+              - column:
+                  name: messagecontent
+                  value: Manage Users
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: manageusers
+              - column:
+                  name: messagecontent
+                  value: Felhasználókezelés
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: required
+              - column:
+                  name: messagecontent
+                  value: required
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: required
+              - column:
+                  name: messagecontent
+                  value: kötelező
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: password
+              - column:
+                  name: messagecontent
+                  value: password
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: password
+              - column:
+                  name: messagecontent
+                  value: jelszó
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: organizations
+              - column:
+                  name: messagecontent
+                  value: organizations
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: organizations
+              - column:
+                  name: messagecontent
+                  value: szervezetek
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: loginpage
+              - column:
+                  name: messagecontent
+                  value: LoginPage
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: loginpage
+              - column:
+                  name: messagecontent
+                  value: LoginOldal
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: savesuccess
+              - column:
+                  name: messagecontent
+                  value: Save Successful!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: savesuccess
+              - column:
+                  name: messagecontent
+                  value: Sikeres mentés!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: addremoveorg
+              - column:
+                  name: messagecontent
+                  value: Add/Remove Organization
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: addremoveorg
+              - column:
+                  name: messagecontent
+                  value: Szervezet hozzáadása/törlése
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: addorganization
+              - column:
+                  name: messagecontent
+                  value: Add organization
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: addorganization
+              - column:
+                  name: messagecontent
+                  value: Szervezet hozzáadása
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: deleteorg
+              - column:
+                  name: messagecontent
+                  value: Delete Org(s)
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: deleteorg
+              - column:
+                  name: messagecontent
+                  value: Szervezet(ek) törlése
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: add
+              - column:
+                  name: messagecontent
+                  value: Add
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: add
+              - column:
+                  name: messagecontent
+                  value: Hozzáadás
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: close
+              - column:
+                  name: messagecontent
+                  value: Close
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: close
+              - column:
+                  name: messagecontent
+                  value: Becsukás
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: deletesuccess
+              - column:
+                  name: messagecontent
+                  value: Delete Successful!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: deletesuccess
+              - column:
+                  name: messagecontent
+                  value: Sikeres Törlés!
+
 
 
 

@@ -27,7 +27,7 @@
             <a class="nav-link" href="manage?lang=hu">Hu</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="manage?lang=eng">Eng</a>
+            <a class="nav-link" href="manage?lang=en">Eng</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="login"><spring:message code="loginpage" text="default"/></a>

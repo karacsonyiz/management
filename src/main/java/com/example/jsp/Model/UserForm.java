@@ -13,7 +13,7 @@ public class UserForm {
     private String email;
     private String phone;
     private String address;
-    private int enabled;
+    private Integer enabled;
     private String role;
     private Integer version;
     private List<GeneratedOrganizationEntity> orgs = new ArrayList<>();
@@ -69,11 +69,11 @@ public class UserForm {
         this.address = address;
     }
 
-    public int getEnabled() {
+    public Integer getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(int enabled) {
+    public void setEnabled(Integer enabled) {
         this.enabled = enabled;
     }
 

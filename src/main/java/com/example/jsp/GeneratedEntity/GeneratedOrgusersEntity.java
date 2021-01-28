@@ -7,8 +7,15 @@ import java.util.Objects;
 @Table(name = "orgusers", schema = "demo")
 public class GeneratedOrgusersEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
+    @ManyToOne
+    @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
     private GeneratedUserEntity userByUserid;
+    @ManyToOne
+    @JoinColumn(name = "organizationid", referencedColumnName = "organizationid", nullable = false)
     private GeneratedOrganizationEntity organizationByOrgid;
 
     public GeneratedOrgusersEntity(GeneratedUserEntity userByUserid, GeneratedOrganizationEntity organizationByOrgid) {
@@ -19,9 +26,6 @@ public class GeneratedOrgusersEntity {
     public GeneratedOrgusersEntity() {
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     public Integer getId() {
         return id;
     }
@@ -43,8 +47,6 @@ public class GeneratedOrgusersEntity {
         return Objects.hash(id);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "userid", referencedColumnName = "userid", nullable = false)
     public GeneratedUserEntity getUserByUserid() {
         return userByUserid;
     }
@@ -53,8 +55,6 @@ public class GeneratedOrgusersEntity {
         this.userByUserid = userByUserid;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "organizationid", referencedColumnName = "organizationid", nullable = false)
     public GeneratedOrganizationEntity getOrganizationByOrgid() {
         return organizationByOrgid;
     }
