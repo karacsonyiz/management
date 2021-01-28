@@ -140,8 +140,7 @@ public class GeneratedUserEntity {
         this.orgs = orgs;
     }
 
-
-    @Column(name = "version", columnDefinition = "integer default 1")
+    @Column(name = "version")
     public Integer getVersion() {
         return version;
     }
