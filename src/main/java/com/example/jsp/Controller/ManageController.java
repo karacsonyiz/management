@@ -6,6 +6,7 @@ import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
 import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
+import liquibase.pro.packaged.G;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -75,8 +76,9 @@ public class ManageController {
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ModelAndView save(@ModelAttribute("user") UserForm userForm, HttpServletResponse response, Errors errors, HttpSession httpSession) throws IOException {
         ModelAndView modelAndView = new ModelAndView("manage");
-        GeneratedUserEntity user = userRepositoryService.matchFormDataToUserEntity(userForm);
+        GeneratedUserEntity user = new GeneratedUserEntity();
         try {
+            user = userRepositoryService.matchFormDataToUserEntity(userForm);
             userRepositoryService.addUser(user, errors);
         } catch (Exception e) {
             userRepositoryService.handleErrors(errors, user, e);

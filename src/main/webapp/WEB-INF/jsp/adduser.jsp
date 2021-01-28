@@ -73,6 +73,9 @@
                     <td><p style="margin-bottom: 0;padding:0;"> * = <spring:message code="required" text="default"/></p>
                     </td>
                 </tr>
+                <tr style="display:none;">
+                    <td style="display:none;"><form:input path="version" id="versionInput"/></td>
+                </tr>
                 </tbody>
             </table>
         </div>
