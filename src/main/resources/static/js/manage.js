@@ -13,16 +13,19 @@ window.onload = function () {
     })
 }
 
-function initSearchButtons(){
-    document.querySelectorAll(".searchButton").
-    forEach(element => element.addEventListener("click",function(){searchField(this.value,this.parentElement.parentElement.firstChild)}));
+function initSearchButtons() {
+    document.querySelectorAll(".searchButton").forEach(element => element.addEventListener("click", function () {
+        searchField(this.value, this.parentElement.parentElement.firstChild)
+    }));
 }
 
-function searchField(field,input){
-    values = {"field": field,
-              "input": input.value}
+function searchField(field, input) {
+    values = {
+        "field": field,
+        "input": input.value
+    }
 
-    fetch("/searchOnField/",{
+    fetch("/searchOnField/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
@@ -38,8 +41,8 @@ function searchField(field,input){
     return false;
 }
 
-function handleSearchResult(jsonData){
-    if(jsonData.userEntities.length !== 0 ) {
+function handleSearchResult(jsonData) {
+    if (jsonData.userEntities.length !== 0) {
         $('#userTable').DataTable().destroy();
         generateAjaxDataTable(jsonData);
     } else {
@@ -47,9 +50,8 @@ function handleSearchResult(jsonData){
     }
 }
 
-function setSearchMessage(){
-    document.querySelector("#searchResult").setAttribute("style","display:block;color:red;text-align: center;");
-    document.querySelector("#searchResult").innerHTML = "There are no results for this condition!";
+function setSearchMessage() {
+    document.querySelector("#searchResult").setAttribute("style", "display:block;color:red;text-align: center;");
     setTimeout(function () {
         document.querySelector("#searchResult").setAttribute("style", "display:none;");
     }, 4000);
@@ -317,6 +319,11 @@ function hideSuccessMessage() {
                 .catch(error => console.log(error));
         },
         4000);
+}
+
+function resetTable() {
+    $('#userTable').DataTable().destroy();
+    getUsers();
 }
 
 

@@ -22,7 +22,7 @@
                         <td style="color:red;text-align:center;"><form:errors path="username"/></td>
                     </tr>
                     <tr>
-                        <td><form:input path="password" placeholder="Password"/></td>
+                        <td><form:input type="password" path="password" placeholder="Password"/></td>
                         <td><form:errors path="password"/></td>
                     </tr>
                     <tr>

@@ -13,7 +13,7 @@ import javax.persistence.EntityManager;
 @Service
 public class LoggerService {
 
-    private EntityManager em;
+    private final EntityManager em;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryService.class);
 
 

@@ -46,7 +46,9 @@
 <br>
 <button onclick="test()" class="btn btn-warning mt-3" disabled>Test</button>
 <br>
-<button onclick="complexCriteriaSelect()" id="complexCritera" class="btn btn-success mt-3">Hány .hu-s email címre végződő user van a K-val kezdődő szervezetek között? Válasz : </button>
+<button onclick="complexCriteriaSelect()" id="complexCritera" class="btn btn-success mt-3">Hány .hu-s email címre
+    végződő user van a K-val kezdődő szervezetek között? Válasz :
+</button>
 <br>
 <button onclick="evictCache()" class="btn btn-danger mt-3">EvictCache</button>
 <br>

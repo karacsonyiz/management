@@ -16,10 +16,10 @@ import java.util.List;
 @Service
 public class OrgRepositoryService {
 
-    private OrgEntityRepository orgEntityRepository;
-    private UserEntityRepository userEntityRepository;
-    private OrgUsersEntityRepository orgUsersEntityRepository;
-    private EntityManager em;
+    private final OrgEntityRepository orgEntityRepository;
+    private final UserEntityRepository userEntityRepository;
+    private final OrgUsersEntityRepository orgUsersEntityRepository;
+    private final EntityManager em;
 
     public OrgRepositoryService(OrgEntityRepository orgEntityRepository, UserEntityRepository userEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, EntityManager em) {
         this.orgEntityRepository = orgEntityRepository;

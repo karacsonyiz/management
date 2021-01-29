@@ -16,24 +16,14 @@ function getOrgs() {
 function generateAjaxDataTable(dataTable) {
 
     $('#orgTable').DataTable({
-        initComplete: function () {
-            this.api().columns().every(function () {
-                var that = this;
-                $('input', this.footer()).on('keyup change clear', function () {
-                    if (that.search() !== this.value) {
-                        that
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            });
-        },
         "recordsTotal": dataTable.recordsTotal,
         "recordsFiltered": dataTable.recordsFiltered,
         "filter": false,
-        "searching": true,
+        "searching": false,
         "pagingType": "numbers",
-
+        "bPaginate": false,
+        "bLengthChange": false,
+        "bInfo": false,
         data: dataTable.orgEntities,
         columns: [
             {data: "name"},

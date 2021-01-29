@@ -2,7 +2,7 @@ window.onload = function () {
     // getUser();
 }
 
-function evictCache(){
+function evictCache() {
     fetch("/evictCache")
         .catch(error => console.log(error));
 }

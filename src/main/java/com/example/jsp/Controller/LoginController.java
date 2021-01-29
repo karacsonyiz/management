@@ -17,7 +17,7 @@ import java.io.IOException;
 @Controller
 public class LoginController {
 
-    private UserRepositoryService userRepositoryService;
+    private final UserRepositoryService userRepositoryService;
 
     public LoginController(UserRepositoryService userRepositoryService) {
         this.userRepositoryService = userRepositoryService;

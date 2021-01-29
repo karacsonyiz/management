@@ -31,11 +31,11 @@ import java.util.regex.Pattern;
 @Service
 public class UserRepositoryService {
 
-    private UserEntityRepository userEntityRepository;
-    private EntityManager em;
-    private OrgEntityRepository orgEntityRepository;
-    private OrgUsersEntityRepository orgUsersEntityRepository;
-    private LoggerService loggerService;
+    private final UserEntityRepository userEntityRepository;
+    private final EntityManager em;
+    private final OrgEntityRepository orgEntityRepository;
+    private final OrgUsersEntityRepository orgUsersEntityRepository;
+    private final LoggerService loggerService;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryService.class);
 
     public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, LoggerService loggerService) {
@@ -80,10 +80,7 @@ public class UserRepositoryService {
         String regex = "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(email);
-        if (matcher.matches()) {
-            return true;
-        }
-        return false;
+        return matcher.matches();
     }
 
     public void validateAddUser(GeneratedUserEntity user, Errors errors) {
@@ -115,12 +112,13 @@ public class UserRepositoryService {
     /**
      * Sets the rejectvalues to the corresponding exception.
      * If the exception has a root cause, we can set the rejectValue more accurately.
+     *
      * @param errors Built-in errors class to handle form errors on frontend.
-     * @param e The exception that is to be handled.
+     * @param e      The exception that is to be handled.
      */
     public void handleErrors(Errors errors, GeneratedUserEntity user, Exception e) {
         if (!errors.hasErrors()) {
-            if(e.getCause() != null){
+            if (e.getCause() != null) {
                 String cause = e.getCause().getCause().getMessage();
                 if (cause.contains("key 'email'")) {
                     errors.rejectValue("email", "This email is not available!", "This email is not available!");
@@ -130,11 +128,11 @@ public class UserRepositoryService {
                     errors.rejectValue("name", "This name is not available!", "This name is not available!");
                     loggerService.log("Duplicate entry on name for user: " + user.getName());
                 } else {
-                    errors.reject(e.getMessage(),e.getCause().getCause().getMessage());
+                    errors.reject(e.getMessage(), e.getCause().getCause().getMessage());
                     loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
                 }
             } else {
-                errors.reject(e.getMessage(),e.getMessage());
+                errors.reject(e.getMessage(), e.getMessage());
                 loggerService.log("Unexpected error happened : " + e.getMessage());
             }
         }
@@ -221,14 +219,14 @@ public class UserRepositoryService {
      * @param value The record in database.
      * @return List of GeneratedUserEntities.
      */
-    public List<GeneratedUserEntity> searchOnField(String field,String value){
-        if(field.equals("orgs")){
+    public List<GeneratedUserEntity> searchOnField(String field, String value) {
+        if (field.equals("orgs")) {
             return searchOnOrgs(value);
         }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
-        Predicate predicate = cb.equal(root.get(field),value);
+        Predicate predicate = cb.equal(root.get(field), value);
         query.where(predicate);
         return em.createQuery(query).getResultList();
     }
@@ -236,17 +234,18 @@ public class UserRepositoryService {
 
     /**
      * This method helps to find users in searchOnField method if the given field is an Organization.
+     *
      * @param orgName Name of the given organization.
      * @return List of GeneratedUserEntities.
      */
-    private List<GeneratedUserEntity> searchOnOrgs(String orgName){
+    private List<GeneratedUserEntity> searchOnOrgs(String orgName) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedOrganizationEntity> query = cb.createQuery(GeneratedOrganizationEntity.class);
         Root<GeneratedOrganizationEntity> root = query.from(GeneratedOrganizationEntity.class);
         query.where(cb.equal(root.get("name"), orgName));
         try {
             return em.createQuery(query).getSingleResult().getUsers();
-        } catch (NoResultException e){
+        } catch (NoResultException e) {
             return Collections.emptyList();
         }
     }
@@ -268,7 +267,7 @@ public class UserRepositoryService {
             userEntity.setOrgs(foundEntity.getOrgs());
             userEntity.setEnabled(foundEntity.getEnabled());
         }
-        if(userForm.getVersion() != null) {
+        if (userForm.getVersion() != null) {
             if (!userForm.getVersion().equals(userEntity.getVersion())) {
                 throw new OptimisticLockException("Version mismatch!", new RuntimeException("Version mismatch!"));
             }

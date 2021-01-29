@@ -437,7 +437,7 @@ databaseChangeLog:
                   value: adduser
               - column:
                   name: messagecontent
-                  value: Új felszanáló hozzáadása
+                  value: Új felhasználó hozzáadása
         - insert:
             tableName: languages
             columns:
@@ -774,6 +774,30 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: Sikeres Törlés!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: searchResult
+              - column:
+                  name: messagecontent
+                  value: There are no results for this condition!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: searchResult
+              - column:
+                  name: messagecontent
+                  value: Ezzel a feltétellel nincs találat!
 
 
 

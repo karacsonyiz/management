@@ -38,15 +38,6 @@
         <th>update</th>
     </tr>
     </thead>
-    <tfoot>
-    <tr>
-        <th>name</th>
-        <th>users</th>
-        <th style="display:none;">delete</th>
-        <th style="display:none;">update</th>
-    </tr>
-    </tfoot>
-
 </table>
 <script src="/js/manageorgs.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

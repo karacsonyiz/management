@@ -23,8 +23,8 @@ import java.util.Map;
 @RestController
 public class ManageController {
 
-    private UserRepositoryService userRepositoryService;
-    private LoggerService loggerService;
+    private final UserRepositoryService userRepositoryService;
+    private final LoggerService loggerService;
 
     public ManageController(UserRepositoryService userRepositoryService, LoggerService loggerService) {
         this.userRepositoryService = userRepositoryService;
@@ -126,7 +126,7 @@ public class ManageController {
 
     @RequestMapping(value = "/searchOnField", method = RequestMethod.POST)
     public DataTable searchOnField(@RequestBody Map<String, String> values) {
-        List <GeneratedUserEntity> users = userRepositoryService.searchOnField(values.get("field"),values.get("input"));
+        List<GeneratedUserEntity> users = userRepositoryService.searchOnField(values.get("field"), values.get("input"));
         return new DataTable(1, 0, 10, users, new ArrayList<>());
     }
 }

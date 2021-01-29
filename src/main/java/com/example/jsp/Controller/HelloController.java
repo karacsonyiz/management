@@ -24,12 +24,12 @@ import javax.servlet.http.HttpSession;
 @RestController
 public class HelloController {
 
-    private EntityManager em;
-    private UserRepositoryService userRepositoryService;
-    private OrgRepositoryService orgRepositoryService;
-    private CacheService cacheService;
+    private final EntityManager em;
+    private final UserRepositoryService userRepositoryService;
+    private final OrgRepositoryService orgRepositoryService;
+    private final CacheService cacheService;
 
-    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService, EntityManager em,CacheService cacheService) {
+    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService, EntityManager em, CacheService cacheService) {
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
         this.em = em;
@@ -69,7 +69,7 @@ public class HelloController {
     }
 
     @RequestMapping(value = "evictCache", method = RequestMethod.GET)
-    public void evictCache(){
+    public void evictCache() {
         cacheService.evictAllCaches();
     }
 }

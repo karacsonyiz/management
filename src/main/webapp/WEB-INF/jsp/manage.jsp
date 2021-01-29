@@ -36,7 +36,8 @@
 </nav>
 <h1><spring:message code="manageusers" text="default"/></h1>
 <div style="text-align: center;">
-    <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message code="savesuccess" text="default"/></h5>
+    <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message code="savesuccess"
+                                                                                      text="default"/></h5>
 </div>
 <div style="text-align: center;">
     <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess" text="default"/></h5>
@@ -60,37 +61,82 @@
         </tbody>
         <tfoot>
         <tr>
-            <th><div style="display:inline-flex"><input  placeholder="Search id"><div><button class="mx-1 searchButton" value="userid">Go</button></div></div></th>
-            <th><div style="display:inline-flex"><input  placeholder="Search name"><div><button class="mx-1 searchButton" value="name">Go</button></div></div></th>
-            <th><div style="display:inline-flex"><input  placeholder="Search email"><div><button class="mx-1 searchButton" value="email">Go</button></div></div></th>
-            <th><div style="display:inline-flex"><input  placeholder="Search address"><div><button class="mx-1 searchButton" value="address">Go</button></div></div></th>
-            <th><div style="display:inline-flex"><input  placeholder="Search phone"><div><button class="mx-1 searchButton" value="phone">Go</button></div></div></th>
-            <th><div style="display:inline-flex"><input  placeholder="Search role"><div><button class="mx-1 searchButton" value="role">Go</button></div></div></th>
-            <th><div style="display:inline-flex"><input  placeholder="Search orgs"><div><button class="mx-1 searchButton" value="orgs">Go</button></div></div></th>
+            <th class="px-0">
+                <div style="display:inline-flex"><input type="number" placeholder="Search id">
+                    <div>
+                        <button class="mx-1 searchButton" value="userid">Go</button>
+                    </div>
+                </div>
+            </th>
+            <th class="px-0">
+                <div style="display:inline-flex"><input placeholder="Search name">
+                    <div>
+                        <button class="mx-1 searchButton" value="name">Go</button>
+                    </div>
+                </div>
+            </th>
+            <th class="px-0">
+                <div style="display:inline-flex"><input placeholder="Search email">
+                    <div>
+                        <button class="mx-1 searchButton" value="email">Go</button>
+                    </div>
+                </div>
+            </th>
+            <th class="px-0">
+                <div style="display:inline-flex"><input placeholder="Search address">
+                    <div>
+                        <button class="mx-1 searchButton" value="address">Go</button>
+                    </div>
+                </div>
+            </th>
+            <th class="px-0">
+                <div style="display:inline-flex"><input placeholder="Search phone">
+                    <div>
+                        <button class="mx-1 searchButton" value="phone">Go</button>
+                    </div>
+                </div>
+            </th>
+            <th class="px-0">
+                <div style="display:inline-flex"><input placeholder="Search role">
+                    <div>
+                        <button class="mx-1 searchButton" value="role">Go</button>
+                    </div>
+                </div>
+            </th>
+            <th class="px-0">
+                <div style="display:inline-flex"><input placeholder="Search orgs">
+                    <div>
+                        <button class="mx-1 searchButton" value="orgs">Go</button>
+                    </div>
+                </div>
+            </th>
+            <th>
+                <button class="btn btn-danger" onclick="resetTable()">reset</button>
+            </th>
         </tr>
         </tfoot>
     </table>
-    <h5 id="searchResult" style="display:none;"></h5>
+    <h5 id="searchResult" style="display:none;"><spring:message code="searchResult" text="default"/></h5>
     <button class="btn btn-success" id="adduserbutton" onclick="adduser()"><spring:message code="adduser"
                                                                                            text="default"/></button>
 </div>
-    <div id="adduserdiv" style="${userTableStyle}">
-        <jsp:include page="adduser.jsp"></jsp:include>
-    </div>
-    <div>
-        <div class="row mt-4">
-            <div class="col-6">
-                <table class="table table-striped">
-                    <tbody id="updatetable">
-                    </tbody>
-                </table>
-            </div>
+<div id="adduserdiv" style="${userTableStyle}">
+    <jsp:include page="adduser.jsp"></jsp:include>
+</div>
+<div>
+    <div class="row mt-4">
+        <div class="col-6">
+            <table class="table table-striped">
+                <tbody id="updatetable">
+                </tbody>
+            </table>
         </div>
     </div>
-    <script src="/js/manage.js"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+</div>
+<script src="/js/manage.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 </body>
 </html>

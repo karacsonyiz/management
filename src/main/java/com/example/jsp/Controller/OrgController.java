@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 public class OrgController {
 
-    private OrgRepositoryService orgRepositoryService;
+    private final OrgRepositoryService orgRepositoryService;
 
     public OrgController(OrgRepositoryService orgRepositoryService) {
         this.orgRepositoryService = orgRepositoryService;
