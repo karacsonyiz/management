@@ -14,7 +14,7 @@ function complexCriteriaSelect() {
         })
         .then(function (jsonData) {
             console.log(jsonData)
-            document.querySelector("#complexCriteriaSelectAnswer").innerHTML = jsonData;
+            document.querySelector("#complexCritera").innerHTML = document.querySelector("#complexCritera").innerHTML + jsonData
         });
 }
 

@@ -1,15 +1,58 @@
 window.onload = function () {
-    initColSearch();
+    //initColSearch();
     getUsers();
     initAddUserButton();
     initErrorCss();
     hideSuccessMessage();
+    initSearchButtons();
     document.querySelector("#closeModalButton").addEventListener("click", function () {
         location.reload()
     })
     document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
         deleteSelectedOrgs()
     })
+}
+
+function initSearchButtons(){
+    document.querySelectorAll(".searchButton").
+    forEach(element => element.addEventListener("click",function(){searchField(this.value,this.parentElement.parentElement.firstChild)}));
+}
+
+function searchField(field,input){
+    values = {"field": field,
+              "input": input.value}
+
+    fetch("/searchOnField/",{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json; charset=utf-8"
+        },
+        body: JSON.stringify(values),
+    }).then(function (response) {
+        return response.json();
+    })
+        .then(function (jsonData) {
+            handleSearchResult(jsonData);
+        })
+        .catch(error => console.log(error));
+    return false;
+}
+
+function handleSearchResult(jsonData){
+    if(jsonData.userEntities.length !== 0 ) {
+        $('#userTable').DataTable().destroy();
+        generateAjaxDataTable(jsonData);
+    } else {
+        setSearchMessage();
+    }
+}
+
+function setSearchMessage(){
+    document.querySelector("#searchResult").setAttribute("style","display:block;color:red;text-align: center;");
+    document.querySelector("#searchResult").innerHTML = "There are no results for this condition!";
+    setTimeout(function () {
+        document.querySelector("#searchResult").setAttribute("style", "display:none;");
+    }, 4000);
 }
 
 function initColSearch() {
@@ -51,24 +94,15 @@ function getUsers() {
 function generateAjaxDataTable(dataTable) {
 
     $('#userTable').DataTable({
-        initComplete: function () {
-            this.api().columns().every(function () {
-                var that = this;
-                $('input', this.footer()).on('keyup change clear', function () {
-                    if (that.search() !== this.value) {
-                        that
-                            .search(this.value)
-                            .draw();
-                    }
-                });
-            });
-        },
         "recordsTotal": dataTable.recordsTotal,
         "recordsFiltered": dataTable.recordsFiltered,
         "rowId": "userid",
         "filter": false,
-        "searching": true,
+        "searching": false,
+        "bPaginate": false,
         "pagingType": "numbers",
+        "bLengthChange": false,
+        "bInfo": false,
         data: dataTable.userEntities,
         columns: [
             {data: "userid"},

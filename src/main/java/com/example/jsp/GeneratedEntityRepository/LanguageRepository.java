@@ -9,5 +9,4 @@ public interface LanguageRepository extends JpaRepository<LanguageEntity,Integer
     @Cacheable("language")
     LanguageEntity findByKeyAndLocale(String key,String locale);
 
-
 }

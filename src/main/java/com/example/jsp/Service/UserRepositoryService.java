@@ -23,6 +23,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -119,7 +120,7 @@ public class UserRepositoryService {
      */
     public void handleErrors(Errors errors, GeneratedUserEntity user, Exception e) {
         if (!errors.hasErrors()) {
-            if(e.getCause().getCause() != null){
+            if(e.getCause() != null){
                 String cause = e.getCause().getCause().getMessage();
                 if (cause.contains("key 'email'")) {
                     errors.rejectValue("email", "This email is not available!", "This email is not available!");
@@ -213,6 +214,42 @@ public class UserRepositoryService {
         return em.createQuery(query).getSingleResult().getId();
     }
 
+    /**
+     * This method searches for a list of users in the database by given field and value.
+     *
+     * @param field The column in database.
+     * @param value The record in database.
+     * @return List of GeneratedUserEntities.
+     */
+    public List<GeneratedUserEntity> searchOnField(String field,String value){
+        if(field.equals("orgs")){
+            return searchOnOrgs(value);
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
+        Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
+        Predicate predicate = cb.equal(root.get(field),value);
+        query.where(predicate);
+        return em.createQuery(query).getResultList();
+    }
+
+
+    /**
+     * This method helps to find users in searchOnField method if the given field is an Organization.
+     * @param orgName Name of the given organization.
+     * @return List of GeneratedUserEntities.
+     */
+    private List<GeneratedUserEntity> searchOnOrgs(String orgName){
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedOrganizationEntity> query = cb.createQuery(GeneratedOrganizationEntity.class);
+        Root<GeneratedOrganizationEntity> root = query.from(GeneratedOrganizationEntity.class);
+        query.where(cb.equal(root.get("name"), orgName));
+        try {
+            return em.createQuery(query).getSingleResult().getUsers();
+        } catch (NoResultException e){
+            return Collections.emptyList();
+        }
+    }
 
     /**
      * Creates a new GeneratedUserEntity from the submitted form.
@@ -231,8 +268,10 @@ public class UserRepositoryService {
             userEntity.setOrgs(foundEntity.getOrgs());
             userEntity.setEnabled(foundEntity.getEnabled());
         }
-        if(!userForm.getVersion().equals(userEntity.getVersion())){
-            throw new OptimisticLockException("Version mismatch!",new RuntimeException("Version mismatch!"));
+        if(userForm.getVersion() != null) {
+            if (!userForm.getVersion().equals(userEntity.getVersion())) {
+                throw new OptimisticLockException("Version mismatch!", new RuntimeException("Version mismatch!"));
+            }
         }
         userEntity.setName(userForm.getName());
         userEntity.setAddress(userForm.getAddress());

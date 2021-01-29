@@ -60,18 +60,17 @@
         </tbody>
         <tfoot>
         <tr>
-            <th>id</th>
-            <th>name</th>
-            <th>email</th>
-            <th>address</th>
-            <th>phone</th>
-            <th>role</th>
-            <th>orgs</th>
-            <th style="display:none;">delete</th>
-            <th style="display:none;">update</th>
+            <th><div style="display:inline-flex"><input  placeholder="Search id"><div><button class="mx-1 searchButton" value="userid">Go</button></div></div></th>
+            <th><div style="display:inline-flex"><input  placeholder="Search name"><div><button class="mx-1 searchButton" value="name">Go</button></div></div></th>
+            <th><div style="display:inline-flex"><input  placeholder="Search email"><div><button class="mx-1 searchButton" value="email">Go</button></div></div></th>
+            <th><div style="display:inline-flex"><input  placeholder="Search address"><div><button class="mx-1 searchButton" value="address">Go</button></div></div></th>
+            <th><div style="display:inline-flex"><input  placeholder="Search phone"><div><button class="mx-1 searchButton" value="phone">Go</button></div></div></th>
+            <th><div style="display:inline-flex"><input  placeholder="Search role"><div><button class="mx-1 searchButton" value="role">Go</button></div></div></th>
+            <th><div style="display:inline-flex"><input  placeholder="Search orgs"><div><button class="mx-1 searchButton" value="orgs">Go</button></div></div></th>
         </tr>
         </tfoot>
     </table>
+    <h5 id="searchResult" style="display:none;"></h5>
     <button class="btn btn-success" id="adduserbutton" onclick="adduser()"><spring:message code="adduser"
                                                                                            text="default"/></button>
 </div>

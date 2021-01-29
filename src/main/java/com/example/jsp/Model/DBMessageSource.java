@@ -21,7 +21,7 @@ public class DBMessageSource extends AbstractMessageSource {
     protected MessageFormat resolveCode(String key, Locale locale) {
         LanguageEntity message = languageRepository.findByKeyAndLocale(key,locale.getLanguage());
         if (message == null) {
-            message = languageRepository.findByKeyAndLocale(key,DEFAULT_LOCALE_CODE);
+            return null;
         }
         return new MessageFormat(message.getContent(), locale);
     }

@@ -6,7 +6,6 @@ import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
 import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
-import liquibase.pro.packaged.G;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -118,4 +117,16 @@ public class ManageController {
         session.setAttribute("sessionBean", sessionBean);
     }
 
+    /**
+     * This function returns a list of Users by given Field and Value;
+     *
+     * @param values The incoming values from frontend : Field and InputValue
+     * @return A Datatable with a list of users.
+     */
+
+    @RequestMapping(value = "/searchOnField", method = RequestMethod.POST)
+    public DataTable searchOnField(@RequestBody Map<String, String> values) {
+        List <GeneratedUserEntity> users = userRepositoryService.searchOnField(values.get("field"),values.get("input"));
+        return new DataTable(1, 0, 10, users, new ArrayList<>());
+    }
 }
