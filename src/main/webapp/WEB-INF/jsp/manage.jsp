@@ -30,7 +30,7 @@
             <a class="nav-link" href="manage?lang=en">Eng</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="login"><spring:message code="loginpage" text="default"/></a>
+            <a class="nav-link" href="login">Login</a>
         </li>
     </ul>
 </nav>

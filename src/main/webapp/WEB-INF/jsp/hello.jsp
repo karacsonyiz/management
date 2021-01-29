@@ -33,7 +33,7 @@
             <a class="nav-link" href="hello?lang=en">Eng</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="login">loginPage</a>
+            <a class="nav-link" href="login">Login</a>
         </li>
     </ul>
 </nav>
@@ -48,9 +48,13 @@
 <br>
 <button onclick="complexCriteriaSelect()" class="btn btn-warning mt-3">complexCriteriaSelect</button>
 <br>
-<a>Hány .hu-s email címre végződő user van a K-val kezdődő szervezetek között?</a>
+<a>Hány .hu-s email címre végződő user van a K-val kezdődő szervezetek között? </a>
+<a> Válasz : <a id="complexCriteriaSelectAnswer"></a></a>
 <br>
-<a>Válasz : <a id="complexCriteriaSelectAnswer"></a></a>
+<button onclick="evictCache()" class="btn btn-warning mt-3">Evict Cache</button>
+<br>
+
+
 <script src="/js/hello.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"

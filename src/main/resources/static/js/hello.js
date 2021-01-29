@@ -2,6 +2,11 @@ window.onload = function () {
     // getUser();
 }
 
+function evictCache(){
+    fetch("/evictCache")
+        .catch(error => console.log(error));
+}
+
 function complexCriteriaSelect() {
     fetch("/complexCriteriaSelect")
         .then(function (response) {

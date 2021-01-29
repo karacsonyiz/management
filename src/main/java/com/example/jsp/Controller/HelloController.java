@@ -4,6 +4,7 @@ import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.Session;
+import com.example.jsp.Service.CacheService;
 import com.example.jsp.Service.OrgRepositoryService;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,11 +27,13 @@ public class HelloController {
     private EntityManager em;
     private UserRepositoryService userRepositoryService;
     private OrgRepositoryService orgRepositoryService;
+    private CacheService cacheService;
 
-    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService, EntityManager em) {
+    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService, EntityManager em,CacheService cacheService) {
         this.userRepositoryService = userRepositoryService;
         this.orgRepositoryService = orgRepositoryService;
         this.em = em;
+        this.cacheService = cacheService;
     }
 
     @GetMapping(value = {"/hello", "/"})
@@ -63,5 +66,10 @@ public class HelloController {
         org.on(cb.equal(cb.substring(orguser.get("name"), 1, 1), "k"));
         query.select(cb.countDistinct(userRoot.get("userid")));
         return em.createQuery(query).getSingleResult();
+    }
+
+    @RequestMapping(value = "evictCache", method = RequestMethod.GET)
+    public void evictCache(){
+        cacheService.evictAllCaches();
     }
 }
