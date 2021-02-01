@@ -96,8 +96,13 @@ function getUsers() {
 function generateAjaxDataTable(dataTable) {
 
     $('#userTable').DataTable({
-        "recordsTotal": dataTable.recordsTotal,
-        "recordsFiltered": dataTable.recordsFiltered,
+        "ajax": {
+            'type': 'GET',
+            'url': '/getUsers/',
+            dataSrc : "userEntities"
+        },
+        "recordsTotal": "recordsTotal",
+        "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
         "filter": false,
         "searching": false,
@@ -105,7 +110,6 @@ function generateAjaxDataTable(dataTable) {
         "pagingType": "numbers",
         "bLengthChange": false,
         "bInfo": false,
-        data: dataTable.userEntities,
         columns: [
             {data: "userid"},
             {data: "name"},

@@ -123,16 +123,7 @@
 <div id="adduserdiv" style="${userTableStyle}">
     <jsp:include page="adduser.jsp"></jsp:include>
 </div>
-<div>
-    <div class="row mt-4">
-        <div class="col-6">
-            <table class="table table-striped">
-                <tbody id="updatetable">
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+<progress value="5" max="10"></progress>
 <script src="/js/manage.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
