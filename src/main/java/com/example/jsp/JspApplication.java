@@ -17,11 +17,4 @@ public class JspApplication {
         SpringApplication.run(JspApplication.class, args);
     }
 
-    @Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver slr = new SessionLocaleResolver();
-        slr.setDefaultLocale(Locale.US);
-        return slr;
-    }
-
 }

@@ -4,12 +4,9 @@ import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
-import com.example.jsp.GeneratedEntityRepository.OrgUsersEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.UserForm;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +15,7 @@ import org.springframework.validation.Errors;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.OptimisticLockException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -34,23 +32,13 @@ public class UserRepositoryService {
     private final UserEntityRepository userEntityRepository;
     private final EntityManager em;
     private final OrgEntityRepository orgEntityRepository;
-    private final OrgUsersEntityRepository orgUsersEntityRepository;
     private final LoggerService loggerService;
-    public static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryService.class);
 
-    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, OrgUsersEntityRepository orgUsersEntityRepository, LoggerService loggerService) {
+    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, LoggerService loggerService) {
         this.userEntityRepository = userEntityRepository;
         this.em = em;
         this.orgEntityRepository = orgEntityRepository;
-        this.orgUsersEntityRepository = orgUsersEntityRepository;
         this.loggerService = loggerService;
-    }
-
-    public List<GeneratedUserEntity> listUsers() {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
-        Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
-        return em.createQuery(query).getResultList();
     }
 
     public Integer findIdByName(String name) {
@@ -157,18 +145,10 @@ public class UserRepositoryService {
 
     @Transactional
     public void generateUsers() {
-        String name;
-        String password;
-        String email;
-        String address;
-        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 99998; i++) {
-            name = "user" + i;
-            password = name;
-            email = name + "@" + i + name + ".hu";
-            address = "Pálya utca " + i;
-            GeneratedUserEntity g = new GeneratedUserEntity(name, password, email, "061555555", address, "ROLE_USER", new ArrayList<>());
-            em.persist(g);
+            em.persist(new GeneratedUserEntity(
+                    "user"+i,"user"+i,"user"+i+"@konzorcia.hu",
+                    "061555555","Pálya utca "+i,"ROLE_USER",new ArrayList<>()));
         }
     }
 
@@ -213,36 +193,20 @@ public class UserRepositoryService {
     }
 
     /**
-     * This method searches for a list of users in the database by given field and value.
-     *
-     * @param field The column in database.
-     * @param value The record in database.
-     * @return List of GeneratedUserEntities.
-     */
-    public List<GeneratedUserEntity> searchOnField(String field, String value) {
-        if (field.equals("orgs")) {
-            return searchOnOrgs(value);
-        }
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
-        Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
-        Predicate predicate = cb.equal(root.get(field), value);
-        query.where(predicate);
-        return em.createQuery(query).getResultList();
-    }
-
-
-    /**
      * This method helps to find users in searchOnField method if the given field is an Organization.
      *
      * @param orgName Name of the given organization.
      * @return List of GeneratedUserEntities.
      */
-    private List<GeneratedUserEntity> searchOnOrgs(String orgName) {
+    private List<GeneratedUserEntity> searchOnOrgs(String orgName,int pageNumber,int pageSize) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedOrganizationEntity> query = cb.createQuery(GeneratedOrganizationEntity.class);
         Root<GeneratedOrganizationEntity> root = query.from(GeneratedOrganizationEntity.class);
         query.where(cb.equal(root.get("name"), orgName));
+        CriteriaQuery<GeneratedOrganizationEntity> select = query.select(root);
+        TypedQuery<GeneratedOrganizationEntity> typedQuery = em.createQuery(select);
+        typedQuery.setFirstResult(pageNumber);
+        typedQuery.setMaxResults(pageSize);
         try {
             return em.createQuery(query).getSingleResult().getUsers();
         } catch (NoResultException e) {
@@ -257,7 +221,6 @@ public class UserRepositoryService {
      * @param userForm Incoming values from the submitted form.
      * @return A GeneratedUserEntity that is matched with the form attributes.
      */
-
     public GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm) {
         GeneratedUserEntity userEntity = new GeneratedUserEntity();
         if (userForm.getUserid() != null) {
@@ -279,5 +242,21 @@ public class UserRepositoryService {
         userEntity.setPhone(userForm.getPhone());
         userEntity.setRole(userForm.getRole());
         return userEntity;
+    }
+
+    public List<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber,int pageSize,String field,String value){
+        if (field.equals("orgs")) {
+            return searchOnOrgs(value,pageNumber,pageSize);
+        }
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
+        Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
+        Predicate predicate = cb.equal(root.get(field), value);
+        query.where(predicate);
+        CriteriaQuery<GeneratedUserEntity> select = query.select(root);
+        TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
+        typedQuery.setFirstResult(pageNumber);
+        typedQuery.setMaxResults(pageSize);
+        return typedQuery.getResultList();
     }
 }

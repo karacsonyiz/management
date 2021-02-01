@@ -42,7 +42,7 @@
 <br>
 <button onclick="location.href='manageorgs';" class="btn btn-info mt-3">Manage Organizations</button>
 <br>
-<button onclick="generate()" class="btn btn-primary mt-3" disabled>GenerateUsers</button>
+<button onclick="generate()" class="btn btn-primary mt-3">GenerateUsers</button>
 <br>
 <button onclick="test()" class="btn btn-warning mt-3" disabled>Test</button>
 <br>

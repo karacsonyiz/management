@@ -117,13 +117,12 @@
         </tfoot>
     </table>
     <h5 id="searchResult" style="display:none;"><spring:message code="searchResult" text="default"/></h5>
-    <button class="btn btn-success" id="adduserbutton" onclick="adduser()"><spring:message code="adduser"
+    <button class="btn btn-success mb-2" id="adduserbutton" onclick="adduser()"><spring:message code="adduser"
                                                                                            text="default"/></button>
 </div>
 <div id="adduserdiv" style="${userTableStyle}">
     <jsp:include page="adduser.jsp"></jsp:include>
 </div>
-<progress value="5" max="10"></progress>
 <script src="/js/manage.js"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>

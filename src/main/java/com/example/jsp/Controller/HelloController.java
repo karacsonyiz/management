@@ -26,12 +26,10 @@ public class HelloController {
 
     private final EntityManager em;
     private final UserRepositoryService userRepositoryService;
-    private final OrgRepositoryService orgRepositoryService;
     private final CacheService cacheService;
 
-    public HelloController(UserRepositoryService userRepositoryService, OrgRepositoryService orgRepositoryService, EntityManager em, CacheService cacheService) {
+    public HelloController(UserRepositoryService userRepositoryService, EntityManager em, CacheService cacheService) {
         this.userRepositoryService = userRepositoryService;
-        this.orgRepositoryService = orgRepositoryService;
         this.em = em;
         this.cacheService = cacheService;
     }
@@ -48,11 +46,6 @@ public class HelloController {
     @RequestMapping(value = "/generate", method = RequestMethod.GET)
     public void generateUsers() {
         userRepositoryService.generateUsers();
-    }
-
-    @RequestMapping(value = "/test", method = RequestMethod.GET)
-    public void test() {
-        orgRepositoryService.testOrgUsersAdd();
     }
 
     @RequestMapping(value = "/complexCriteriaSelect", method = RequestMethod.GET)

@@ -1,11 +1,14 @@
 package com.example.jsp.Controller;
 
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
+import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.DataTable;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
-import com.example.jsp.Service.LoggerService;
 import com.example.jsp.Service.UserRepositoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -24,12 +27,11 @@ import java.util.Map;
 public class ManageController {
 
     private final UserRepositoryService userRepositoryService;
-    private final LoggerService loggerService;
+    private final UserEntityRepository userEntityRepository;
 
-    public ManageController(UserRepositoryService userRepositoryService, LoggerService loggerService) {
+    public ManageController(UserRepositoryService userRepositoryService,UserEntityRepository userEntityRepository) {
         this.userRepositoryService = userRepositoryService;
-        this.loggerService = loggerService;
-
+        this.userEntityRepository = userEntityRepository;
     }
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
@@ -41,11 +43,20 @@ public class ManageController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/getUsers", method = RequestMethod.GET)
-    public DataTable getUsers() {
-        List<GeneratedUserEntity> userEntityList = userRepositoryService.listUsers();
-        long userCount = userRepositoryService.countUsers();
-        return new DataTable(1, userCount, 10, userEntityList, new ArrayList<>());
+    /**
+     * This method is the backend implementation of the jQuery DataTable paging functionality.
+     * Searches for the users to display on the current page.
+     *
+     * @param draw Can be true(1) or false(0), draws the DataTable if true. (default true)
+     * @param start The starting number of actual page.
+     * @param length The number of entries to display on one page.
+     * @return The UserEntities according to the current page.
+     */
+    @RequestMapping(value = "/getUsersForPage")
+    public DataTable getUsersForPage(@RequestParam("draw") int draw, @RequestParam("start") int start, @RequestParam("length") int length) {
+        Pageable pageable = PageRequest.of(start / length, length);
+        Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
+        return new DataTable(draw,responseData.getTotalElements(),responseData.getTotalElements(),new ArrayList<>(),responseData.getContent(),start);
     }
 
     @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.GET)
@@ -116,17 +127,21 @@ public class ManageController {
         sessionBean.setActionMessage("display:none;");
         session.setAttribute("sessionBean", sessionBean);
     }
-
     /**
-     * This function returns a list of Users by given Field and Value;
+     * This method returns a list of Users by given field,value and current page.
      *
-     * @param values The incoming values from frontend : Field and InputValue
-     * @return A Datatable with a list of users.
+     * @param draw Can be true(1) or false(0), draws the DataTable if true. (default true)
+     * @param start The starting number of actual page.
+     * @param length The number of entries to display on one page.
+     * @param field The incoming field criteria.
+     * @param input The incoming input value criteria.
+     * @return A dataTable consisting UserEntities and pageinformation according to the current page and criteria.
      */
-
-    @RequestMapping(value = "/searchOnField", method = RequestMethod.POST)
-    public DataTable searchOnField(@RequestBody Map<String, String> values) {
-        List<GeneratedUserEntity> users = userRepositoryService.searchOnField(values.get("field"), values.get("input"));
-        return new DataTable(1, 0, 10, users, new ArrayList<>());
+    @RequestMapping(value = "/getUsersForPageByCriteria")
+    public DataTable searchOnFieldForPage(@RequestParam("draw") int draw, @RequestParam("start") int start, @RequestParam("length") int length,
+                                          @RequestParam("field") String field,@RequestParam("input") String input) {
+        List<GeneratedUserEntity> users = userRepositoryService.getUsersForPageByCriteria(start,length,field,input);
+        long userCount = userRepositoryService.countUsers();
+        return new DataTable(draw,userCount,userCount,new ArrayList<>(),users,start);
     }
 }

@@ -16,6 +16,7 @@ public class DataTable implements Serializable {
     private long recordsFiltered;
     private List<GeneratedUserEntity> userEntities;
     private List<GeneratedOrganizationEntity> orgEntities;
+    private int start;
 
     public DataTable(int draw, long recordsTotal, long recordsFiltered, List<GeneratedUserEntity> userEntities, List<GeneratedOrganizationEntity> orgEntities) {
         this.draw = draw;
@@ -23,6 +24,15 @@ public class DataTable implements Serializable {
         this.recordsFiltered = recordsFiltered;
         this.userEntities = userEntities;
         this.orgEntities = orgEntities;
+    }
+
+    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<GeneratedOrganizationEntity> orgEntities, List<GeneratedUserEntity> userEntities,int start) {
+        this.draw = draw;
+        this.recordsTotal = recordsTotal;
+        this.recordsFiltered = recordsFiltered;
+        this.orgEntities = orgEntities;
+        this.userEntities = userEntities;
+        this.start = start;
     }
 
     public DataTable() {
@@ -70,6 +80,14 @@ public class DataTable implements Serializable {
 
     public void setOrgEntities(List<GeneratedOrganizationEntity> orgEntities) {
         this.orgEntities = orgEntities;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
     }
 
     @Override

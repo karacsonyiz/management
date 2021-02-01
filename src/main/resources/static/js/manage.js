@@ -1,22 +1,8 @@
 window.onload = function () {
-    //initColSearch();
-    getUsers();
-    initAddUserButton();
+    generateAjaxDataTable();
     initErrorCss();
     hideSuccessMessage();
-    initSearchButtons();
-    document.querySelector("#closeModalButton").addEventListener("click", function () {
-        location.reload()
-    })
-    document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
-        deleteSelectedOrgs()
-    })
-}
-
-function initSearchButtons() {
-    document.querySelectorAll(".searchButton").forEach(element => element.addEventListener("click", function () {
-        searchField(this.value, this.parentElement.parentElement.firstChild)
-    }));
+    initButtons();
 }
 
 function searchField(field, input) {
@@ -24,44 +10,7 @@ function searchField(field, input) {
         "field": field,
         "input": input.value
     }
-
-    fetch("/searchOnField/", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify(values),
-    }).then(function (response) {
-        return response.json();
-    })
-        .then(function (jsonData) {
-            handleSearchResult(jsonData);
-        })
-        .catch(error => console.log(error));
-    return false;
-}
-
-function handleSearchResult(jsonData) {
-    if (jsonData.userEntities.length !== 0) {
-        $('#userTable').DataTable().destroy();
-        generateAjaxDataTable(jsonData);
-    } else {
-        setSearchMessage();
-    }
-}
-
-function setSearchMessage() {
-    document.querySelector("#searchResult").setAttribute("style", "display:block;color:red;text-align: center;");
-    setTimeout(function () {
-        document.querySelector("#searchResult").setAttribute("style", "display:none;");
-    }, 4000);
-}
-
-function initColSearch() {
-    $('#userTable tfoot th').each(function () {
-        var title = $(this).text();
-        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-    });
+    generateAjaxDataTableByCriteria(values);
 }
 
 function deleteUser(id) {
@@ -76,40 +25,45 @@ function deleteUser(id) {
 function showDeleteSuccessAndReload() {
     document.querySelector("#deleteMessage").setAttribute("style", "display:block;color:green;");
     $('#userTable').DataTable().destroy();
-    getUsers();
+    generateAjaxDataTable();
     setTimeout(function () {
         document.querySelector("#deleteMessage").setAttribute("style", "display:none;");
     }, 4000);
 }
 
-function getUsers() {
-    fetch("/getUsers/")
-        .then(function (response) {
-            return response.json();
-        })
-        .then(function (data) {
-            console.log(data)
-            generateAjaxDataTable(data);
-        });
+function generateDataSrcForDataTable(response){
+    let data = response.userEntities;
+    let entities = [];
+    for (let i = 0; i < data.length; i++) {
+        let row = {
+            rows: response.start + i + 1,
+            userid: data[i].userid,
+            name: data[i].name,
+            email: data[i].email,
+            address: data[i].address,
+            phone: data[i].phone,
+            role: data[i].role,
+            orgs: data[i].orgs,
+        };
+        entities.push(row);
+    }
+    return entities;
 }
 
-function generateAjaxDataTable(dataTable) {
-
+function generateAjaxDataTable() {
     $('#userTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "pageLength": 10,
         "ajax": {
             'type': 'GET',
-            'url': '/getUsers/',
-            dataSrc : "userEntities"
+            'url': '/getUsersForPage/',
+            dataSrc: function(response){return generateDataSrcForDataTable(response)}
         },
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
-        "filter": false,
-        "searching": false,
-        "bPaginate": false,
         "pagingType": "numbers",
-        "bLengthChange": false,
-        "bInfo": false,
         columns: [
             {data: "userid"},
             {data: "name"},
@@ -117,11 +71,7 @@ function generateAjaxDataTable(dataTable) {
             {data: "address"},
             {data: "phone"},
             {data: "role"},
-            {
-                data: function (data) {
-                    return data.orgs.map(org => org.name).join("<br>");
-                }
-            },
+            {data: function (data) {return data.orgs.map(org => org.name).join("<br>");}},
             {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
         ]
@@ -130,7 +80,7 @@ function generateAjaxDataTable(dataTable) {
 
 function adduser() {
     adduserdiv = document.querySelector("#adduserdiv");
-    adduserdiv.setAttribute("style", "display:block;")
+    adduserdiv.setAttribute("style", "display:block;");
 }
 
 function initAddUserPanel() {
@@ -154,7 +104,6 @@ function getUser(id) {
 }
 
 function filluserDiv(user) {
-    console.log(user);
     let adduserdiv = document.querySelector("#adduserdiv");
     adduserdiv.setAttribute("style", "display:block");
     document.querySelector("#idInput").value = user.userid;
@@ -208,7 +157,6 @@ function populateOrgModal(userOrgs, allOrgs, userid) {
 function selectDeletableOrg(element, userid) {
     document.querySelector("#deleteSelectedOrgs").disabled = false;
     document.querySelector("#deleteSelectedOrgs").userid = userid;
-    console.log(element);
     if (element.getAttribute("value") === "false") {
         element.setAttribute("value", "true");
         element.style = "background-color : red;"
@@ -270,13 +218,11 @@ function addOrg() {
         return response.json();
     })
         .then(function (jsonData) {
-            console.log(jsonData);
             refreshOrgModal(userid);
 
         })
         .catch(error => refreshOrgModal(userid));
     return false;
-
 }
 
 function refreshOrgModal(userid) {
@@ -304,11 +250,6 @@ function refreshUserOrgList(userOrgs, userid) {
     }
 }
 
-function initAddUserButton() {
-    let adduserbutton = document.querySelector("#adduserbutton");
-    adduserbutton.addEventListener("click", initAddUserPanel);
-}
-
 function initErrorCss() {
     let style = "border: 1px solid red;";
     document.querySelector('#nameError').innerHTML === "" ? document.querySelector('#nameInput').style = "" : document.querySelector('#nameInput').style = style;
@@ -327,9 +268,52 @@ function hideSuccessMessage() {
 
 function resetTable() {
     $('#userTable').DataTable().destroy();
-    getUsers();
+    generateAjaxDataTable();
 }
 
+function initButtons(){
+    document.querySelector("#closeModalButton").addEventListener("click", function () {
+        location.reload()
+    });
+    document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
+        deleteSelectedOrgs()
+    });
+    document.querySelectorAll(".searchButton").forEach(element => element.addEventListener("click", function () {
+        searchField(this.value, this.parentElement.parentElement.firstChild)
+    }));
+    let adduserbutton = document.querySelector("#adduserbutton");
+    adduserbutton.addEventListener("click", initAddUserPanel);
+}
 
+function generateAjaxDataTableByCriteria(values){
 
+    $('#userTable').DataTable().destroy();
 
+    $('#userTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "pageLength": 10,
+        "ajax": {
+            'type': 'GET',
+            "contentType": "application/json; charset=utf-8",
+            'url': '/getUsersForPageByCriteria/',
+            "data" : values,
+            dataSrc: function (response){return generateDataSrcForDataTable(response)}
+        },
+        "recordsTotal": "recordsTotal",
+        "recordsFiltered": "recordsFiltered",
+        "rowId": "userid",
+        "pagingType": "numbers",
+        columns: [
+            {data: "userid"},
+            {data: "name"},
+            {data: "email"},
+            {data: "address"},
+            {data: "phone"},
+            {data: "role"},
+            {data: function (data) {return data.orgs.map(org => org.name).join("<br>");}},
+            {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
+            {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
+        ]
+    });
+}

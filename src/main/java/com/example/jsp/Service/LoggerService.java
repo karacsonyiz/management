@@ -16,7 +16,6 @@ public class LoggerService {
     private final EntityManager em;
     public static final Logger LOGGER = LoggerFactory.getLogger(UserRepositoryService.class);
 
-
     public LoggerService(EntityManager em) {
         this.em = em;
     }
