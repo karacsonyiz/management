@@ -6,11 +6,21 @@ window.onload = function () {
 }
 
 function searchField(field, input) {
+
+    let inputValues = document.querySelectorAll(".searchInput");
+    let valuesObject = {};
+
+    for(let i = 0; i < inputValues.length;i++){
+        valuesObject[inputValues[i].title] = inputValues[i].value;
+        console.log(inputValues[i].value);
+    }
+
+
     values = {
         "field": field,
         "input": input.value
     }
-    generateAjaxDataTableByCriteria(values);
+    generateAjaxDataTableByCriteria(valuesObject);
 }
 
 function deleteUser(id) {
@@ -281,8 +291,7 @@ function initButtons(){
     document.querySelectorAll(".searchButton").forEach(element => element.addEventListener("click", function () {
         searchField(this.value, this.parentElement.parentElement.firstChild)
     }));
-    let adduserbutton = document.querySelector("#adduserbutton");
-    adduserbutton.addEventListener("click", initAddUserPanel);
+    document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
 function generateAjaxDataTableByCriteria(values){

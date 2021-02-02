@@ -6,6 +6,7 @@ import com.example.jsp.Model.DataTable;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
 import com.example.jsp.Service.UserRepositoryService;
+import liquibase.pro.packaged.D;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,9 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 public class ManageController {
@@ -133,15 +132,26 @@ public class ManageController {
      * @param draw Can be true(1) or false(0), draws the DataTable if true. (default true)
      * @param start The starting number of actual page.
      * @param length The number of entries to display on one page.
-     * @param field The incoming field criteria.
-     * @param input The incoming input value criteria.
      * @return A dataTable consisting UserEntities and pageinformation according to the current page and criteria.
      */
     @RequestMapping(value = "/getUsersForPageByCriteria")
-    public DataTable searchOnFieldForPage(@RequestParam("draw") int draw, @RequestParam("start") int start, @RequestParam("length") int length,
-                                          @RequestParam("field") String field,@RequestParam("input") String input) {
-        List<GeneratedUserEntity> users = userRepositoryService.getUsersForPageByCriteria(start,length,field,input);
+    public DataTable searchOnFieldForPage(@RequestParam("draw") int draw, @RequestParam("start") int start, @RequestParam("length") int length, @RequestParam("userid") String userid,@RequestParam("name") String name,
+                                          @RequestParam("email") String email,@RequestParam("role") String role, @RequestParam("orgs") String orgs, @RequestParam("phone") String phone,@RequestParam("address") String address) {
+        Map<String,String> params = getRequestParams(userid,name,email,role,orgs,phone,address);
+        Set<GeneratedUserEntity> userSet = userRepositoryService.getUsersForPageByCriteria(start,length,params);
         long userCount = userRepositoryService.countUsers();
-        return new DataTable(draw,userCount,userCount,new ArrayList<>(),users,start);
+        return new DataTable(draw,userCount,userCount,new ArrayList<>(),new ArrayList<>(userSet),start);
+    }
+
+    private Map<String,String> getRequestParams(String userid,String name,String email,String role,String orgs,String phone,String address){
+        Map<String,String> result = new HashMap<>();
+        result.put("userid",userid);
+        result.put("name",name);
+        result.put("email",email);
+        result.put("role",role);
+        result.put("orgs",orgs);
+        result.put("phone",phone);
+        result.put("address",address);
+        return result;
     }
 }

@@ -20,9 +20,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -244,22 +242,31 @@ public class UserRepositoryService {
         return userEntity;
     }
 
-    public List<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber,int pageSize,String field,String value){
-        if (field.equals("orgs")) {
-            return searchOnOrgs(value,pageNumber,pageSize);
-        }
-        if(field.equals("userid") && value.equals("")){
-            return new ArrayList<>();
-        }
+    public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String,String> params){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
-        Predicate predicate = cb.equal(root.get(field), value);
-        query.where(predicate);
+        List<Predicate> predicateList = new ArrayList<>();
+        List<GeneratedUserEntity> result= new ArrayList<>();
+
+        for(Map.Entry<String,String> entry : params.entrySet()){
+            if(!entry.getValue().equals("")){
+                if(entry.getKey().equals("orgs")){
+                    result = searchOnOrgs(entry.getValue(), pageNumber,pageSize);
+                } else {
+                    Predicate p = cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%");
+                    predicateList.add(p);
+                }
+            }
+        }
+
+        Predicate finalPredicate = cb.or(predicateList.toArray(new Predicate[0]));
+        query.where(finalPredicate);
         CriteriaQuery<GeneratedUserEntity> select = query.select(root);
         TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
         typedQuery.setFirstResult(pageNumber);
         typedQuery.setMaxResults(pageSize);
-        return typedQuery.getResultList();
+        result.addAll(typedQuery.getResultList());
+        return new HashSet<>(result);
     }
 }

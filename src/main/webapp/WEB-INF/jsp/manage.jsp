@@ -62,49 +62,49 @@
         <tfoot>
         <tr>
             <th class="px-0">
-                <div style="display:inline-flex"><input type="number" placeholder="Search id">
+                <div style="display:inline-flex"><input type="number" placeholder="Search id" class="searchInput" title="userid">
                     <div>
                         <button class="mx-1 searchButton" value="userid">Go</button>
                     </div>
                 </div>
             </th>
             <th class="px-0">
-                <div style="display:inline-flex"><input placeholder="Search name">
+                <div style="display:inline-flex"><input placeholder="Search name" class="searchInput" title="name">
                     <div>
                         <button class="mx-1 searchButton" value="name">Go</button>
                     </div>
                 </div>
             </th>
             <th class="px-0">
-                <div style="display:inline-flex"><input placeholder="Search email">
+                <div style="display:inline-flex"><input placeholder="Search email" class="searchInput" title="email">
                     <div>
                         <button class="mx-1 searchButton" value="email">Go</button>
                     </div>
                 </div>
             </th>
             <th class="px-0">
-                <div style="display:inline-flex"><input placeholder="Search address">
+                <div style="display:inline-flex"><input placeholder="Search address" class="searchInput" title="address">
                     <div>
                         <button class="mx-1 searchButton" value="address">Go</button>
                     </div>
                 </div>
             </th>
             <th class="px-0">
-                <div style="display:inline-flex"><input placeholder="Search phone">
+                <div style="display:inline-flex"><input placeholder="Search phone" class="searchInput" title="phone">
                     <div>
-                        <button class="mx-1 searchButton" value="phone">Go</button>
+                        <button class="mx-1 searchButton" value="phone" >Go</button>
                     </div>
                 </div>
             </th>
             <th class="px-0">
-                <div style="display:inline-flex"><input placeholder="Search role">
+                <div style="display:inline-flex"><input placeholder="Search role" class="searchInput" title="role">
                     <div>
-                        <button class="mx-1 searchButton" value="role">Go</button>
+                        <button class="mx-1 searchButton" value="role" >Go</button>
                     </div>
                 </div>
             </th>
             <th class="px-0">
-                <div style="display:inline-flex"><input placeholder="Search orgs">
+                <div style="display:inline-flex"><input placeholder="Search orgs" class="searchInput" title="orgs">
                     <div>
                         <button class="mx-1 searchButton" value="orgs">Go</button>
                     </div>
