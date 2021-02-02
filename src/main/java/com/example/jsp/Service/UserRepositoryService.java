@@ -248,6 +248,9 @@ public class UserRepositoryService {
         if (field.equals("orgs")) {
             return searchOnOrgs(value,pageNumber,pageSize);
         }
+        if(field.equals("userid") && value.equals("")){
+            return new ArrayList<>();
+        }
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
