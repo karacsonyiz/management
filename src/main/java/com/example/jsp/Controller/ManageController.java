@@ -136,9 +136,10 @@ public class ManageController {
      */
     @RequestMapping(value = "/getUsersForPageByCriteria")
     public DataTable searchOnFieldForPage(@RequestParam("draw") int draw, @RequestParam("start") int start, @RequestParam("length") int length, @RequestParam("userid") String userid,@RequestParam("name") String name,
-                                          @RequestParam("email") String email,@RequestParam("role") String role, @RequestParam("orgs") String orgs, @RequestParam("phone") String phone,@RequestParam("address") String address) {
+                                          @RequestParam("email") String email,@RequestParam("role") String role, @RequestParam("orgs") String orgs, @RequestParam("phone") String phone,@RequestParam("address") String address,
+                                          @RequestParam("condition") String condition) {
         Map<String,String> params = getRequestParams(userid,name,email,role,orgs,phone,address);
-        Set<GeneratedUserEntity> userSet = userRepositoryService.getUsersForPageByCriteria(start,length,params);
+        Set<GeneratedUserEntity> userSet = userRepositoryService.getUsersForPageByCriteria(start,length,params,condition);
         long userCount = userRepositoryService.countUsers();
         return new DataTable(draw,userCount,userCount,new ArrayList<>(),new ArrayList<>(userSet),start);
     }

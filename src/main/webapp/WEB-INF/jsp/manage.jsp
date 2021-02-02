@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/manage.css">
     <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 </head>
 <body class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -113,6 +114,9 @@
             <th>
                 <button class="btn btn-danger" onclick="resetTable()">reset</button>
             </th>
+            <th>
+                <input type="checkbox" id="conditionToggle" data-toggle="toggle" data-on="And" data-off="Or" data-onstyle="success" data-offstyle="primary">
+            </th>
         </tr>
         </tfoot>
     </table>
@@ -128,5 +132,6 @@
 <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </body>
 </html>

@@ -191,28 +191,6 @@ public class UserRepositoryService {
     }
 
     /**
-     * This method helps to find users in searchOnField method if the given field is an Organization.
-     *
-     * @param orgName Name of the given organization.
-     * @return List of GeneratedUserEntities.
-     */
-    private List<GeneratedUserEntity> searchOnOrgs(String orgName,int pageNumber,int pageSize) {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<GeneratedOrganizationEntity> query = cb.createQuery(GeneratedOrganizationEntity.class);
-        Root<GeneratedOrganizationEntity> root = query.from(GeneratedOrganizationEntity.class);
-        query.where(cb.equal(root.get("name"), orgName));
-        CriteriaQuery<GeneratedOrganizationEntity> select = query.select(root);
-        TypedQuery<GeneratedOrganizationEntity> typedQuery = em.createQuery(select);
-        typedQuery.setFirstResult(pageNumber);
-        typedQuery.setMaxResults(pageSize);
-        try {
-            return em.createQuery(query).getSingleResult().getUsers();
-        } catch (NoResultException e) {
-            return Collections.emptyList();
-        }
-    }
-
-    /**
      * Creates a new GeneratedUserEntity from the submitted form.
      * Handles frontend-based optimistic lock exception.
      *
@@ -242,31 +220,37 @@ public class UserRepositoryService {
         return userEntity;
     }
 
-    public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String,String> params){
+    public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String,String> params,String condition){
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
         List<Predicate> predicateList = new ArrayList<>();
-        List<GeneratedUserEntity> result= new ArrayList<>();
+        Predicate finalPredicate;
 
         for(Map.Entry<String,String> entry : params.entrySet()){
             if(!entry.getValue().equals("")){
                 if(entry.getKey().equals("orgs")){
-                    result = searchOnOrgs(entry.getValue(), pageNumber,pageSize);
+                    GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(entry.getValue());
+                    Predicate predicate = cb.isMember(org,root.get("orgs"));
+                    predicateList.add(predicate);
                 } else {
-                    Predicate p = cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%");
-                    predicateList.add(p);
+                    Predicate predicate = cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%");
+                    predicateList.add(predicate);
                 }
             }
         }
 
-        Predicate finalPredicate = cb.or(predicateList.toArray(new Predicate[0]));
+        if(condition.equals("Or")){
+            finalPredicate = cb.or(predicateList.toArray(new Predicate[0]));
+        } else {
+            finalPredicate = cb.and(predicateList.toArray(new Predicate[0]));
+        }
         query.where(finalPredicate);
         CriteriaQuery<GeneratedUserEntity> select = query.select(root);
         TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
         typedQuery.setFirstResult(pageNumber);
         typedQuery.setMaxResults(pageSize);
-        result.addAll(typedQuery.getResultList());
-        return new HashSet<>(result);
+
+        return new HashSet<>(typedQuery.getResultList());
     }
 }

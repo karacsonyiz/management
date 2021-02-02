@@ -5,20 +5,18 @@ window.onload = function () {
     initButtons();
 }
 
-function searchField(field, input) {
-
+function searchField() {
     let inputValues = document.querySelectorAll(".searchInput");
     let valuesObject = {};
 
-    for(let i = 0; i < inputValues.length;i++){
-        valuesObject[inputValues[i].title] = inputValues[i].value;
-        console.log(inputValues[i].value);
+    if($('#conditionToggle').prop('checked')){
+        valuesObject["condition"] = "And";
+    } else {
+        valuesObject["condition"] = "Or";
     }
 
-
-    values = {
-        "field": field,
-        "input": input.value
+    for(let i = 0; i < inputValues.length;i++){
+        valuesObject[inputValues[i].title] = inputValues[i].value;
     }
     generateAjaxDataTableByCriteria(valuesObject);
 }
