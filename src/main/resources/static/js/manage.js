@@ -12,7 +12,7 @@ function initInputFeedback(){
         if (this.value.length > 0) {
             this.classList.add("feedback");
         }
-        if(this.value.length == 0){
+        if(this.value.length === 0){
             this.classList.remove("feedback");
         }
     });
@@ -78,7 +78,7 @@ function generateAjaxDataTable() {
     $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
-        "pageLength": 10,
+        "stateSave": true,
         "ajax": {
             'type': 'GET',
             'url': '/getUsersForPage/',
@@ -314,7 +314,7 @@ function generateAjaxDataTableByCriteria(values){
     $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
-        "pageLength": 10,
+        "stateSave": true,
         "ajax": {
             'type': 'GET',
             "contentType": "application/json; charset=utf-8",
