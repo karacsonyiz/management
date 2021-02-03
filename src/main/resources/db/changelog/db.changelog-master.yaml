@@ -57,6 +57,12 @@ databaseChangeLog:
                   constraints:
                     nullable: true
               - column:
+                  name: is_active
+                  type: TINYINT
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
                   name: version
                   type: int
                   defaultValue: 1

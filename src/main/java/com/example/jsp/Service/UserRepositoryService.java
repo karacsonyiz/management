@@ -143,7 +143,8 @@ public class UserRepositoryService {
     public void deleteUser(int id) {
         GeneratedUserEntity user = em.find(GeneratedUserEntity.class, id);
         if (user != null) {
-            em.remove(user);
+            user.setIsactive(false);
+            em.merge(user);
         }
     }
 

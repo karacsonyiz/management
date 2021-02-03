@@ -35,12 +35,15 @@ function searchField() {
 }
 
 function deleteUser(id) {
-    fetch("/deleteUser/" + id)
-        .then(function (response) {
-            showDeleteSuccessAndReload();
-        })
-        .catch(error => console.log(error));
-    return false;
+    let confirm = window.confirm("Biztos, hogy törölni szeretné ezt a felhasználót?");
+    if (confirm) {
+        fetch("/deleteUser/" + id)
+            .then(function (response) {
+                showDeleteSuccessAndReload();
+            })
+            .catch(error => console.log(error));
+        return false;
+    }
 }
 
 function showDeleteSuccessAndReload() {

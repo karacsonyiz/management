@@ -1,6 +1,7 @@
 package com.example.jsp.GeneratedEntity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user", schema = "demo")
+@Where(clause="is_active=1")
 public class GeneratedUserEntity {
 
     @Id
@@ -29,6 +31,8 @@ public class GeneratedUserEntity {
     private int enabled = 1;
     @Column(name = "role")
     private String role;
+    @Column(name = "is_active")
+    private Boolean isactive = true;
     @Version
     private Integer version;
     @Column(name = "orgs")
@@ -145,6 +149,14 @@ public class GeneratedUserEntity {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public Boolean getIsactive() {
+        return isactive;
+    }
+
+    public void setIsactive(Boolean isactive) {
+        this.isactive = isactive;
     }
 
     @Override
