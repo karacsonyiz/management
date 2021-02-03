@@ -23,7 +23,7 @@ public class OrgController {
     }
 
     @RequestMapping("/manageorgs")
-    public ModelAndView manage(Model model, HttpSession session) {
+    public ModelAndView manage(Model model, HttpSession session){
         ModelAndView modelAndView = new ModelAndView("manageorgs");
         Object name = session.getAttribute("name");
         model.addAttribute("name", name);

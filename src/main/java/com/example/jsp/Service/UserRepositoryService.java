@@ -226,20 +226,23 @@ public class UserRepositoryService {
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
         List<Predicate> predicateList = new ArrayList<>();
         Predicate finalPredicate;
+        boolean foundOne = false;
 
         for(Map.Entry<String,String> entry : params.entrySet()){
-            if(!entry.getValue().equals("")){
+            if(!entry.getValue().trim().equals("")){
+                foundOne = true;
                 if(entry.getKey().equals("orgs")){
                     GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(entry.getValue());
-                    Predicate predicate = cb.isMember(org,root.get("orgs"));
-                    predicateList.add(predicate);
+                    predicateList.add(cb.isMember(org,root.get("orgs")));
                 } else {
-                    Predicate predicate = cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%");
-                    predicateList.add(predicate);
+                    predicateList.add(cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%"));
                 }
             }
         }
 
+        if(!foundOne){
+            return null;
+        }
         if(condition.equals("Or")){
             finalPredicate = cb.or(predicateList.toArray(new Predicate[0]));
         } else {

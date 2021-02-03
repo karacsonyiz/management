@@ -16,10 +16,10 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="manage"><spring:message code="manageusers" text="default"/></a>
+                <a class="nav-link" href="manage"><spring:message code="manageusers"/></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="manageorgs"><spring:message code="manageorgs" text="default"/></a>
+                <a class="nav-link" href="manageorgs"><spring:message code="manageorgs"/></a>
             </li>
         </ul>
     </div>
@@ -35,27 +35,26 @@
         </li>
     </ul>
 </nav>
-<h1><spring:message code="manageusers" text="default"/></h1>
+<h1><spring:message code="manageusers"/></h1>
 <div style="text-align: center;">
-    <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message code="savesuccess"
-                                                                                      text="default"/></h5>
+    <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message code="savesuccess"/></h5>
 </div>
 <div style="text-align: center;">
-    <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess" text="default"/></h5>
+    <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess"/></h5>
 </div>
 <div>
     <table id="userTable" class="table table-striped">
         <thead>
         <tr>
             <th>id</th>
-            <th><spring:message code="name" text="default"/></th>
+            <th><spring:message code="name"/></th>
             <th>email</th>
-            <th><spring:message code="address" text="default"/></th>
-            <th><spring:message code="phone" text="default"/></th>
-            <th><spring:message code="role" text="default"/></th>
-            <th><spring:message code="orgs" text="default"/></th>
-            <th><spring:message code="delete" text="default"/></th>
-            <th><spring:message code="update" text="default"/></th>
+            <th><spring:message code="address"/></th>
+            <th><spring:message code="phone"/></th>
+            <th><spring:message code="role"/></th>
+            <th><spring:message code="orgs"/></th>
+            <th><spring:message code="delete"/></th>
+            <th><spring:message code="update"/></th>
         </tr>
         </thead>
         <tbody id="dataTableTbody">
@@ -105,9 +104,9 @@
                 </div>
             </th>
             <th class="px-0">
-                <div style="display:inline-flex"><input placeholder="Search orgs" class="searchInput" title="orgs">
+                <div style="display:inline-flex"><input placeholder="Search orgs" class="searchInput" id="searchInputForKeyUp" title="orgs">
                     <div>
-                        <button class="mx-1 searchButton" value="orgs">Go</button>
+                        <button class="mx-1 searchButton" id="SearchButton" value="orgs">Go</button>
                     </div>
                 </div>
             </th>
@@ -120,9 +119,7 @@
         </tr>
         </tfoot>
     </table>
-    <h5 id="searchResult" style="display:none;"><spring:message code="searchResult" text="default"/></h5>
-    <button class="btn btn-success mb-2" id="adduserbutton" onclick="adduser()"><spring:message code="adduser"
-                                                                                           text="default"/></button>
+    <button class="btn btn-success mb-2" id="adduserbutton" onclick="adduser()"><spring:message code="adduser"/></button>
 </div>
 <div id="adduserdiv" style="${userTableStyle}">
     <jsp:include page="adduser.jsp"></jsp:include>

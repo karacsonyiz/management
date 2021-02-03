@@ -5,7 +5,6 @@ import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.CacheService;
-import com.example.jsp.Service.OrgRepositoryService;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +33,7 @@ public class HelloController {
         this.cacheService = cacheService;
     }
 
-    @GetMapping(value = {"/hello", "/"})
+    @GetMapping(value = {"/hello"})
     public ModelAndView hello(HttpSession session) {
         ModelAndView modelAndView = new ModelAndView("hello");
         Session sessionBean = (Session) session.getAttribute("sessionBean");

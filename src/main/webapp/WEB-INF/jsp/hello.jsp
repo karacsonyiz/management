@@ -15,13 +15,13 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="manage"><spring:message code="manageusers" text="default"/></a>
+                <a class="nav-link" href="manage"><spring:message code="manageusers"/></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="manageorgs"><spring:message code="manageorgs" text="default"/></a>
+                <a class="nav-link" href="manageorgs"><spring:message code="manageorgs"/></a>
             </li>
             <li>
-                <a class="nav-link"><spring:message code="greeting" text="default"/></a>
+                <a class="nav-link"><spring:message code="greeting"/></a>
             </li>
         </ul>
     </div>

@@ -3,6 +3,8 @@ package com.example.jsp.Service;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 @Service
 public class CacheService {
 
@@ -13,8 +15,7 @@ public class CacheService {
     }
 
     public void evictAllCaches() {
-        cacheManager.getCacheNames().stream()
-                .forEach(cacheName -> cacheManager.getCache(cacheName).clear());
+        cacheManager.getCacheNames().forEach(cacheName -> Objects.requireNonNull(cacheManager.getCache(cacheName)).clear());
     }
 
 }

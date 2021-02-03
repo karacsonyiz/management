@@ -5,6 +5,7 @@ import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,7 +24,7 @@ public class LoginController {
         this.userRepositoryService = userRepositoryService;
     }
 
-    @RequestMapping("/login")
+    @GetMapping(value = {"/login", "/"})
     public ModelAndView showLogin() {
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("login", new Login());
@@ -43,5 +44,4 @@ public class LoginController {
         }
         return modelAndView;
     }
-
 }

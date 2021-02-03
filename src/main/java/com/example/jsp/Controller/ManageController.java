@@ -6,7 +6,6 @@ import com.example.jsp.Model.DataTable;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
 import com.example.jsp.Service.UserRepositoryService;
-import liquibase.pro.packaged.D;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +34,7 @@ public class ManageController {
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
     public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession httpSession) {
+
         ModelAndView modelAndView = new ModelAndView("manage");
         Object name = httpSession.getAttribute("name");
         model.addAttribute("name", name);
@@ -140,10 +140,20 @@ public class ManageController {
                                           @RequestParam("condition") String condition) {
         Map<String,String> params = getRequestParams(userid,name,email,role,orgs,phone,address);
         Set<GeneratedUserEntity> userSet = userRepositoryService.getUsersForPageByCriteria(start,length,params,condition);
+        if(userSet == null){
+            Pageable pageable = PageRequest.of(start / length, length);
+            Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
+            return new DataTable(draw,responseData.getTotalElements(),responseData.getTotalElements(),new ArrayList<>(),responseData.getContent(),start);
+        }
         long userCount = userRepositoryService.countUsers();
         return new DataTable(draw,userCount,userCount,new ArrayList<>(),new ArrayList<>(userSet),start);
     }
 
+    /**
+     * This method creates a Map from parameter keys and values to pass the service's search function.
+     * @params Parameters for search criteria
+     * @return A Hashmap that contains the key and value pairs of request parameters.
+     */
     private Map<String,String> getRequestParams(String userid,String name,String email,String role,String orgs,String phone,String address){
         Map<String,String> result = new HashMap<>();
         result.put("userid",userid);

@@ -3,6 +3,19 @@ window.onload = function () {
     initErrorCss();
     hideSuccessMessage();
     initButtons();
+    initEnterButton();
+    initInputFeedback();
+}
+
+function initInputFeedback(){
+    $('.searchInput').on('keyup', function() {
+        if (this.value.length > 0) {
+            this.classList.add("feedback");
+        }
+        if(this.value.length == 0){
+            this.classList.remove("feedback");
+        }
+    });
 }
 
 function searchField() {
@@ -144,7 +157,7 @@ function populateOrgModal(userOrgs, allOrgs, userid) {
     orgSelect.setAttribute("userID", userid);
     orgSelect.innerHTML = "";
     orgModalBody.innerHTML = "";
-    for (i in userOrgs) {
+    for (let i in userOrgs) {
         let orgBadge = document.createElement("button");
         orgBadge.setAttribute("class", "btn btn-success p-2 m-2 orgBadge");
         orgBadge.setAttribute("value", "false");
@@ -275,8 +288,7 @@ function hideSuccessMessage() {
 }
 
 function resetTable() {
-    $('#userTable').DataTable().destroy();
-    generateAjaxDataTable();
+    location.reload();
 }
 
 function initButtons(){
@@ -322,5 +334,18 @@ function generateAjaxDataTableByCriteria(values){
             {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
         ]
+    });
+    removeInputFeedback();
+}
+
+function removeInputFeedback(){
+    document.querySelectorAll(".searchInput").forEach(element => element.classList.remove("feedback"))
+}
+
+function initEnterButton(){
+    $(document).on('keydown', document, function(e) {
+        if (e.keyCode === 13) {
+            searchField();
+        }
     });
 }
