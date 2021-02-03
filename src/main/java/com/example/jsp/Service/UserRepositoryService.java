@@ -7,15 +7,14 @@ import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.UserForm;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
+import org.springframework.validation.FieldError;
 
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.OptimisticLockException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -100,29 +99,40 @@ public class UserRepositoryService {
      * If the exception has a root cause, we can set the rejectValue more accurately.
      *
      * @param errors Built-in errors class to handle form errors on frontend.
-     * @param e      The exception that is to be handled.
+     * @param e The exception that is to be handled.
      */
     public void handleErrors(Errors errors, GeneratedUserEntity user, Exception e) {
+
         if (!errors.hasErrors()) {
-            if (e.getCause() != null) {
+            if(e.getClass() == DataIntegrityViolationException.class){
                 String cause = e.getCause().getCause().getMessage();
-                if (cause.contains("key 'email'")) {
-                    errors.rejectValue("email", "This email is not available!", "This email is not available!");
-                    loggerService.log("Duplicate entry on email for user: " + user.getName());
-                }
-                if (cause.contains("key 'name'")) {
-                    errors.rejectValue("name", "This name is not available!", "This name is not available!");
-                    loggerService.log("Duplicate entry on name for user: " + user.getName());
-                } else {
-                    errors.reject(e.getMessage(), e.getCause().getCause().getMessage());
-                    loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
-                }
-            } else {
+                generateErrorMessagesForDataException(cause,e,errors,user);
+            }
+            if(e.getClass() == OptimisticLockException.class){
+                errors.reject(e.getCause().getMessage(), e.getCause().getMessage());
+                loggerService.log("Optimisticlockexception : " + e.getCause().getMessage());
+            }
+            else {
                 errors.reject(e.getMessage(), e.getMessage());
                 loggerService.log("Unexpected error happened : " + e.getMessage());
             }
         }
     }
+
+    private void generateErrorMessagesForDataException(String cause,Exception e,Errors errors,GeneratedUserEntity user) {
+        if (cause.contains("key 'email'")) {
+            errors.rejectValue("email", "This email is already taken!", "This email is already taken!");
+            loggerService.log("Duplicate entry on email for user: " + user.getName());
+        }
+        if (cause.contains("key 'name'")) {
+            errors.rejectValue("name", "This name is already taken!", "This name is already taken!");
+            loggerService.log("Duplicate entry on name for user: " + user.getName());
+        } else {
+            errors.reject(e.getMessage(), e.getCause().getCause().getMessage());
+            loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
+        }
+    }
+
 
     @Transactional
     public GeneratedUserEntity findUserById(int id) {
@@ -200,16 +210,11 @@ public class UserRepositoryService {
     public GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm) {
         GeneratedUserEntity userEntity = new GeneratedUserEntity();
         if (userForm.getUserid() != null) {
-            GeneratedUserEntity foundEntity = findUserById(userForm.getUserid());
+            GeneratedUserEntity foundEntity = em.find(GeneratedUserEntity.class,userForm.getUserid(), LockModeType.OPTIMISTIC);
             userEntity.setUserid(foundEntity.getUserid());
-            userEntity.setVersion(foundEntity.getVersion());
+            userEntity.setVersion(userForm.getVersion());
             userEntity.setOrgs(foundEntity.getOrgs());
             userEntity.setEnabled(foundEntity.getEnabled());
-        }
-        if (userForm.getVersion() != null) {
-            if (!userForm.getVersion().equals(userEntity.getVersion())) {
-                throw new OptimisticLockException("Version mismatch!", new RuntimeException("Version mismatch!"));
-            }
         }
         userEntity.setName(userForm.getName());
         userEntity.setAddress(userForm.getAddress());

@@ -98,6 +98,9 @@ public class ManageController {
 
     private void createErrorMessages(ModelAndView modelAndView, Errors errors, HttpSession httpSession, HttpServletResponse response) throws IOException {
         if (errors.hasErrors()) {
+            for(int i = 0;i<errors.getAllErrors().size();i++){
+                errors.getAllErrors().get(i).getCodes()[i] = errors.getAllErrors().get(i).getDefaultMessage();
+            }
             ModelMap modelMap = new ModelMap()
                     .addAttribute("userTableStyle", "display:block;")
                     .addAttribute("errorMsg", "Error: " + errors.getAllErrors().get(0).getDefaultMessage());

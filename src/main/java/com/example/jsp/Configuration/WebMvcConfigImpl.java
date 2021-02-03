@@ -31,4 +31,5 @@ public class WebMvcConfigImpl implements WebMvcConfigurer {
         slr.setDefaultLocale(Locale.US);
         return slr;
     }
+
 }
