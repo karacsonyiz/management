@@ -13,6 +13,7 @@ public class Session implements Serializable {
     private GeneratedUserEntity user;
     private Response response;
     private String actionMessage;
+    private String actionResponse;
 
     public Session() {
     }
@@ -62,6 +63,14 @@ public class Session implements Serializable {
 
     public void setActionMessage(String actionMessage) {
         this.actionMessage = actionMessage;
+    }
+
+    public String getActionResponse() {
+        return actionResponse;
+    }
+
+    public void setActionResponse(String actionResponse) {
+        this.actionResponse = actionResponse;
     }
 
     public Session(Login login, GeneratedUserEntity user, Response response, String actionMessage) {

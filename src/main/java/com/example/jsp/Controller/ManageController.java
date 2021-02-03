@@ -111,6 +111,7 @@ public class ManageController {
         } else {
             modelAndView.addObject("userTableStyle", "display:none;");
             Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
+            sessionBean.setActionResponse("savesuccess");
             sessionBean.setActionMessage("display:block;color:green;");
             httpSession.setAttribute("sessionBean", sessionBean);
             response.sendRedirect("/manage");

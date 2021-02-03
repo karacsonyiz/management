@@ -37,7 +37,7 @@
 </nav>
 <h1><spring:message code="manageusers"/></h1>
 <div style="text-align: center;">
-    <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message code="savesuccess"/></h5>
+    <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message code='${sessionBean.getActionResponse()}'/></h5>
 </div>
 <div style="text-align: center;">
     <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess"/></h5>

@@ -38,6 +38,7 @@ public class HelloController {
         ModelAndView modelAndView = new ModelAndView("hello");
         Session sessionBean = (Session) session.getAttribute("sessionBean");
         sessionBean.setActionMessage("display:none;");
+        sessionBean.setActionResponse("savesuccess");
         session.setAttribute("sessionBean", sessionBean);
         return modelAndView;
     }
