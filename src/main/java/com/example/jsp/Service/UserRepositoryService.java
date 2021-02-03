@@ -7,6 +7,7 @@ import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.UserForm;
+import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -24,14 +25,15 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Service
-public class UserRepositoryService {
+public class UserRepositoryService extends GeneralService {
 
     private final UserEntityRepository userEntityRepository;
     private final EntityManager em;
     private final OrgEntityRepository orgEntityRepository;
     private final LoggerService loggerService;
 
-    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, LoggerService loggerService) {
+    public UserRepositoryService(UserEntityRepository userEntityRepository, EntityManager em, OrgEntityRepository orgEntityRepository, LoggerService loggerService, CacheManager cacheManager) {
+        super(cacheManager);
         this.userEntityRepository = userEntityRepository;
         this.em = em;
         this.orgEntityRepository = orgEntityRepository;
@@ -259,7 +261,6 @@ public class UserRepositoryService {
         TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
         typedQuery.setFirstResult(pageNumber);
         typedQuery.setMaxResults(pageSize);
-
         return new HashSet<>(typedQuery.getResultList());
     }
 }

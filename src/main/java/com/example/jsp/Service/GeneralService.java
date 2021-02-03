@@ -5,17 +5,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 
+
 @Service
-public class CacheService {
+public class GeneralService {
 
-    CacheManager cacheManager;
+    protected CacheManager cacheManager;
 
-    public CacheService(CacheManager cacheManager) {
+    public GeneralService(CacheManager cacheManager) {
         this.cacheManager = cacheManager;
     }
 
     public void evictAllCaches() {
         cacheManager.getCacheNames().forEach(cacheName -> Objects.requireNonNull(cacheManager.getCache(cacheName)).clear());
     }
-
 }

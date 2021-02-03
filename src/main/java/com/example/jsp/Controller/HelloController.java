@@ -4,7 +4,6 @@ import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
 import com.example.jsp.Model.Session;
-import com.example.jsp.Service.CacheService;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +24,10 @@ public class HelloController {
 
     private final EntityManager em;
     private final UserRepositoryService userRepositoryService;
-    private final CacheService cacheService;
 
-    public HelloController(UserRepositoryService userRepositoryService, EntityManager em, CacheService cacheService) {
+    public HelloController(UserRepositoryService userRepositoryService, EntityManager em) {
         this.userRepositoryService = userRepositoryService;
         this.em = em;
-        this.cacheService = cacheService;
     }
 
     @GetMapping(value = {"/hello"})
@@ -63,6 +60,6 @@ public class HelloController {
 
     @RequestMapping(value = "evictCache", method = RequestMethod.GET)
     public void evictCache() {
-        cacheService.evictAllCaches();
+        userRepositoryService.evictAllCaches();
     }
 }
