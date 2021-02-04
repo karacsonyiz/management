@@ -34,14 +34,15 @@ public class LoginController {
     @RequestMapping(value = "/hello", method = RequestMethod.POST)
     public ModelAndView hello(@ModelAttribute("login") Login login, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        Session sessionBean = new Session(login);
         ModelAndView modelAndView = null;
         if (!userRepositoryService.validateUserForLogin(login, result)) {
             modelAndView = new ModelAndView("login");
         } else {
+            Session sessionBean = new Session(login);
             request.getSession().setAttribute("sessionBean", sessionBean);
             response.sendRedirect("hello");
         }
         return modelAndView;
     }
+
 }

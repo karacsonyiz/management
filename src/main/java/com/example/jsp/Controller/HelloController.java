@@ -16,7 +16,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 
 @RestController
@@ -31,9 +33,13 @@ public class HelloController {
     }
 
     @GetMapping(value = {"/hello"})
-    public ModelAndView hello(HttpSession session) {
-        ModelAndView modelAndView = new ModelAndView("hello");
+    public ModelAndView hello(HttpSession session, HttpServletResponse response) throws IOException {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
+        if(sessionBean == null){
+            response.sendRedirect("login");
+            return null;
+        }
+        ModelAndView modelAndView = new ModelAndView("hello");
         sessionBean.setActionMessage("display:none;");
         sessionBean.setActionResponse("savesuccess");
         session.setAttribute("sessionBean", sessionBean);
@@ -62,4 +68,5 @@ public class HelloController {
     public void evictCache() {
         userRepositoryService.evictAllCaches();
     }
+
 }

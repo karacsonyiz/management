@@ -36,8 +36,13 @@ public class ManageController {
     }
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
-    public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession httpSession) {
+    public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession httpSession,HttpServletResponse response) throws IOException {
 
+        Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
+        if(sessionBean == null){
+            response.sendRedirect("login");
+            return null;
+        }
         ModelAndView modelAndView = new ModelAndView("manage");
         Object name = httpSession.getAttribute("name");
         model.addAttribute("name", name);
