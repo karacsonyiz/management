@@ -5,6 +5,12 @@ window.onload = function () {
     initButtons();
     initEnterButton();
     initInputFeedback();
+    initLocaleSetter();
+}
+
+function initLocaleSetter(){
+    document.querySelector("#enLocale").addEventListener("click",function(){sessionStorage.setItem("lang","en")})
+    document.querySelector("#huLocale").addEventListener("click",function(){sessionStorage.setItem("lang","hu")})
 }
 
 function initInputFeedback(){
@@ -35,7 +41,15 @@ function searchField() {
 }
 
 function deleteUser(id) {
-    let confirm = window.confirm("Biztos, hogy törölni szeretné ezt a felhasználót?");
+    let springmessage = ""
+    let lang = sessionStorage.getItem("lang");
+    if(lang === "hu"){
+        springMessage = sessionStorage.getItem("deletePrompt,hu")
+    } else {
+        springMessage = sessionStorage.getItem("deletePrompt,en")
+    }
+
+    let confirm = window.confirm(springMessage);
     if (confirm) {
         fetch("/deleteUser/" + id)
             .then(function (response) {

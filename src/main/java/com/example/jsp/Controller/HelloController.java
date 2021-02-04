@@ -3,6 +3,8 @@ package com.example.jsp.Controller;
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 import com.example.jsp.GeneratedEntity.GeneratedOrgusersEntity;
 import com.example.jsp.GeneratedEntity.GeneratedUserEntity;
+import com.example.jsp.GeneratedEntity.LanguageEntity;
+import com.example.jsp.GeneratedEntityRepository.LanguageRepository;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,7 @@ import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -26,10 +29,12 @@ public class HelloController {
 
     private final EntityManager em;
     private final UserRepositoryService userRepositoryService;
+    private final LanguageRepository languageRepository;
 
-    public HelloController(UserRepositoryService userRepositoryService, EntityManager em) {
+    public HelloController(UserRepositoryService userRepositoryService, EntityManager em,LanguageRepository languageRepository) {
         this.userRepositoryService = userRepositoryService;
         this.em = em;
+        this.languageRepository = languageRepository;
     }
 
     @GetMapping(value = {"/hello"})
@@ -64,9 +69,15 @@ public class HelloController {
         return em.createQuery(query).getSingleResult();
     }
 
-    @RequestMapping(value = "evictCache", method = RequestMethod.GET)
+    @RequestMapping(value = "/evictCache", method = RequestMethod.GET)
     public void evictCache() {
         userRepositoryService.evictAllCaches();
+    }
+
+
+    @RequestMapping(value = "/getLanguageMap", method = RequestMethod.GET)
+    public List<LanguageEntity> getLanguageMap() {
+        return languageRepository.findAll();
     }
 
 }

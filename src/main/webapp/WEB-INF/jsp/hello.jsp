@@ -2,7 +2,7 @@
 <jsp:useBean id="sessionBean" class="com.example.jsp.Model.Session" scope="session"/>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Hello ${sessionBean.getLogin().getUsername()}!</title>
@@ -27,10 +27,10 @@
     </div>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" href="hello?lang=hu">Hu</a>
+            <a class="nav-link" href="hello?lang=hu" hreflang="hu" id="huLocale">Hu</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="hello?lang=en">Eng</a>
+            <a class="nav-link" href="hello?lang=en" hreflang="en" id="enLocale">Eng</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="login">Login</a>

@@ -16,7 +16,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="manage"><spring:message code="manageusers"/></a>
+                <a class="nav-link" id="sajt" href="manage"><spring:message code="manageusers"/></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="manageorgs"><spring:message code="manageorgs"/></a>
@@ -25,10 +25,10 @@
     </div>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" href="manage?lang=hu">Hu</a>
+            <a class="nav-link" href="manage?lang=hu" hreflang="hu" id="huLocale">Hu</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="manage?lang=en">Eng</a>
+            <a class="nav-link" href="manage?lang=en" hreflang="en" id="enLocale">Eng</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="login">Login</a>

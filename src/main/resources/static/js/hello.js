@@ -1,5 +1,17 @@
 window.onload = function () {
-    // getUser();
+    document.querySelector("#enLocale").addEventListener("click",function(){sessionStorage.setItem("lang","en")})
+    document.querySelector("#huLocale").addEventListener("click",function(){sessionStorage.setItem("lang","hu")})
+    getLanguageMap();
+}
+
+function getLanguageMap(){
+    fetch("/getLanguageMap")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (jsonData) {
+            jsonData.forEach(element => sessionStorage.setItem(element.key+","+element.locale,element.content));
+        });
 }
 
 function evictCache() {
@@ -35,7 +47,6 @@ function test() {
         .then(function (jsonData) {
         });
 }
-
 
 function getUser() {
     fetch("api/user")

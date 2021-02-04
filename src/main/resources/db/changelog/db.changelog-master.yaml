@@ -802,8 +802,27 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: Ezzel a feltétellel nincs találat!
-
-
-
-
-
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: deletePrompt
+              - column:
+                  name: messagecontent
+                  value: Are you sure you want to delete this user?
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: deletePrompt
+              - column:
+                  name: messagecontent
+                  value: Biztos, hogy törölni szeretné ezt a felhasználót?
