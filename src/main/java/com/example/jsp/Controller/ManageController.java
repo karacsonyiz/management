@@ -5,6 +5,7 @@ import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.DataTable;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
+import com.example.jsp.Service.FormValidator;
 import com.example.jsp.Service.UserRepositoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,10 +27,12 @@ public class ManageController {
 
     private final UserRepositoryService userRepositoryService;
     private final UserEntityRepository userEntityRepository;
+    private final FormValidator formValidator;
 
-    public ManageController(UserRepositoryService userRepositoryService,UserEntityRepository userEntityRepository) {
+    public ManageController(UserRepositoryService userRepositoryService,UserEntityRepository userEntityRepository,FormValidator formValidator) {
         this.userRepositoryService = userRepositoryService;
         this.userEntityRepository = userEntityRepository;
+        this.formValidator = formValidator;
     }
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
@@ -87,8 +90,11 @@ public class ManageController {
         ModelAndView modelAndView = new ModelAndView("manage");
         GeneratedUserEntity user = new GeneratedUserEntity();
         try {
-            user = userRepositoryService.matchFormDataToUserEntity(userForm);
-            userRepositoryService.addUser(user, errors);
+            formValidator.validateForm(userForm,errors);
+            if(!errors.hasErrors()) {
+                user = userRepositoryService.matchFormDataToUserEntity(userForm,errors);
+                userRepositoryService.addUser(user, errors);
+            }
         } catch (Exception e) {
             userRepositoryService.handleErrors(errors, user, e);
         }
@@ -98,9 +104,6 @@ public class ManageController {
 
     private void createErrorMessages(ModelAndView modelAndView, Errors errors, HttpSession httpSession, HttpServletResponse response) throws IOException {
         if (errors.hasErrors()) {
-            for(int i = 0;i<errors.getAllErrors().size();i++){
-                errors.getAllErrors().get(i).getCodes()[i] = errors.getAllErrors().get(i).getDefaultMessage();
-            }
             ModelMap modelMap = new ModelMap()
                     .addAttribute("userTableStyle", "display:block;")
                     .addAttribute("errorMsg", "Error: " + errors.getAllErrors().get(0).getDefaultMessage());

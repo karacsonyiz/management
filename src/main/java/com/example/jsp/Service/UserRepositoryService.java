@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
-import org.springframework.validation.FieldError;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -21,8 +20,6 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 public class UserRepositoryService extends GeneralService {
@@ -63,34 +60,8 @@ public class UserRepositoryService extends GeneralService {
         return true;
     }
 
-    private boolean isEmailValid(String email) {
-        String regex = "^(.+)@(.+)$";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
-    public void validateAddUser(GeneratedUserEntity user, Errors errors) {
-        if (user.getName().equals("")) {
-            errors.rejectValue("name", "Username can not be empty!", "Username can not be empty!");
-        }
-        if (user.getPassword().equals("")) {
-            errors.rejectValue("password", "Password can not be empty!", "Password can not be empty!");
-        }
-        if (user.getRole() == null) {
-            errors.rejectValue("role", "You must select a role!", "You must select a role!");
-        }
-        if (user.getPhone().length() > 12) {
-            errors.rejectValue("phone", "Phone number too long!", "Phone number too long!");
-        }
-        if (!isEmailValid(user.getEmail())) {
-            errors.rejectValue("email", "Invalid email pattern!", "Invalid email pattern!");
-        }
-    }
-
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void addUser(GeneratedUserEntity user, Errors errors) {
-        validateAddUser(user, errors);
         if (!errors.hasErrors()) {
             em.merge(user);
         }
@@ -104,7 +75,6 @@ public class UserRepositoryService extends GeneralService {
      * @param e The exception that is to be handled.
      */
     public void handleErrors(Errors errors, GeneratedUserEntity user, Exception e) {
-
         if (!errors.hasErrors()) {
             if(e.getClass() == DataIntegrityViolationException.class){
                 String cause = e.getCause().getCause().getMessage();
@@ -134,7 +104,6 @@ public class UserRepositoryService extends GeneralService {
             loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
         }
     }
-
 
     @Transactional
     public GeneratedUserEntity findUserById(int id) {
@@ -210,7 +179,7 @@ public class UserRepositoryService extends GeneralService {
      * @param userForm Incoming values from the submitted form.
      * @return A GeneratedUserEntity that is matched with the form attributes.
      */
-    public GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm) {
+    public GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm, Errors errors) {
         GeneratedUserEntity userEntity = new GeneratedUserEntity();
         if (userForm.getUserid() != null) {
             GeneratedUserEntity foundEntity = em.find(GeneratedUserEntity.class,userForm.getUserid(), LockModeType.OPTIMISTIC);

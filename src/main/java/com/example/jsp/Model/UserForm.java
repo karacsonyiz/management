@@ -2,18 +2,27 @@ package com.example.jsp.Model;
 
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserForm {
 
     private Integer userid;
+
+    @Size(min = 1, max = 50)
     private String name;
+    @Size(min = 1, max = 50)
     private String password;
+    @Pattern(regexp = "^(.+)@(.+)$")
     private String email;
+    @Size(max=12)
     private String phone;
     private String address;
     private Integer enabled;
+    @NotNull
     private String role;
     private Integer version;
     private List<GeneratedOrganizationEntity> orgs = new ArrayList<>();
@@ -99,5 +108,21 @@ public class UserForm {
 
     public void setOrgs(List<GeneratedOrganizationEntity> orgs) {
         this.orgs = orgs;
+    }
+
+    @Override
+    public String toString() {
+        return "UserForm{" +
+                "userid=" + userid +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", address='" + address + '\'' +
+                ", enabled=" + enabled +
+                ", role='" + role + '\'' +
+                ", version=" + version +
+                ", orgs=" + orgs +
+                '}';
     }
 }
