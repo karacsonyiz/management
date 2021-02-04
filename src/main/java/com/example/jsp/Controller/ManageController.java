@@ -92,7 +92,7 @@ public class ManageController {
         try {
             formValidator.validateForm(userForm,errors);
             if(!errors.hasErrors()) {
-                user = userRepositoryService.matchFormDataToUserEntity(userForm,errors);
+                user = userRepositoryService.matchFormDataToUserEntity(userForm);
                 userRepositoryService.addUser(user, errors);
             }
         } catch (Exception e) {

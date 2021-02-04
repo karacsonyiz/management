@@ -9,10 +9,18 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
-
+/**
+ * This class is using BeanValidation to validate a submitted form.
+ */
 @Service
 public class FormValidator {
 
+    /**
+     * This method sets the error messages if any violation happens during validation.
+     *
+     * @param userForm The incoming userForm from request.
+     * @param errors Errors class to store possible error messages.
+     */
     public void validateForm(UserForm userForm, Errors errors){
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
