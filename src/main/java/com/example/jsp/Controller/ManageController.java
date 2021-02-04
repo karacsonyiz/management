@@ -91,6 +91,7 @@ public class ManageController {
         GeneratedUserEntity user = new GeneratedUserEntity();
         try {
             formValidator.validateForm(userForm,errors);
+            formValidator.checkConstraints(userForm,errors);
             if(!errors.hasErrors()) {
                 user = userRepositoryService.matchFormDataToUserEntity(userForm);
                 userRepositoryService.addUser(user, errors);
