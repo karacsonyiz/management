@@ -826,3 +826,23 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: Biztos, hogy törölni szeretné ezt a felhasználót?
+  - changeSet:
+      id: 9
+      author: karacsonyiz
+      changes:
+        - createTable:
+            tableName: image
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content
+                  type: longblob
+              - column:
+                  name: name
+                  type: varchar(255)

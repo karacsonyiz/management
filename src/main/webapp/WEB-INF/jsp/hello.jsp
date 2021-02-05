@@ -52,6 +52,12 @@
 <br>
 <button onclick="evictCache()" class="btn btn-danger mt-3">EvictCache</button>
 <br>
+<br/>
+<label>Upload Image File:</label><br/>
+<input name="userImage" type="file" class="inputFile mr-3" id="imageInput" />
+<h5 style="display:none;" id="uploadMessage"></h5>
+<br><br>
+<button class="btn btn-success" onclick="uploadImage()">Upload</button>
 <script src="/js/hello.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

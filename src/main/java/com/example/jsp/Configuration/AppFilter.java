@@ -9,8 +9,7 @@ public class AppFilter implements Filter {
 
 
     @Override
-    public void init(FilterConfig filterConfig){
-    }
+    public void init(FilterConfig filterConfig){ }
 
     @Override
     public void doFilter(ServletRequest request,
@@ -21,6 +20,5 @@ public class AppFilter implements Filter {
     }
 
     @Override
-    public void destroy() {
-    }
+    public void destroy() { }
 }
