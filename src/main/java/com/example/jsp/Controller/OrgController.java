@@ -30,6 +30,7 @@ public class OrgController {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
         if(sessionBean == null){
             response.sendRedirect("login");
+            return null;
         }
 
         ModelAndView modelAndView = new ModelAndView("manageorgs");
