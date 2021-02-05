@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+import java.util.Optional;
 
 
 @RestController
@@ -33,8 +33,11 @@ public class ImageController {
 
     @RequestMapping(value = "/getImage/{id}", method = RequestMethod.GET)
     public String getImage(@PathVariable Integer id, HttpServletResponse response) throws IOException {
-        ImageEntity image = imageRepository.findById(id).get();
-        response.getOutputStream().write(image.getContent());
+        Optional<ImageEntity> image = imageRepository.findById(id);
+        if(!image.isPresent()){
+            return null;
+        }
+        response.getOutputStream().write(image.get().getContent());
         response.getOutputStream().close();
         return null;
     }

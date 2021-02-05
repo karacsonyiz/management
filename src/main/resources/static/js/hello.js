@@ -63,7 +63,7 @@ function uploadImage(){
     let formData = new FormData();
     let fileInput = document.getElementById('imageInput');
     let labelInput = document.getElementById('nameInput');
-    formData.append(labelInput.value, fileInput.files[0]);
+    formData.append("file", fileInput.files[0]);
     fetch('/uploadImage', {
         method: "POST",
         body: formData,

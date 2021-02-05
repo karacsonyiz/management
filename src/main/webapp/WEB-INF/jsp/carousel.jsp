@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -20,26 +21,26 @@
                     <div class="card-body" >
                         <div class="img-body">
                             <div>
-                                <h2 style="text-align: center;">Az első kép</h2>
+                                <h2 style="text-align: center;"><spring:message code="labelforimg1"/></h2>
                             </div>
                             <div>
-                                <img src="/getImage/1" class="image">
-                            </div>
-                        </div>
-                        <div class="img-body">
-                            <div>
-                                <h2 style="text-align: center;">A második kép</h2>
-                            </div>
-                            <div>
-                                <img src="/getImage/2" class="image">
+                                <img src="/getImage/1" class="image" alt="image1">
                             </div>
                         </div>
                         <div class="img-body">
                             <div>
-                                <h2 style="text-align: center;">A harmadik kép</h2>
+                                <h2 style="text-align: center;"><spring:message code="labelforimg2"/></h2>
                             </div>
                             <div>
-                                <img src="/getImage/3" class="image">
+                                <img src="/getImage/2" class="image" alt="image2">
+                            </div>
+                        </div>
+                        <div class="img-body">
+                            <div>
+                                <h2 style="text-align: center;"><spring:message code="labelforimg3"/></h2>
+                            </div>
+                            <div>
+                                <img src="/getImage/3" class="image" alt="image3">
                             </div>
                         </div>
                     </div>

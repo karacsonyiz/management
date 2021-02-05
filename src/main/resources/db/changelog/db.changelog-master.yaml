@@ -826,6 +826,78 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: Biztos, hogy törölni szeretné ezt a felhasználót?
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: labelforimg1
+              - column:
+                  name: messagecontent
+                  value: This is a peaceful road.
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: labelforimg1
+              - column:
+                  name: messagecontent
+                  value: Ez egy békés út.
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: labelforimg2
+              - column:
+                  name: messagecontent
+                  value: This crossroad has many memories.
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: labelforimg2
+              - column:
+                  name: messagecontent
+                  value: Ehhez az útelágazáshoz rengeteg emlék fűződik.
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: labelforimg3
+              - column:
+                  name: messagecontent
+                  value: This glade is home for many creatures.
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: labelforimg3
+              - column:
+                  name: messagecontent
+                  value: Ez a tisztás otthona rengeteg teremtménynek.
   - changeSet:
       id: 9
       author: karacsonyiz
