@@ -12,6 +12,16 @@
     justify-content: center;
 }
 
+.btn-next:hover {
+    padding-left: 10px;
+    cursor: pointer;
+}
+
+.btn-prev:hover {
+    padding-right: 10px;
+    cursor: pointer;
+}
+
 .img-body:first-of-type {
     display: block;
 }
