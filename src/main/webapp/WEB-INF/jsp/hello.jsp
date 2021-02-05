@@ -55,14 +55,9 @@
 <br>
 <button onclick="evictCache()" class="btn btn-danger mt-3">EvictCache</button>
 <br>
-<br/>
-<label>Upload Image File:</label><br/>
-<input name="userImage" type="file" class="inputFile mr-3" id="imageInput" />
-<input name="userImage" type="text" class="inputFile mr-3" id="nameInput" />
+<input type="file" class="btn p-0 mt-3" id="imageInput" />
 <h5 style="display:none;" id="uploadMessage"></h5>
-<br><br>
-<button class="btn btn-success" onclick="uploadImage()">Upload</button>
-<button class="btn btn-info" onclick="getImages()">FetchImages</button>
+<button class="btn btn-success mt-3" onclick="uploadImage()">Feltöltés</button>
 <br>
 <br>
 <jsp:include page="carousel.jsp"></jsp:include>
