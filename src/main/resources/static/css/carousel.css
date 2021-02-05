@@ -1,0 +1,30 @@
+.backbutton {
+    display: flex;
+    align-items: center;
+    height: 590px;
+    justify-content: center;
+}
+
+.fwdbutton {
+    display: flex;
+    align-items: center;
+    height: 590px;
+    justify-content: center;
+}
+
+.img-body:first-of-type {
+    display: block;
+}
+
+.img-body {
+    display: none;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.image {
+    width:750px;
+    height:500px;
+    border-style: solid;
+    border-color: sienna;
+}

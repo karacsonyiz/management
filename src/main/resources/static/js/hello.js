@@ -62,7 +62,8 @@ function getUser() {
 function uploadImage(){
     let formData = new FormData();
     let fileInput = document.getElementById('imageInput');
-    formData.append('file', fileInput.files[0]);
+    let labelInput = document.getElementById('nameInput');
+    formData.append(labelInput.value, fileInput.files[0]);
     fetch('/uploadImage', {
         method: "POST",
         body: formData,
@@ -87,6 +88,11 @@ function setMessage(jsonData){
     }
 }
 
+function setImgLabels(){
+
+
+
+}
 
 
 
