@@ -40,3 +40,4 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery("select name, role from users where name=?");
     }
 }
+

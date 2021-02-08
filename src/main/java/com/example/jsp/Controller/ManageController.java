@@ -66,6 +66,11 @@ public class ManageController {
         return new DataTable(draw,responseData.getTotalElements(),responseData.getTotalElements(),new ArrayList<>(),responseData.getContent(),start);
     }
 
+    @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
+    public List<GeneratedUserEntity> getAllUsers() {
+        return userRepositoryService.getAllUsers();
+    }
+
     @RequestMapping(value = "/deleteUser/{id}", method = RequestMethod.GET)
     public void delete(@PathVariable String id) {
         userRepositoryService.deleteUser(Integer.parseInt(id));

@@ -1,6 +1,6 @@
 window.onload = function () {
     getLanguageMap();
-    getImages(4);
+    getImages(3);
     autoPage();
     initButtons();
     document.querySelector("#uploadMessage").style = "display:none";
@@ -117,14 +117,9 @@ function createImagesForCarousel(imgIds){
     }
 }
 
-
 function initButtons(){
     document.querySelector("#enLocale").addEventListener("click",function(){sessionStorage.setItem("lang","en")})
     document.querySelector("#huLocale").addEventListener("click",function(){sessionStorage.setItem("lang","hu")})
     document.querySelector(".btn-next").addEventListener("click",getNext);
     document.querySelector(".btn-prev").addEventListener("click",getPrevious);
 }
-
-
-
-

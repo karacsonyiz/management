@@ -52,6 +52,10 @@ public class UserRepositoryService extends GeneralService {
         return entity.getUserid();
     }
 
+    public List<GeneratedUserEntity> getAllUsers(){
+        return userEntityRepository.findAll();
+    }
+
     public boolean validateUserForLogin(Login login, Errors errors) {
         if (findIdByName(login.getUsername()) == null) {
             errors.rejectValue("username", "Invalid Username!", "Invalid Username!");

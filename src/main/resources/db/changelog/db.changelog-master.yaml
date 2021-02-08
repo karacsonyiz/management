@@ -81,7 +81,7 @@ databaseChangeLog:
                   value: $2a$10$FV9w7BuvK2gmnVPaUqQ88.d9V2C73VyTvc24DrqHZJXTGnQV5xtl.
               - column:
                   name: email
-                  value: admin@admin.com
+                  value: admin@admin.hu
               - column:
                   name: phone
                   value: 061555444
@@ -918,3 +918,17 @@ databaseChangeLog:
               - column:
                   name: name
                   type: varchar(255)
+  - changeSet:
+      id: 10
+      author: karacsonyiz
+      changes:
+        - insert:
+            tableName: orgusers
+            columns:
+              - column:
+                  name: organizationid
+                  value: 1
+              - column:
+                  name: userid
+                  value: 1
+

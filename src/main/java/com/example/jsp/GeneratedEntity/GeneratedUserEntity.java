@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user", schema = "demo")
+@Table(name = "user")
 @Where(clause="is_active=1")
 public class GeneratedUserEntity {
 
