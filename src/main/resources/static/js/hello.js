@@ -49,18 +49,18 @@ function uploadImage(){
         method: "POST",
         body: formData,
     }).then(function (response) {
-        return response.json();
+        return response;
     })
         .then(function (jsonData) {
             setMessage(jsonData);
         })
-        .catch(error => setMessage());
+        .catch(error => setMessage(error));
     return false;
 }
 
 function setMessage(jsonData){
     let uploadMessage = document.querySelector("#uploadMessage");
-    if(jsonData.status !== 400){
+    if(jsonData.status === 200){
         uploadMessage.style = "display:block;color:green;";
         uploadMessage.innerHTML = "Upload successful!"
     } else {
