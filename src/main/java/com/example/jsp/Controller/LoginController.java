@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
@@ -24,7 +25,19 @@ public class LoginController {
         this.userRepositoryService = userRepositoryService;
     }
 
-    @GetMapping(value = {"/login", "/"})
+    @GetMapping(value = {"/"})
+    public ModelAndView redirectLoginOrHello(HttpSession httpSession,HttpServletResponse response) throws IOException{
+        Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
+        if(sessionBean == null){
+            response.sendRedirect("login");
+            return null;
+        }
+        ModelAndView modelAndView = new ModelAndView("hello");
+        modelAndView.addObject("login", new Login());
+        return modelAndView;
+    }
+
+    @GetMapping(value = {"/login"})
     public ModelAndView showLogin() {
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("login", new Login());
