@@ -48,7 +48,6 @@ function deleteUser(id) {
     } else {
         springMessage = sessionStorage.getItem("deletePrompt,en")
     }
-
     let confirm = window.confirm(springMessage);
     if (confirm) {
         fetch("/deleteUser/" + id)

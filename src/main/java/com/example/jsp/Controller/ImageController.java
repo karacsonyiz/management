@@ -5,8 +5,10 @@ import com.example.jsp.GeneratedEntity.ImageEntity;
 import com.example.jsp.GeneratedEntityRepository.ImageRepository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -14,8 +16,10 @@ import java.util.Optional;
 public class ImageController {
 
     private ImageRepository imageRepository;
+    private EntityManager em;
 
-    public ImageController(ImageRepository imageRepository) {
+    public ImageController(ImageRepository imageRepository,EntityManager em) {
+        this.em = em;
         this.imageRepository = imageRepository;
     }
 
@@ -42,9 +46,12 @@ public class ImageController {
         return null;
     }
 
-    @RequestMapping(value = "/getImageLabel/{id}", method = RequestMethod.GET)
-    public String getImageLabel(@PathVariable Integer id){
-        ImageEntity image = imageRepository.findById(id).get();
-        return image.getName();
+    @RequestMapping(value = "/getImageIdsByLimit/{limit}", method = RequestMethod.GET)
+    public List<Integer> getImageIdsByLimit(@PathVariable Integer limit){
+        List<Integer> imageIds = imageRepository.getImageIds();
+        if(imageIds.size() < limit){
+            return imageIds;
+        }
+        return imageRepository.getImageIds().subList(0,limit);
     }
 }

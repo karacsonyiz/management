@@ -18,31 +18,7 @@
         <div class="col"style="display: flex;align-items: center;justify-content: center;max-width: 750px;"  >
             <div>
                 <div class="row" >
-                    <div class="card-body" >
-                        <div class="img-body">
-                            <div>
-                                <h2 style="text-align: center;"><spring:message code="labelforimg1"/></h2>
-                            </div>
-                            <div>
-                                <img src="/getImage/1" class="image" alt="image1">
-                            </div>
-                        </div>
-                        <div class="img-body">
-                            <div>
-                                <h2 style="text-align: center;"><spring:message code="labelforimg2"/></h2>
-                            </div>
-                            <div>
-                                <img src="/getImage/2" class="image" alt="image2">
-                            </div>
-                        </div>
-                        <div class="img-body">
-                            <div>
-                                <h2 style="text-align: center;"><spring:message code="labelforimg3"/></h2>
-                            </div>
-                            <div>
-                                <img src="/getImage/3" class="image" alt="image3">
-                            </div>
-                        </div>
+                    <div class="carousel-body" >
                     </div>
                 </div>
             </div>
@@ -52,7 +28,7 @@
         </div>
     </div>
 </div>
-<script src="/js/carousel.js"></script>
+<script src="/js/hello.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
 </body>
