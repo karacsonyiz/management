@@ -1,4 +1,5 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <jsp:useBean id="sessionBean" class="com.example.jsp.Model.Session" scope="session"/>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
@@ -15,25 +16,31 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="manage">Manage Users</a>
+                <a class="nav-link" id="sajt" href="manage"><spring:message code="manageusers"/></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="manageorgs">Manage Orgs</a>
+                <a class="nav-link" href="manageorgs"><spring:message code="manageorgs"/></a>
             </li>
         </ul>
     </div>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a class="nav-link" href="login">LoginPage</a>
+            <a class="nav-link" href="manageorgs?lang=hu" hreflang="hu" id="huLocale">Hu</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="manageorgs?lang=en" hreflang="en" id="enLocale">Eng</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="login">Login</a>
         </li>
     </ul>
 </nav>
-<h1>Manage Organizations</h1>
+<h1><spring:message code="manageorgs"/></h1>
 <table id="orgTable" class="table table-striped">
     <thead>
     <tr>
-        <th>name</th>
-        <th>users</th>
+        <th><spring:message code="name"/></th>
+        <th><spring:message code="users"/></th>
         <th>delete</th>
         <th>update</th>
     </tr>

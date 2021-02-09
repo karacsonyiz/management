@@ -970,6 +970,30 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: A feltöltés nem sikerült!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: users
+              - column:
+                  name: messagecontent
+                  value: users
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: users
+              - column:
+                  name: messagecontent
+                  value: felhasználók
   - changeSet:
       id: 9
       author: karacsonyiz
