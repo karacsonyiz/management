@@ -140,7 +140,6 @@ public class UserRepositoryService extends GeneralService {
 
     /**
      * Creates a new GeneratedUserEntity from the submitted form.
-     * Handles frontend-based optimistic lock exception.
      *
      * @param userForm Incoming values from the submitted form.
      * @return A GeneratedUserEntity that is matched with the form attributes.
