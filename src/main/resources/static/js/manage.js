@@ -15,11 +15,8 @@ function initLocaleSetter(){
 
 function initInputFeedback(){
     $('.searchInput').on('keyup', function() {
-        if (this.value.length > 0) {
+        if (this.value.length >= 0) {
             this.classList.add("feedback");
-        }
-        if(this.value.length === 0){
-            this.classList.remove("feedback");
         }
     });
 }
