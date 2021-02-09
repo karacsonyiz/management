@@ -178,7 +178,11 @@ public class UserRepositoryService extends GeneralService {
                     GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(entry.getValue());
                     predicateList.add(cb.isMember(org,root.get("orgs")));
                 } else {
-                    predicateList.add(cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%"));
+                    if(entry.getKey().equals("userid")){
+                        predicateList.add(cb.equal(root.get(entry.getKey()),entry.getValue()));
+                    } else{
+                        predicateList.add(cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%"));
+                    }
                 }
             }
         }

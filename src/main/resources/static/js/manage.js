@@ -183,7 +183,7 @@ function populateOrgModal(userOrgs, allOrgs, userid) {
         orgBadge.innerHTML = userOrgs[i].name;
         orgModalBody.appendChild(orgBadge);
     }
-    for (k in allOrgs) {
+    for (let k in allOrgs) {
         let option = document.createElement("option");
         option.setAttribute("value", allOrgs[k].name);
         option.innerHTML = allOrgs[k].name;
@@ -275,7 +275,7 @@ function refreshOrgModal(userid) {
 function refreshUserOrgList(userOrgs, userid) {
     let orgModalBody = document.querySelector("#orgModalBody");
     orgModalBody.innerHTML = "";
-    for (i in userOrgs) {
+    for (let i in userOrgs) {
         let orgBadge = document.createElement("button");
         orgBadge.setAttribute("class", "btn btn-success p-2 m-2 orgBadge");
         orgBadge.setAttribute("value", "false");

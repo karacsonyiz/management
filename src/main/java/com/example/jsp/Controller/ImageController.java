@@ -20,7 +20,6 @@ import java.util.Optional;
 public class ImageController implements HandlerExceptionResolver {
 
     private ImageRepository imageRepository;
-
     public ImageController(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
     }
