@@ -93,7 +93,7 @@ function generateAjaxDataTable() {
         "serverSide": true,
         "stateSave": true,
         "ajax": {
-            'type': 'GET',
+            'type': 'POST',
             'url': '/getUsersForPage/',
             dataSrc: function(response){return generateDataSrcForDataTable(response)}
         },
@@ -329,7 +329,7 @@ function generateAjaxDataTableByCriteria(values){
         "serverSide": true,
         "stateSave": true,
         "ajax": {
-            'type': 'GET',
+            'type': 'POST',
             "contentType": "application/json; charset=utf-8",
             'url': '/getUsersForPageByCriteria/',
             "data" : values,

@@ -7,6 +7,8 @@ import com.example.jsp.GeneratedEntityRepository.OrgEntityRepository;
 import com.example.jsp.GeneratedEntityRepository.UserEntityRepository;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.UserForm;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.nio.charset.Charset;
 import java.util.*;
 
 @Service
@@ -238,5 +241,22 @@ public class UserRepositoryService extends GeneralService {
             errors.reject(e.getMessage(), e.getCause().getCause().getMessage());
             loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
         }
+    }
+
+    public Map<String,Integer> getDataFromParams(String formData){
+        Map<String,Integer> result = new HashMap<>();
+        List<NameValuePair> params = URLEncodedUtils.parse(formData, Charset.defaultCharset());
+        for(NameValuePair param : params){
+            if(param.getName().equals("start")){
+                result.put("start",Integer.parseInt(param.getValue()));
+            }
+            if(param.getName().equals("length")){
+                result.put("length",Integer.parseInt(param.getValue()));
+            }
+            if(param.getName().equals("draw")){
+                result.put("draw",Integer.parseInt(param.getValue()));
+            }
+        }
+        return result;
     }
 }

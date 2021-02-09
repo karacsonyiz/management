@@ -2,7 +2,7 @@
 <jsp:useBean id="sessionBean" class="com.example.jsp.Model.Session" scope="session"/>
 <%@ page contentType="text/html; charset=UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Hello ${sessionBean.getLogin().getUsername()}!</title>

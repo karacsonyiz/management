@@ -16,7 +16,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" id="sajt" href="manage"><spring:message code="manageusers"/></a>
+                <a class="nav-link" href="manage"><spring:message code="manageusers"/></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="manageorgs"><spring:message code="manageorgs"/></a>

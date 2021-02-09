@@ -7,6 +7,8 @@ import com.example.jsp.Model.Session;
 import com.example.jsp.Model.UserForm;
 import com.example.jsp.Service.FormValidator;
 import com.example.jsp.Service.UserRepositoryService;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -16,11 +18,12 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class ManageController {
@@ -54,13 +57,15 @@ public class ManageController {
      * This method is the backend implementation of the jQuery DataTable paging functionality.
      * Searches for the users to display on the current page.
      *
-     * @param draw Can be true(1) or false(0), draws the DataTable if true. (default true)
-     * @param start The starting number of actual page.
-     * @param length The number of entries to display on one page.
+     * @param formData incoming parameters from DataTable.
      * @return The UserEntities according to the current page.
      */
     @RequestMapping(value = "/getUsersForPage")
-    public DataTable getUsersForPage(@RequestParam("draw") int draw, @RequestParam("start") int start, @RequestParam("length") int length) {
+    public DataTable getUsersForPage(@RequestBody String formData){
+        Map<String,Integer> formDataMap = userRepositoryService.getDataFromParams(formData);
+        Integer start = formDataMap.get("start");
+        Integer length = formDataMap.get("length");
+        Integer draw = formDataMap.get("draw");
         Pageable pageable = PageRequest.of(start / length, length);
         Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
         return new DataTable(draw,responseData.getTotalElements(),responseData.getTotalElements(),new ArrayList<>(),responseData.getContent(),start);
@@ -147,17 +152,18 @@ public class ManageController {
     /**
      * This method returns a list of Users by given field,value and current page.
      *
-     * @param draw Can be true(1) or false(0), draws the DataTable if true. (default true)
-     * @param start The starting number of actual page.
-     * @param length The number of entries to display on one page.
+     * @param formData incoming parameters from DataTable.
      * @return A dataTable consisting UserEntities and pageinformation according to the current page and criteria.
      */
     @RequestMapping(value = "/getUsersForPageByCriteria")
-    public DataTable searchOnFieldForPage(@RequestParam("draw") int draw, @RequestParam("start") int start, @RequestParam("length") int length, @RequestParam("userid") String userid,@RequestParam("name") String name,
-                                          @RequestParam("email") String email,@RequestParam("role") String role, @RequestParam("orgs") String orgs, @RequestParam("phone") String phone,@RequestParam("address") String address,
-                                          @RequestParam("condition") String condition) {
-        Map<String,String> params = getRequestParams(userid,name,email,role,orgs,phone,address);
-        Set<GeneratedUserEntity> userSet = userRepositoryService.getUsersForPageByCriteria(start,length,params,condition);
+    public DataTable searchOnFieldForPage(@RequestBody String formData) {
+        Map<String, String> params = convertFormDataToMap(formData);
+        Map<String,String> criteria =  getCriteriaParams(params);
+        int start = Integer.parseInt(params.getOrDefault("start","0"));
+        int length = Integer.parseInt(params.getOrDefault("length","10"));
+        int draw = Integer.parseInt(params.getOrDefault("draw","1"));
+        Set<GeneratedUserEntity> userSet = userRepositoryService
+                .getUsersForPageByCriteria(start,length,criteria,params.getOrDefault("condition","Or"));
         if(userSet == null){
             Pageable pageable = PageRequest.of(start / length, length);
             Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
@@ -170,17 +176,22 @@ public class ManageController {
     /**
      * This method creates a Map from parameter keys and values to pass the service's search function.
      * @params Parameters for search criteria
-     * @return A Hashmap that contains the key and value pairs of request parameters.
+     * @return A Hashmap that contains the key and value pairs of thr required criteria parameters.
      */
-    private Map<String,String> getRequestParams(String userid,String name,String email,String role,String orgs,String phone,String address){
+    private Map<String,String> getCriteriaParams(Map<String, String> params){
         Map<String,String> result = new HashMap<>();
-        result.put("userid",userid);
-        result.put("name",name);
-        result.put("email",email);
-        result.put("role",role);
-        result.put("orgs",orgs);
-        result.put("phone",phone);
-        result.put("address",address);
+        result.put("userid",params.get("userid"));
+        result.put("name",params.get("name"));
+        result.put("email",params.get("email"));
+        result.put("role",params.get("role"));
+        result.put("orgs",params.get("orgs"));
+        result.put("phone",params.get("phone"));
+        result.put("address",params.get("address"));
         return result;
+    }
+
+    private Map<String,String> convertFormDataToMap(String formData){
+        return URLEncodedUtils.parse(formData, Charset.defaultCharset()).stream()
+                .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }
 }
