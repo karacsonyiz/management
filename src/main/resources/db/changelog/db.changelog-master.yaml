@@ -898,6 +898,78 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: Ez a tisztás otthona rengeteg teremtménynek.
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: imguploadlimiterror
+              - column:
+                  name: messagecontent
+                  value: File size exceeds maximum limit!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: imguploadlimiterror
+              - column:
+                  name: messagecontent
+                  value: Túl nagy méretű fájl!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: imguploadsuccess
+              - column:
+                  name: messagecontent
+                  value: Upload successful!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: imguploadsuccess
+              - column:
+                  name: messagecontent
+                  value: Sikeres feltöltés!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: imguploadgeneralerror
+              - column:
+                  name: messagecontent
+                  value: Upload was not successful!
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: imguploadgeneralerror
+              - column:
+                  name: messagecontent
+                  value: A feltöltés nem sikerült!
   - changeSet:
       id: 9
       author: karacsonyiz

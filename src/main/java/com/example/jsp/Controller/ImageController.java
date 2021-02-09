@@ -30,14 +30,14 @@ public class ImageController implements HandlerExceptionResolver {
         ImageEntity dbImage = new ImageEntity();
         dbImage.setName(multipartImage.getName());
         dbImage.setContent(multipartImage.getBytes());
+        ModelAndView modelAndView = new ModelAndView("hello");
         try {
             imageRepository.save(dbImage);
         } catch (Exception e) {
-            ModelAndView modelAndView = new ModelAndView("hello");
             modelAndView.setStatus(HttpStatus.BAD_REQUEST);
             return modelAndView;
         }
-        return new ModelAndView("hello");
+        return modelAndView;
     }
 
     @RequestMapping(value = "/getImage/{id}", method = RequestMethod.GET)
@@ -64,8 +64,7 @@ public class ImageController implements HandlerExceptionResolver {
     public ModelAndView resolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) {
         ModelAndView modelAndView = new ModelAndView("hello");
         if (ex instanceof MaxUploadSizeExceededException) {
-            modelAndView.getModel().put("message", "File size exceeds limit!");
-            modelAndView.setStatus(HttpStatus.BAD_REQUEST);
+            modelAndView.setStatus(HttpStatus.PAYLOAD_TOO_LARGE);
         }
         return modelAndView;
     }

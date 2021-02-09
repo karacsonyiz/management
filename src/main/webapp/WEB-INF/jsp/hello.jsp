@@ -54,13 +54,13 @@
 <button onclick="evictCache()" class="btn btn-danger mt-3">EvictCache</button>
 <br>
 <input type="file" class="btn p-0 mt-3" id="imageInput" />
-<h5 style="display:none;" id="uploadMessage"></h5>
-<button class="btn btn-success mt-3" onclick="uploadImage()">Feltöltés</button>
+<button class="btn btn-success mt-3" type="submit" onclick="uploadImage()">Feltöltés</button>
 <br>
+<h5 style="display:none;" id="uploadMessage"></h5>
 <br>
 <jsp:include page="carousel.jsp"></jsp:include>
 <script src="/js/hello.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

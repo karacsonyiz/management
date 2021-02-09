@@ -1,4 +1,5 @@
 window.onload = function () {
+    setDefaultLang();
     getLanguageMap();
     getImages(3);
     autoPage();
@@ -27,7 +28,6 @@ function complexCriteriaSelect() {
             return response.json();
         })
         .then(function (jsonData) {
-            console.log(jsonData)
             document.querySelector("#complexCritera").innerHTML = document.querySelector("#complexCritera").innerHTML + jsonData
         });
 }
@@ -41,9 +41,20 @@ function generate() {
         });
 }
 
+function checkIfFileValid(file){
+    if(file === undefined){
+        let lang = sessionStorage.getItem("lang");
+        let uploadMessage = document.querySelector("#uploadMessage");
+        uploadMessage.style = "display:block;color:red;";
+        uploadMessage.innerHTML = lang === "en" ? "No file selected!" : "Nincs fájl kiválasztva!";
+        throw "No file selected!"
+    }
+}
+
 function uploadImage(){
     let formData = new FormData();
     let fileInput = document.getElementById('imageInput');
+    checkIfFileValid(fileInput.files[0]);
     formData.append("file", fileInput.files[0]);
     fetch('/uploadImage', {
         method: "POST",
@@ -60,12 +71,16 @@ function uploadImage(){
 
 function setMessage(jsonData){
     let uploadMessage = document.querySelector("#uploadMessage");
+    let lang = sessionStorage.getItem("lang");
     if(jsonData.status === 200){
         uploadMessage.style = "display:block;color:green;";
-        uploadMessage.innerHTML = "Upload successful!"
+        uploadMessage.innerHTML = sessionStorage.getItem("imguploadsuccess," + lang);
+    } else if(jsonData.status === 413) {
+        uploadMessage.style = "display:block;color:red;";
+        uploadMessage.innerHTML = sessionStorage.getItem("imguploadlimiterror," + lang);
     } else {
         uploadMessage.style = "display:block;color:red;";
-        uploadMessage.innerHTML = "Upload was not successful!"
+        uploadMessage.innerHTML = sessionStorage.getItem("imguploadgeneralerror," + lang);
     }
 }
 
@@ -100,7 +115,6 @@ function getImages(numberOfImages){
 function createImagesForCarousel(imgIds){
     let carouselBody = document.querySelector(".carousel-body");
     let lang = sessionStorage.getItem("lang");
-
     for(let i in imgIds){
         let imgbody = document.createElement("div");
         imgbody.classList.add("img-body");
@@ -123,3 +137,10 @@ function initButtons(){
     document.querySelector(".btn-next").addEventListener("click",getNext);
     document.querySelector(".btn-prev").addEventListener("click",getPrevious);
 }
+
+function setDefaultLang(){
+    if(sessionStorage.getItem("lang") === null){
+        sessionStorage.setItem("lang","en");
+    }
+}
+
