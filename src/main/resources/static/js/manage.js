@@ -136,7 +136,7 @@ function initAddUserPanel() {
 }
 
 function getUser(element) {
-     let id;
+    let id;
     if(element.id === ""){
         id  = $(element.parentElement.parentElement.parentElement.previousSibling).closest('tr')[0].id;
     } else {

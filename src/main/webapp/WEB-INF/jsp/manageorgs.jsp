@@ -36,7 +36,7 @@
     </ul>
 </nav>
 <h1><spring:message code="manageorgs"/></h1>
-<table id="orgTable" class="table table-striped">
+<table id="orgTable" class="table table-striped" style="width: 100%;">
     <thead>
     <tr>
         <th><spring:message code="name"/></th>
