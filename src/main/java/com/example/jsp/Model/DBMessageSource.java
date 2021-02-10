@@ -37,9 +37,9 @@ public class DBMessageSource implements MessageSource {
 
     @Override
     public String getMessage(MessageSourceResolvable resolvable, Locale locale) throws NoSuchMessageException {
-        try{
-            return Objects.requireNonNull(resolvable.getCodes())[resolvable.getCodes().length-1];
-        } catch (IndexOutOfBoundsException | NoSuchMessageException e){
+        try {
+            return Objects.requireNonNull(resolvable.getCodes())[resolvable.getCodes().length - 1];
+        } catch (IndexOutOfBoundsException | NoSuchMessageException e) {
             return resolvable.getDefaultMessage();
         }
     }

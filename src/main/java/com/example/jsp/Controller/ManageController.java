@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -32,17 +33,17 @@ public class ManageController {
     private final UserEntityRepository userEntityRepository;
     private final FormValidator formValidator;
 
-    public ManageController(UserRepositoryService userRepositoryService,UserEntityRepository userEntityRepository,FormValidator formValidator) {
+    public ManageController(UserRepositoryService userRepositoryService, UserEntityRepository userEntityRepository, FormValidator formValidator) {
         this.userRepositoryService = userRepositoryService;
         this.userEntityRepository = userEntityRepository;
         this.formValidator = formValidator;
     }
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
-    public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession httpSession,HttpServletResponse response) throws IOException {
+    public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession httpSession, HttpServletResponse response) throws IOException {
 
         Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
-        if(sessionBean == null){
+        if (sessionBean == null) {
             response.sendRedirect("login");
             return null;
         }
@@ -61,14 +62,14 @@ public class ManageController {
      * @return The UserEntities according to the current page.
      */
     @RequestMapping(value = "/getUsersForPage")
-    public DataTable getUsersForPage(@RequestBody String formData){
-        Map<String,Integer> formDataMap = userRepositoryService.getDataFromParams(formData);
+    public DataTable getUsersForPage(@RequestBody String formData) {
+        Map<String, Integer> formDataMap = userRepositoryService.getDataFromParams(formData);
         Integer start = formDataMap.get("start");
         Integer length = formDataMap.get("length");
         Integer draw = formDataMap.get("draw");
         Pageable pageable = PageRequest.of(start / length, length);
         Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
-        return new DataTable(draw,responseData.getTotalElements(),responseData.getTotalElements(),new ArrayList<>(),responseData.getContent(),start);
+        return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
     }
 
     @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
@@ -105,9 +106,9 @@ public class ManageController {
         ModelAndView modelAndView = new ModelAndView("manage");
         GeneratedUserEntity user = new GeneratedUserEntity();
         try {
-            formValidator.validateForm(userForm,errors);
-            formValidator.checkConstraints(userForm,errors);
-            if(!errors.hasErrors()) {
+            formValidator.validateForm(userForm, errors);
+            formValidator.checkConstraints(userForm, errors);
+            if (!errors.hasErrors()) {
                 user = userRepositoryService.matchFormDataToUserEntity(userForm);
                 userRepositoryService.addUser(user, errors);
             }
@@ -149,6 +150,7 @@ public class ManageController {
         sessionBean.setActionMessage("display:none;");
         session.setAttribute("sessionBean", sessionBean);
     }
+
     /**
      * This method returns a list of Users by given field,value and current page.
      *
@@ -158,40 +160,41 @@ public class ManageController {
     @RequestMapping(value = "/getUsersForPageByCriteria")
     public DataTable searchOnFieldForPage(@RequestBody String formData) {
         Map<String, String> params = convertFormDataToMap(formData);
-        Map<String,String> criteria =  getCriteriaParams(params);
-        int start = Integer.parseInt(params.getOrDefault("start","0"));
-        int length = Integer.parseInt(params.getOrDefault("length","10"));
-        int draw = Integer.parseInt(params.getOrDefault("draw","1"));
+        Map<String, String> criteria = getCriteriaParams(params);
+        int start = Integer.parseInt(params.getOrDefault("start", "0"));
+        int length = Integer.parseInt(params.getOrDefault("length", "10"));
+        int draw = Integer.parseInt(params.getOrDefault("draw", "1"));
         Set<GeneratedUserEntity> userSet = userRepositoryService
-                .getUsersForPageByCriteria(start,length,criteria,params.getOrDefault("condition","Or"));
-        if(userSet == null){
+                .getUsersForPageByCriteria(start, length, criteria, params.getOrDefault("condition", "Or"));
+        if (userSet == null) {
             Pageable pageable = PageRequest.of(start / length, length);
             Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
-            return new DataTable(draw,responseData.getTotalElements(),responseData.getTotalElements(),new ArrayList<>(),responseData.getContent(),start);
+            return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
         }
         long userCount = userRepositoryService.countUsers();
-        return new DataTable(draw,userCount,userCount,new ArrayList<>(),new ArrayList<>(userSet),start);
+        return new DataTable(draw, userCount, userCount, new ArrayList<>(), new ArrayList<>(userSet), start);
     }
 
     /**
      * This method creates a Map from parameter keys and values to pass the service's search function.
-     * @params Parameters for search criteria
+     *
      * @return A Hashmap that contains the key and value pairs of thr required criteria parameters.
+     * @params Parameters for search criteria
      */
-    private Map<String,String> getCriteriaParams(Map<String, String> params){
-        Map<String,String> result = new HashMap<>();
-        result.put("userid",params.get("userid"));
-        result.put("name",params.get("name"));
-        result.put("email",params.get("email"));
-        result.put("role",params.get("role"));
-        result.put("orgs",params.get("orgs"));
-        result.put("phone",params.get("phone"));
-        result.put("address",params.get("address"));
+    private Map<String, String> getCriteriaParams(Map<String, String> params) {
+        Map<String, String> result = new HashMap<>();
+        result.put("userid", params.get("userid"));
+        result.put("name", params.get("name"));
+        result.put("email", params.get("email"));
+        result.put("role", params.get("role"));
+        result.put("orgs", params.get("orgs"));
+        result.put("phone", params.get("phone"));
+        result.put("address", params.get("address"));
         return result;
     }
 
 
-    private Map<String,String> convertFormDataToMap(String formData){
+    private Map<String, String> convertFormDataToMap(String formData) {
         return URLEncodedUtils.parse(formData, Charset.defaultCharset()).stream()
                 .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }

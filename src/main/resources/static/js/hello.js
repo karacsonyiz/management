@@ -7,13 +7,13 @@ window.onload = function () {
     document.querySelector("#uploadMessage").style = "display:none";
 }
 
-function getLanguageMap(){
+function getLanguageMap() {
     fetch("/getLanguageMap")
         .then(function (response) {
             return response.json();
         })
         .then(function (jsonData) {
-            jsonData.forEach(element => sessionStorage.setItem(element.key+","+element.locale,element.content));
+            jsonData.forEach(element => sessionStorage.setItem(element.key + "," + element.locale, element.content));
         });
 }
 
@@ -41,8 +41,8 @@ function generate() {
         });
 }
 
-function checkIfFileValid(file){
-    if(file === undefined){
+function checkIfFileValid(file) {
+    if (file === undefined) {
         let lang = sessionStorage.getItem("lang");
         let uploadMessage = document.querySelector("#uploadMessage");
         uploadMessage.style = "display:block;color:red;";
@@ -51,7 +51,7 @@ function checkIfFileValid(file){
     }
 }
 
-function uploadImage(){
+function uploadImage() {
     let formData = new FormData();
     let fileInput = document.getElementById('imageInput');
     checkIfFileValid(fileInput.files[0]);
@@ -69,13 +69,13 @@ function uploadImage(){
     return false;
 }
 
-function setMessage(jsonData){
+function setMessage(jsonData) {
     let uploadMessage = document.querySelector("#uploadMessage");
     let lang = sessionStorage.getItem("lang");
-    if(jsonData.status === 200){
+    if (jsonData.status === 200) {
         uploadMessage.style = "display:block;color:green;";
         uploadMessage.innerHTML = sessionStorage.getItem("imguploadsuccess," + lang);
-    } else if(jsonData.status === 413) {
+    } else if (jsonData.status === 413) {
         uploadMessage.style = "display:block;color:red;";
         uploadMessage.innerHTML = sessionStorage.getItem("imguploadlimiterror," + lang);
     } else {
@@ -91,18 +91,20 @@ function getNext() {
     next.css('display', 'block');
 }
 
-function getPrevious(){
+function getPrevious() {
     let current = $('.img-body:visible');
     let next = (current.prev().length) ? current.prev() : $('.img-body').last();
     current.css('display', 'none');
     next.css('display', 'block');
 }
 
-function autoPage(){
-    setInterval(function(){getNext()} ,5000);
+function autoPage() {
+    setInterval(function () {
+        getNext()
+    }, 5000);
 }
 
-function getImages(numberOfImages){
+function getImages(numberOfImages) {
     fetch("/getImageIdsByLimit/" + numberOfImages)
         .then(function (response) {
             return response.json();
@@ -112,10 +114,10 @@ function getImages(numberOfImages){
         });
 }
 
-function createImagesForCarousel(imgIds){
+function createImagesForCarousel(imgIds) {
     let carouselBody = document.querySelector(".carousel-body");
     let lang = sessionStorage.getItem("lang");
-    for(let i in imgIds){
+    for (let i in imgIds) {
         let imgbody = document.createElement("div");
         imgbody.classList.add("img-body");
         let img = document.createElement("img");
@@ -124,23 +126,27 @@ function createImagesForCarousel(imgIds){
         img.classList.add("image");
         imgbody.appendChild(img);
         let label = document.createElement("h2");
-        label.innerHTML = sessionStorage.getItem("labelforimg"+imgIds[i]+","+lang);
-        label.setAttribute("style","text-align : center;");
+        label.innerHTML = sessionStorage.getItem("labelforimg" + imgIds[i] + "," + lang);
+        label.setAttribute("style", "text-align : center;");
         imgbody.appendChild(label);
         carouselBody.appendChild(imgbody);
     }
 }
 
-function initButtons(){
-    document.querySelector("#enLocale").addEventListener("click",function(){sessionStorage.setItem("lang","en")})
-    document.querySelector("#huLocale").addEventListener("click",function(){sessionStorage.setItem("lang","hu")})
-    document.querySelector(".btn-next").addEventListener("click",getNext);
-    document.querySelector(".btn-prev").addEventListener("click",getPrevious);
+function initButtons() {
+    document.querySelector("#enLocale").addEventListener("click", function () {
+        sessionStorage.setItem("lang", "en")
+    })
+    document.querySelector("#huLocale").addEventListener("click", function () {
+        sessionStorage.setItem("lang", "hu")
+    })
+    document.querySelector(".btn-next").addEventListener("click", getNext);
+    document.querySelector(".btn-prev").addEventListener("click", getPrevious);
 }
 
-function setDefaultLang(){
-    if(sessionStorage.getItem("lang") === null){
-        sessionStorage.setItem("lang","en");
+function setDefaultLang() {
+    if (sessionStorage.getItem("lang") === null) {
+        sessionStorage.setItem("lang", "en");
     }
 }
 

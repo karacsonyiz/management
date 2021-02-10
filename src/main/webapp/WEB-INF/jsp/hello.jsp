@@ -55,9 +55,9 @@
 <button onclick="evictCache()" class="btn btn-danger mt-3">EvictCache</button>
 <br>
 <div style="display:flex">
-<input type="file" class="btn p-0 mt-3" id="imageInput" />
-<button class="btn btn-success mt-3" type="submit" onclick="uploadImage()">Feltöltés</button>
-<h5 style="display:none;" id="uploadMessage" class="mt-3 mx-3 pt-1"></h5>
+    <input type="file" class="btn p-0 mt-3" id="imageInput"/>
+    <button class="btn btn-success mt-3" type="submit" onclick="uploadImage()">Feltöltés</button>
+    <h5 style="display:none;" id="uploadMessage" class="mt-3 mx-3 pt-1"></h5>
 </div>
 <br>
 <br>

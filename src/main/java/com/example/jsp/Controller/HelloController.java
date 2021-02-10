@@ -31,7 +31,7 @@ public class HelloController {
     private final UserRepositoryService userRepositoryService;
     private final LanguageRepository languageRepository;
 
-    public HelloController(UserRepositoryService userRepositoryService, EntityManager em,LanguageRepository languageRepository) {
+    public HelloController(UserRepositoryService userRepositoryService, EntityManager em, LanguageRepository languageRepository) {
         this.userRepositoryService = userRepositoryService;
         this.em = em;
         this.languageRepository = languageRepository;
@@ -40,7 +40,7 @@ public class HelloController {
     @GetMapping(value = {"/hello"})
     public ModelAndView hello(HttpSession session, HttpServletResponse response) throws IOException {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
-        if(sessionBean == null){
+        if (sessionBean == null) {
             response.sendRedirect("login");
             return null;
         }

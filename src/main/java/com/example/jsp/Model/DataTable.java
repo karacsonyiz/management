@@ -26,7 +26,7 @@ public class DataTable implements Serializable {
         this.orgEntities = orgEntities;
     }
 
-    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<GeneratedOrganizationEntity> orgEntities, List<GeneratedUserEntity> userEntities,int start) {
+    public DataTable(int draw, long recordsTotal, long recordsFiltered, List<GeneratedOrganizationEntity> orgEntities, List<GeneratedUserEntity> userEntities, int start) {
         this.draw = draw;
         this.recordsTotal = recordsTotal;
         this.recordsFiltered = recordsFiltered;

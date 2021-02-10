@@ -18,7 +18,7 @@ public class UserForm {
     private String password;
     @Pattern(regexp = "^(.+)@(.+)$")
     private String email;
-    @Size(max=12)
+    @Size(max = 12)
     private String phone;
     private String address;
     private Integer enabled;

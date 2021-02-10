@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface ImageRepository extends JpaRepository<ImageEntity,Integer> {
+public interface ImageRepository extends JpaRepository<ImageEntity, Integer> {
 
     @Query(value = "SELECT id FROM IMAGE", nativeQuery = true)
     List<Integer> getImageIds();

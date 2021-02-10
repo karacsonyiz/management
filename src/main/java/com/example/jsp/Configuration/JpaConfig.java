@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
-@EnableJpaAuditing(auditorAwareRef = "auditorAware",modifyOnCreate = false)
+@EnableJpaAuditing(auditorAwareRef = "auditorAware", modifyOnCreate = false)
 public class JpaConfig {
 
     @Bean

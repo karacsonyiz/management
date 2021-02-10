@@ -26,9 +26,9 @@ public class OrgController {
     }
 
     @RequestMapping("/manageorgs")
-    public ModelAndView manage(Model model, HttpSession session, HttpServletResponse response)throws IOException {
+    public ModelAndView manage(Model model, HttpSession session, HttpServletResponse response) throws IOException {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
-        if(sessionBean == null){
+        if (sessionBean == null) {
             response.sendRedirect("login");
             return null;
         }

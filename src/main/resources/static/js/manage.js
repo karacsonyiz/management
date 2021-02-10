@@ -8,13 +8,17 @@ window.onload = function () {
     initLocaleSetter();
 }
 
-function initLocaleSetter(){
-    document.querySelector("#enLocale").addEventListener("click",function(){sessionStorage.setItem("lang","en")})
-    document.querySelector("#huLocale").addEventListener("click",function(){sessionStorage.setItem("lang","hu")})
+function initLocaleSetter() {
+    document.querySelector("#enLocale").addEventListener("click", function () {
+        sessionStorage.setItem("lang", "en")
+    })
+    document.querySelector("#huLocale").addEventListener("click", function () {
+        sessionStorage.setItem("lang", "hu")
+    })
 }
 
-function initInputFeedback(){
-    $('.searchInput').on('keyup', function() {
+function initInputFeedback() {
+    $('.searchInput').on('keyup', function () {
         if (this.value.length >= 0) {
             this.classList.add("feedback");
         }
@@ -25,13 +29,13 @@ function searchField() {
     let inputValues = document.querySelectorAll(".searchInput");
     let valuesObject = {};
 
-    if($('#conditionToggle').prop('checked')){
+    if ($('#conditionToggle').prop('checked')) {
         valuesObject["condition"] = "And";
     } else {
         valuesObject["condition"] = "Or";
     }
 
-    for(let i = 0; i < inputValues.length;i++){
+    for (let i = 0; i < inputValues.length; i++) {
         valuesObject[inputValues[i].title] = inputValues[i].value;
     }
     generateAjaxDataTableByCriteria(valuesObject);
@@ -39,14 +43,14 @@ function searchField() {
 
 function deleteUser(element) {
     let id;
-    if(element.id === ""){
+    if (element.id === "") {
         id = $(element.parentElement.parentElement.parentElement.previousSibling).closest('tr')[0].id;
     } else {
         id = element.id;
     }
-    let springmessage = ""
+    let springMessage = ""
     let lang = sessionStorage.getItem("lang");
-    if(lang === "hu"){
+    if (lang === "hu") {
         springMessage = sessionStorage.getItem("deletePrompt,hu")
     } else {
         springMessage = sessionStorage.getItem("deletePrompt,en")
@@ -71,7 +75,7 @@ function showDeleteSuccessAndReload() {
     }, 4000);
 }
 
-function generateDataSrcForDataTable(response){
+function generateDataSrcForDataTable(response) {
     let data = response.userEntities;
     let entities = [];
     for (let i = 0; i < data.length; i++) {
@@ -98,7 +102,9 @@ function generateAjaxDataTable() {
         "ajax": {
             'type': 'POST',
             'url': '/getUsersForPage/',
-            dataSrc: function(response){return generateDataSrcForDataTable(response)}
+            dataSrc: function (response) {
+                return generateDataSrcForDataTable(response)
+            }
         },
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
@@ -112,7 +118,11 @@ function generateAjaxDataTable() {
             {data: "address"},
             {data: "phone"},
             {data: "role"},
-            {data: function (data) {return data.orgs.map(org => org.name).join("<br>");}},
+            {
+                data: function (data) {
+                    return data.orgs.map(org => org.name).join("<br>");
+                }
+            },
             {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement)'>delete</button>"},
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
         ]
@@ -137,8 +147,8 @@ function initAddUserPanel() {
 
 function getUser(element) {
     let id;
-    if(element.id === ""){
-        id  = $(element.parentElement.parentElement.parentElement.previousSibling).closest('tr')[0].id;
+    if (element.id === "") {
+        id = $(element.parentElement.parentElement.parentElement.previousSibling).closest('tr')[0].id;
     } else {
         id = element.id;
     }
@@ -179,21 +189,10 @@ function getDataForModal(userOrgs, userid) {
 }
 
 function populateOrgModal(userOrgs, allOrgs, userid) {
-    let orgModalBody = document.querySelector("#orgModalBody");
     let orgSelect = document.querySelector("#orgSelect");
     orgSelect.setAttribute("userID", userid);
     orgSelect.innerHTML = "";
-    orgModalBody.innerHTML = "";
-    for (let i in userOrgs) {
-        let orgBadge = document.createElement("button");
-        orgBadge.setAttribute("class", "btn btn-success p-2 m-2 orgBadge");
-        orgBadge.setAttribute("value", "false");
-        orgBadge.addEventListener("click", function () {
-            selectDeletableOrg(this, userid)
-        })
-        orgBadge.innerHTML = userOrgs[i].name;
-        orgModalBody.appendChild(orgBadge);
-    }
+    fillUserOrgList(userOrgs, userid);
     for (let k in allOrgs) {
         let option = document.createElement("option");
         option.setAttribute("value", allOrgs[k].name);
@@ -279,11 +278,11 @@ function refreshOrgModal(userid) {
             return response.json();
         })
         .then(function (user) {
-            refreshUserOrgList(user.orgs, userid);
+            fillUserOrgList(user.orgs, userid);
         });
 }
 
-function refreshUserOrgList(userOrgs, userid) {
+function fillUserOrgList(userOrgs, userid) {
     let orgModalBody = document.querySelector("#orgModalBody");
     orgModalBody.innerHTML = "";
     for (let i in userOrgs) {
@@ -318,7 +317,7 @@ function resetTable() {
     location.reload();
 }
 
-function initButtons(){
+function initButtons() {
     document.querySelector("#closeModalButton").addEventListener("click", function () {
         location.reload()
     });
@@ -331,7 +330,7 @@ function initButtons(){
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
-function generateAjaxDataTableByCriteria(values){
+function generateAjaxDataTableByCriteria(values) {
 
     $('#userTable').DataTable().destroy();
 
@@ -343,8 +342,10 @@ function generateAjaxDataTableByCriteria(values){
             'type': 'POST',
             "contentType": "application/json; charset=utf-8",
             'url': '/getUsersForPageByCriteria/',
-            "data" : values,
-            dataSrc: function (response){return generateDataSrcForDataTable(response)}
+            "data": values,
+            dataSrc: function (response) {
+                return generateDataSrcForDataTable(response)
+            }
         },
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
@@ -358,7 +359,11 @@ function generateAjaxDataTableByCriteria(values){
             {data: "address"},
             {data: "phone"},
             {data: "role"},
-            {data: function (data) {return data.orgs.map(org => org.name).join("<br>");}},
+            {
+                data: function (data) {
+                    return data.orgs.map(org => org.name).join("<br>");
+                }
+            },
             {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
         ]
@@ -366,12 +371,12 @@ function generateAjaxDataTableByCriteria(values){
     removeInputFeedback();
 }
 
-function removeInputFeedback(){
+function removeInputFeedback() {
     document.querySelectorAll(".searchInput").forEach(element => element.classList.remove("feedback"))
 }
 
-function initEnterButton(){
-    $(document).on('keydown', document, function(e) {
+function initEnterButton() {
+    $(document).on('keydown', document, function (e) {
         if (e.keyCode === 13) {
             searchField();
         }

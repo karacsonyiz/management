@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "user")
-@Where(clause="is_active=1")
+@Where(clause = "is_active=1")
 public class GeneratedUserEntity {
 
     @Id

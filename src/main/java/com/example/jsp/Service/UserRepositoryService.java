@@ -55,7 +55,7 @@ public class UserRepositoryService extends GeneralService {
         return entity.getUserid();
     }
 
-    public List<GeneratedUserEntity> getAllUsers(){
+    public List<GeneratedUserEntity> getAllUsers() {
         return userEntityRepository.findAll();
     }
 
@@ -96,8 +96,8 @@ public class UserRepositoryService extends GeneralService {
     public void generateUsers() {
         for (int i = 0; i < 99998; i++) {
             em.persist(new GeneratedUserEntity(
-                    "user"+i,"user"+i,"user"+i+"@konzorcia.hu",
-                    "061555555","Pálya utca "+i,"ROLE_USER",new ArrayList<>()));
+                    "user" + i, "user" + i, "user" + i + "@konzorcia.hu",
+                    "061555555", "Pálya utca " + i, "ROLE_USER", new ArrayList<>()));
         }
     }
 
@@ -150,7 +150,7 @@ public class UserRepositoryService extends GeneralService {
     public GeneratedUserEntity matchFormDataToUserEntity(UserForm userForm) {
         GeneratedUserEntity userEntity = new GeneratedUserEntity();
         if (userForm.getUserid() != null) {
-            GeneratedUserEntity foundEntity = em.find(GeneratedUserEntity.class,userForm.getUserid(), LockModeType.OPTIMISTIC);
+            GeneratedUserEntity foundEntity = em.find(GeneratedUserEntity.class, userForm.getUserid(), LockModeType.OPTIMISTIC);
             userEntity.setUserid(foundEntity.getUserid());
             userEntity.setVersion(userForm.getVersion());
             userEntity.setOrgs(foundEntity.getOrgs());
@@ -165,7 +165,7 @@ public class UserRepositoryService extends GeneralService {
         return userEntity;
     }
 
-    public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String,String> params,String condition){
+    public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String, String> params, String condition) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
@@ -173,26 +173,26 @@ public class UserRepositoryService extends GeneralService {
         Predicate finalPredicate;
         boolean foundOne = false;
 
-        for(Map.Entry<String,String> entry : params.entrySet()){
-            if(!entry.getValue().isBlank()){
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (!entry.getValue().isBlank()) {
                 foundOne = true;
-                if(entry.getKey().equals("orgs")){
+                if (entry.getKey().equals("orgs")) {
                     GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(entry.getValue());
-                    predicateList.add(cb.isMember(org,root.get("orgs")));
+                    predicateList.add(cb.isMember(org, root.get("orgs")));
                 } else {
-                    if(entry.getKey().equals("userid")){
-                        predicateList.add(cb.equal(root.get(entry.getKey()),entry.getValue()));
-                    } else{
-                        predicateList.add(cb.like(root.get(entry.getKey()),"%" + entry.getValue() + "%"));
+                    if (entry.getKey().equals("userid")) {
+                        predicateList.add(cb.equal(root.get(entry.getKey()), entry.getValue()));
+                    } else {
+                        predicateList.add(cb.like(root.get(entry.getKey()), "%" + entry.getValue() + "%"));
                     }
                 }
             }
         }
 
-        if(!foundOne){
+        if (!foundOne) {
             return null;
         }
-        if(condition.equals("Or")){
+        if (condition.equals("Or")) {
             finalPredicate = cb.or(predicateList.toArray(new Predicate[0]));
         } else {
             finalPredicate = cb.and(predicateList.toArray(new Predicate[0]));
@@ -210,26 +210,25 @@ public class UserRepositoryService extends GeneralService {
      * If the exception has a root cause, we can set the rejectValue more accurately.
      *
      * @param errors Built-in errors class to handle form errors on frontend.
-     * @param e The exception that is to be handled.
+     * @param e      The exception that is to be handled.
      */
     public void handleErrors(Errors errors, GeneratedUserEntity user, Exception e) {
         if (!errors.hasErrors()) {
-            if(e.getClass() == DataIntegrityViolationException.class){
+            if (e.getClass() == DataIntegrityViolationException.class) {
                 String cause = e.getCause().getCause().getMessage();
-                generateErrorMessagesForDataException(cause,e,errors,user);
+                generateErrorMessagesForDataException(cause, e, errors, user);
             }
-            if(e.getClass() == OptimisticLockException.class){
+            if (e.getClass() == OptimisticLockException.class) {
                 errors.reject(e.getCause().getMessage(), e.getCause().getMessage());
                 loggerService.log("Optimisticlockexception : " + e.getCause().getMessage());
-            }
-            else {
+            } else {
                 errors.reject(e.getMessage(), e.getMessage());
                 loggerService.log("Unexpected error happened : " + e.getMessage());
             }
         }
     }
 
-    private void generateErrorMessagesForDataException(String cause,Exception e,Errors errors,GeneratedUserEntity user) {
+    private void generateErrorMessagesForDataException(String cause, Exception e, Errors errors, GeneratedUserEntity user) {
         if (cause.contains("key 'email'")) {
             errors.rejectValue("email", "This email is already taken!", "This email is already taken!");
             loggerService.log("Duplicate entry on email for user: " + user.getName());
@@ -243,18 +242,18 @@ public class UserRepositoryService extends GeneralService {
         }
     }
 
-    public Map<String,Integer> getDataFromParams(String formData){
-        Map<String,Integer> result = new HashMap<>();
+    public Map<String, Integer> getDataFromParams(String formData) {
+        Map<String, Integer> result = new HashMap<>();
         List<NameValuePair> params = URLEncodedUtils.parse(formData, Charset.defaultCharset());
-        for(NameValuePair param : params){
-            if(param.getName().equals("start")){
-                result.put("start",Integer.parseInt(param.getValue()));
+        for (NameValuePair param : params) {
+            if (param.getName().equals("start")) {
+                result.put("start", Integer.parseInt(param.getValue()));
             }
-            if(param.getName().equals("length")){
-                result.put("length",Integer.parseInt(param.getValue()));
+            if (param.getName().equals("length")) {
+                result.put("length", Integer.parseInt(param.getValue()));
             }
-            if(param.getName().equals("draw")){
-                result.put("draw",Integer.parseInt(param.getValue()));
+            if (param.getName().equals("draw")) {
+                result.put("draw", Integer.parseInt(param.getValue()));
             }
         }
         return result;

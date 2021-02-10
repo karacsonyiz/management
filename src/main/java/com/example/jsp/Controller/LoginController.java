@@ -26,9 +26,9 @@ public class LoginController {
     }
 
     @GetMapping(value = {"/"})
-    public ModelAndView redirectLoginOrHello(HttpSession httpSession,HttpServletResponse response) throws IOException{
+    public ModelAndView redirectLoginOrHello(HttpSession httpSession, HttpServletResponse response) throws IOException {
         Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
-        if(sessionBean == null){
+        if (sessionBean == null) {
             response.sendRedirect("login");
             return null;
         }

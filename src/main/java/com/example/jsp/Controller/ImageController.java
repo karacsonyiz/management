@@ -20,6 +20,7 @@ import java.util.Optional;
 public class ImageController implements HandlerExceptionResolver {
 
     private ImageRepository imageRepository;
+
     public ImageController(ImageRepository imageRepository) {
         this.imageRepository = imageRepository;
     }
@@ -42,7 +43,7 @@ public class ImageController implements HandlerExceptionResolver {
     @RequestMapping(value = "/getImage/{id}", method = RequestMethod.GET)
     public String getImage(@PathVariable Integer id, HttpServletResponse response) throws IOException {
         Optional<ImageEntity> image = imageRepository.findById(id);
-        if(!image.isPresent()){
+        if (!image.isPresent()) {
             return null;
         }
         response.getOutputStream().write(image.get().getContent());
@@ -51,12 +52,12 @@ public class ImageController implements HandlerExceptionResolver {
     }
 
     @RequestMapping(value = "/getImageIdsByLimit/{limit}", method = RequestMethod.GET)
-    public List<Integer> getImageIdsByLimit(@PathVariable Integer limit){
+    public List<Integer> getImageIdsByLimit(@PathVariable Integer limit) {
         List<Integer> imageIds = imageRepository.getImageIds();
-        if(imageIds.size() < limit){
+        if (imageIds.size() < limit) {
             return imageIds;
         }
-        return imageRepository.getImageIds().subList(0,limit);
+        return imageRepository.getImageIds().subList(0, limit);
     }
 
     @Override

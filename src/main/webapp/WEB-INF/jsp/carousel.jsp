@@ -16,10 +16,10 @@
         <div class="col-1 backbutton">
             <i class="fa fa-chevron-left fa-3x btn-prev"></i>
         </div>
-        <div class="col"style="display: flex;align-items: center;justify-content: center;max-width: 750px;"  >
+        <div class="col" style="display: flex;align-items: center;justify-content: center;max-width: 750px;">
             <div>
-                <div class="row" >
-                    <div class="carousel-body" >
+                <div class="row">
+                    <div class="carousel-body">
                     </div>
                 </div>
             </div>
@@ -31,6 +31,6 @@
 </div>
 <script src="/js/hello.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" ></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 </body>
 </html>

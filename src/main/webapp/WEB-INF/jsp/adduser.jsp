@@ -60,7 +60,8 @@
                     <td><spring:message code="organizations"/> :</td>
                     <td>
                         <button style="margin-left : 30px;" type="button" class="btn btn-warning" id="orgModal"
-                                data-bs-toggle="modal" data-bs-target="#exampleModal"><spring:message code="manageorgs"/></button>
+                                data-bs-toggle="modal" data-bs-target="#exampleModal"><spring:message
+                                code="manageorgs"/></button>
                     </td>
                 </tr>
                 <tr>
@@ -88,7 +89,8 @@
             <div class="modal-body" id="orgModalBody">
             </div>
             <div class="modal-footer">
-                <button id="deleteSelectedOrgs" class="btn btn-danger" disabled><spring:message code="deleteorg"/></button>
+                <button id="deleteSelectedOrgs" class="btn btn-danger" disabled><spring:message
+                        code="deleteorg"/></button>
                 <p style="margin-right:70%;"><spring:message code="addorganization"/> :</p>
                 <select class="form-select" id="orgSelect" multiple></select>
                 <button type="button" class="btn btn-success" onclick="addOrg()"><spring:message code="add"/></button>
