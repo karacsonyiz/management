@@ -8,7 +8,6 @@ function getOrgs() {
             return response.json();
         })
         .then(function (jsonData) {
-            console.log(jsonData);
             generateAjaxDataTable(jsonData);
         });
 }
@@ -24,6 +23,7 @@ function generateAjaxDataTable(dataTable) {
         "bPaginate": false,
         "bLengthChange": false,
         "bInfo": false,
+        "responsive": true,
         data: dataTable.orgEntities,
         columns: [
             {data: "name"},

@@ -339,7 +339,6 @@ function generateAjaxDataTableByCriteria(values){
         "processing": true,
         "serverSide": true,
         "stateSave": true,
-        responsive: true,
         "ajax": {
             'type': 'POST',
             "contentType": "application/json; charset=utf-8",
@@ -351,6 +350,7 @@ function generateAjaxDataTableByCriteria(values){
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
         "pagingType": "numbers",
+        "responsive": true,
         columns: [
             {data: "userid"},
             {data: "name"},
