@@ -5,6 +5,7 @@ window.onload = function () {
     autoPage();
     initButtons();
     document.querySelector("#uploadMessage").style = "display:none";
+    getUserTheme()
 }
 
 function getLanguageMap() {
@@ -150,3 +151,28 @@ function setDefaultLang() {
     }
 }
 
+function getUserTheme(){
+    fetch("/getUserTheme")
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (responsetext) {
+            sessionStorage.setItem("theme",responsetext);
+            setTheme(responsetext);
+        });
+}
+
+function setTheme(theme){
+    if(theme === "dark"){
+        switchtheme(document.getElementById("themeSwitcher"))
+    }
+}
+
+function switchtheme(e){
+    document.querySelector("body").classList.add("darktheme");
+    document.querySelector("nav").classList.add("darktheme");
+    document.querySelector(".navbar-brand").classList.add("darktheme");
+    document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemefornavlink"));
+    sessionStorage.setItem("theme","dark");
+    e.innerHTML = "light"
+}

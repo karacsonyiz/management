@@ -8,11 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello ${sessionBean.getLogin().getUsername()}!</title>
     <link rel="stylesheet" href="/css/carousel.css">
+    <link rel="stylesheet" href="/css/theme.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
 </head>
 <body class="container-fluid">
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light">
     <a class="navbar-brand" href="hello">Hello ${sessionBean.getLogin().getUsername()}!</a>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
@@ -28,6 +29,9 @@
         </ul>
     </div>
     <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+            <a onclick="switchthemeforhello(this)" class="nav-link" id="themeSwitcher" style="cursor: pointer">dark</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link" href="hello?lang=hu" hreflang="hu" id="huLocale">Hu</a>
         </li>
@@ -63,6 +67,7 @@
 <br>
 <jsp:include page="carousel.jsp"></jsp:include>
 <script src="/js/hello.js"></script>
+<script src="/js/theme.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>

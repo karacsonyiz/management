@@ -13,6 +13,10 @@
 
 }
 
+.navbar {
+    background-color: #f8f9fa;
+}
+
 .feedback {
     outline: 0;
     border-width: 2px 2px 2px 2px;

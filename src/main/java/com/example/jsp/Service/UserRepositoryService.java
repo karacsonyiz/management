@@ -59,6 +59,16 @@ public class UserRepositoryService extends GeneralService {
         return userEntityRepository.findAll();
     }
 
+    public String getUserTheme(String name){
+        return userEntityRepository.getUserThemeByName(name);
+    }
+
+    public void setUserTheme(String name,String theme){
+        GeneratedUserEntity user = userEntityRepository.findByName(name).get(0);
+        user.setTheme(theme);
+        userEntityRepository.save(user);
+    }
+
     public boolean validateUserForLogin(Login login, Errors errors) {
         if (findIdByName(login.getUsername()) == null) {
             errors.rejectValue("username", "Invalid Username!", "Invalid Username!");

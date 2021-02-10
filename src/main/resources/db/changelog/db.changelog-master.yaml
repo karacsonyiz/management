@@ -66,6 +66,12 @@ databaseChangeLog:
                   defaultValue: 1
                   constraints:
                     nullable: true
+              - column:
+                  name: theme
+                  type: varchar(255)
+                  defaultValue: light
+                  constraints:
+                    nullable: true
   - changeSet:
       id: 2
       author: karacsonyiz

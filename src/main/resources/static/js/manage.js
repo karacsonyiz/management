@@ -6,6 +6,7 @@ window.onload = function () {
     initEnterButton();
     initInputFeedback();
     initLocaleSetter();
+    getUserTheme();
 }
 
 function initLocaleSetter() {
@@ -104,8 +105,9 @@ function generateAjaxDataTable() {
             'url': '/getUsersForPage/',
             dataSrc: function (response) {
                 return generateDataSrcForDataTable(response)
-            }
+            },
         },
+        "initComplete": function(){renderThemeForTable()},
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
@@ -330,6 +332,13 @@ function initButtons() {
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
+function renderThemeForTable(){
+    let theme = sessionStorage.getItem("theme");
+    if(theme === "dark"){
+        document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+    }
+}
+
 function generateAjaxDataTableByCriteria(values) {
 
     $('#userTable').DataTable().destroy();
@@ -347,6 +356,7 @@ function generateAjaxDataTableByCriteria(values) {
                 return generateDataSrcForDataTable(response)
             }
         },
+        "initComplete": function(){renderThemeForTable()},
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
@@ -381,4 +391,32 @@ function initEnterButton() {
             searchField();
         }
     });
+}
+
+function getUserTheme(){
+    fetch("/getUserTheme")
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (responsetext) {
+            sessionStorage.setItem("theme",responsetext);
+            setTheme(responsetext);
+        });
+}
+
+function setTheme(theme){
+    if(theme === "dark"){
+        switchtheme(document.getElementById("themeSwitcher"))
+    }
+}
+
+function switchtheme(e){
+    document.querySelector("body").classList.add("darktheme");
+    document.querySelector("nav").classList.add("darktheme");
+    document.querySelector(".navbar-brand").classList.add("darktheme");
+    document.querySelector(".table").classList.add("darktheme");
+    document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+    document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemefornavlink"));
+    sessionStorage.setItem("theme","dark");
+    e.innerHTML = "light"
 }

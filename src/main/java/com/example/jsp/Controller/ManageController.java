@@ -144,6 +144,20 @@ public class ManageController {
         userRepositoryService.deleteOrgs(orgNames, Integer.parseInt(id));
     }
 
+    @RequestMapping(value = "/getUserTheme", method = RequestMethod.GET)
+    public String getUserTheme(HttpSession session){
+        Session sessionBean = (Session) session.getAttribute("sessionBean");
+        String name = sessionBean.getLogin().getUsername();
+        return userRepositoryService.getUserTheme(name);
+    }
+
+    @RequestMapping(value = "/setUserTheme/{theme}", method = RequestMethod.GET)
+    public void setUserTheme(HttpSession session,@PathVariable String theme){
+        Session sessionBean = (Session) session.getAttribute("sessionBean");
+        String name = sessionBean.getLogin().getUsername();
+        userRepositoryService.setUserTheme(name,theme);
+    }
+
     @RequestMapping(value = "/resetActionMessage", method = RequestMethod.GET)
     public void resetActionMessage(HttpSession session) {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
@@ -198,4 +212,6 @@ public class ManageController {
         return URLEncodedUtils.parse(formData, Charset.defaultCharset()).stream()
                 .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }
+
+
 }

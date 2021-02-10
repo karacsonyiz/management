@@ -33,6 +33,8 @@ public class GeneratedUserEntity {
     private String role;
     @Column(name = "is_active")
     private Boolean isactive = true;
+    @Column(name = "theme")
+    private String theme;
     @Version
     private Integer version;
     @Column(name = "orgs")
@@ -157,6 +159,14 @@ public class GeneratedUserEntity {
 
     public void setIsactive(Boolean isactive) {
         this.isactive = isactive;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
     }
 
     @Override

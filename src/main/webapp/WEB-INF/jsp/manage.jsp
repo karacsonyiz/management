@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/manage.css">
+    <link rel="stylesheet" href="/css/theme.css">
     <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
@@ -13,7 +14,7 @@
 </head>
 <body>
 <div class="container-fluid">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="hello">Hello ${sessionBean.getLogin().getUsername()}!</a>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
@@ -26,6 +27,9 @@
             </ul>
         </div>
         <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a onclick="switchthemeformanage(this)" class="nav-link" id="themeSwitcher" style="cursor: pointer">dark</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="manage?lang=hu" hreflang="hu" id="huLocale">Hu</a>
             </li>
@@ -119,6 +123,7 @@
         <jsp:include page="adduser.jsp"></jsp:include>
     </div>
     <script src="/js/manage.js"></script>
+    <script src="/js/theme.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>

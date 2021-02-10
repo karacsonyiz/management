@@ -23,4 +23,7 @@ public interface UserEntityRepository extends JpaRepository<GeneratedUserEntity,
     @Query(value = "SELECT * FROM USER WHERE email = ?1 AND is_active = 1", nativeQuery = true)
     List<GeneratedUserEntity> findByEmail(String email);
 
+    @Query(value = "SELECT theme FROM USER WHERE name = ?1 AND is_active = 1", nativeQuery = true)
+    String getUserThemeByName(String name);
+
 }
