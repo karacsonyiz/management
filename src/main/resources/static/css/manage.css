@@ -18,3 +18,9 @@
     border-width: 2px 2px 2px 2px;
     border-color: red;
 }
+
+@media only screen and (max-width: 600px) {
+    .dataTableTfoot th {
+        display: list-item !important;
+    }
+}

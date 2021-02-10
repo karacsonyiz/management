@@ -5,10 +5,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hello ${sessionBean.getLogin().getUsername()}!</title>
+    <link rel="stylesheet" href="/css/carousel.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <link rel="stylesheet" href="/css/carousel.css">
 </head>
 <body class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -53,10 +54,12 @@
 <br>
 <button onclick="evictCache()" class="btn btn-danger mt-3">EvictCache</button>
 <br>
+<div style="display:flex">
 <input type="file" class="btn p-0 mt-3" id="imageInput" />
 <button class="btn btn-success mt-3" type="submit" onclick="uploadImage()">Feltöltés</button>
+<h5 style="display:none;" id="uploadMessage" class="mt-3 mx-3 pt-1"></h5>
+</div>
 <br>
-<h5 style="display:none;" id="uploadMessage"></h5>
 <br>
 <jsp:include page="carousel.jsp"></jsp:include>
 <script src="/js/hello.js"></script>

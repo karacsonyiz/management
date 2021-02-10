@@ -9,8 +9,10 @@
     <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/responsive/2.2.7/css/responsive.bootstrap.css" rel="stylesheet">
 </head>
-<body class="container-fluid">
+<body>
+<div class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="hello">Hello ${sessionBean.getLogin().getUsername()}!</a>
     <div class="collapse navbar-collapse" id="navbarNav">
@@ -42,8 +44,8 @@
 <div style="text-align: center;">
     <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess"/></h5>
 </div>
-<div>
-    <table id="userTable" class="table table-striped">
+<div class="userTableDiv" style="width: 100%;">
+    <table id="userTable" class="table table-striped" >
         <thead>
         <tr>
             <th>id</th>
@@ -59,7 +61,7 @@
         </thead>
         <tbody id="dataTableTbody">
         </tbody>
-        <tfoot>
+        <tfoot class="dataTableTfoot">
         <tr>
             <th class="px-0">
                 <div style="display:inline-flex"><input type="number" placeholder="Search id" class="searchInput" title="userid">
@@ -112,5 +114,8 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.23/js/dataTables.bootstrap4.min.js"></script>
 <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.7/js/dataTables.responsive.js"></script>
+<script src="https://cdn.datatables.net/rowreorder/1.2.7/js/dataTables.rowReorder.min.js"></script>
+</div>
 </body>
 </html>

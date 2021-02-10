@@ -37,7 +37,13 @@ function searchField() {
     generateAjaxDataTableByCriteria(valuesObject);
 }
 
-function deleteUser(id) {
+function deleteUser(element) {
+    let id;
+    if(element.id === ""){
+        id = $(element.parentElement.parentElement.parentElement.previousSibling).closest('tr')[0].id;
+    } else {
+        id = element.id;
+    }
     let springmessage = ""
     let lang = sessionStorage.getItem("lang");
     if(lang === "hu"){
@@ -98,6 +104,7 @@ function generateAjaxDataTable() {
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
         "pagingType": "numbers",
+        "responsive": true,
         columns: [
             {data: "userid"},
             {data: "name"},
@@ -106,10 +113,11 @@ function generateAjaxDataTable() {
             {data: "phone"},
             {data: "role"},
             {data: function (data) {return data.orgs.map(org => org.name).join("<br>");}},
-            {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
-            {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
+            {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement)'>delete</button>"},
+            {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
         ]
     });
+
 }
 
 function adduser() {
@@ -127,7 +135,13 @@ function initAddUserPanel() {
     document.querySelector("#roleInput").value = "";
 }
 
-function getUser(id) {
+function getUser(element) {
+     let id;
+    if(element.id === ""){
+        id  = $(element.parentElement.parentElement.parentElement.previousSibling).closest('tr')[0].id;
+    } else {
+        id = element.id;
+    }
     fetch("/getUser/" + id)
         .then(function (response) {
             return response.json();
@@ -325,6 +339,7 @@ function generateAjaxDataTableByCriteria(values){
         "processing": true,
         "serverSide": true,
         "stateSave": true,
+        responsive: true,
         "ajax": {
             'type': 'POST',
             "contentType": "application/json; charset=utf-8",
