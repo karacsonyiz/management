@@ -97,6 +97,10 @@ function generateDataSrcForDataTable(response) {
 
 function generateAjaxDataTable() {
     $('#userTable').DataTable({
+        "dom": 'Bfrtip',
+        "buttons": [
+            'excel'
+        ],
         "processing": true,
         "serverSide": true,
         "stateSave": true,
@@ -113,6 +117,7 @@ function generateAjaxDataTable() {
         "rowId": "userid",
         "pagingType": "numbers",
         "responsive": true,
+        "info": false,
         columns: [
             {data: "userid"},
             {data: "name"},
@@ -349,6 +354,10 @@ function generateAjaxDataTableByCriteria(values) {
         "processing": true,
         "serverSide": true,
         "stateSave": true,
+        "dom": 'Bfrtip',
+        "buttons": [
+            'excel'
+        ],
         "ajax": {
             'type': 'POST',
             "contentType": "application/json; charset=utf-8",
@@ -364,6 +373,7 @@ function generateAjaxDataTableByCriteria(values) {
         "rowId": "userid",
         "pagingType": "numbers",
         "responsive": true,
+        "info": false,
         columns: [
             {data: "userid"},
             {data: "name"},

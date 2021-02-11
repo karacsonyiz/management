@@ -12,6 +12,7 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -63,11 +64,10 @@ public class ManageController {
      */
     @RequestMapping(value = "/getUsersForPage")
     public DataTable getUsersForPage(@RequestBody String formData) {
-        Map<String, Integer> formDataMap = userRepositoryService.getDataFromParams(formData);
-        Integer start = formDataMap.get("start");
-        Integer length = formDataMap.get("length");
-        Integer draw = formDataMap.get("draw");
-        Pageable pageable = PageRequest.of(start / length, length);
+        Map<String, String> formDataMap = convertFormDataToMap(formData);
+        int draw = Integer.parseInt(formDataMap.get( "draw"));
+        int start = Integer.parseInt(formDataMap.get( "start"));
+        Pageable pageable = makePageAbleFromData(formDataMap);
         Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
         return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
     }
@@ -207,11 +207,35 @@ public class ManageController {
         return result;
     }
 
-
+    /**
+     * This method converts formData from String format to a hashMap.
+     *
+     * @param formData The incoming data in String format.
+     * @return A Map that contains formData key-value pairs.
+     */
     private Map<String, String> convertFormDataToMap(String formData) {
         return URLEncodedUtils.parse(formData, Charset.defaultCharset()).stream()
                 .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }
 
+    private Pageable makePageAbleFromData(Map<String, String> formDataMap){
+        int start = Integer.parseInt(formDataMap.get( "start"));
+        int length = Integer.parseInt(formDataMap.get( "length"));
+        String direction = formDataMap.get("order[0][dir]");
+        String orderByColumnNum = formDataMap.get("order[0][column]");
+        String orderBy = formDataMap.get("columns["+orderByColumnNum+"][data]");
+        String validatedOrderBy = validateOrder(orderBy);
+        Sort.Direction dir = direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        return PageRequest.of(start / length, length,dir,validatedOrderBy);
+    }
 
+    private String  validateOrder(String orderBy){
+        if(orderBy.equals("function")){
+           return  "orgs";
+        }
+        if(orderBy.equals("8") || orderBy.equals("7")){
+            return "userid";
+        }
+        return orderBy;
+    }
 }

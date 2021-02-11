@@ -251,21 +251,4 @@ public class UserRepositoryService extends GeneralService {
             loggerService.log("Unexpected error happened : " + e.getCause().getCause().getMessage());
         }
     }
-
-    public Map<String, Integer> getDataFromParams(String formData) {
-        Map<String, Integer> result = new HashMap<>();
-        List<NameValuePair> params = URLEncodedUtils.parse(formData, Charset.defaultCharset());
-        for (NameValuePair param : params) {
-            if (param.getName().equals("start")) {
-                result.put("start", Integer.parseInt(param.getValue()));
-            }
-            if (param.getName().equals("length")) {
-                result.put("length", Integer.parseInt(param.getValue()));
-            }
-            if (param.getName().equals("draw")) {
-                result.put("draw", Integer.parseInt(param.getValue()));
-            }
-        }
-        return result;
-    }
 }
