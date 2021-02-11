@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface ImageRepository extends JpaRepository<ImageEntity, Integer> {
 
-    @Query(value = "SELECT id FROM IMAGE", nativeQuery = true)
+    @Query(value = "SELECT id FROM image", nativeQuery = true)
     List<Integer> getImageIds();
 }
