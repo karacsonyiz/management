@@ -15,7 +15,7 @@
 <form:form method="POST" id="adduserForm" modelAttribute="user" action="save">
     <div class="row mt-4">
         <div class="col-6">
-            <table class="table table-striped" id="usercontroltable">
+            <table class="table table-striped" id="usercontroltable" >
                 <tbody>
                 <h1><spring:message code="saveuser"/></h1>
                 <tr id="idInputTr">

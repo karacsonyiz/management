@@ -164,15 +164,12 @@ function getUserTheme(){
 
 function setTheme(theme){
     if(theme === "dark"){
-        switchtheme(document.getElementById("themeSwitcher"))
+        document.querySelector("body").classList.add("darktheme");
+        document.querySelector("nav").classList.add("darktheme");
+        document.querySelector(".navbar-brand").classList.add("darktheme");
+        document.querySelector("#imageInput").classList.add("darkthemewithoutbackground");
+        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
+        sessionStorage.setItem("theme","dark");
+        document.getElementById("themeSwitcher").innerHTML = "light"
     }
-}
-
-function switchtheme(e){
-    document.querySelector("body").classList.add("darktheme");
-    document.querySelector("nav").classList.add("darktheme");
-    document.querySelector(".navbar-brand").classList.add("darktheme");
-    document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemefornavlink"));
-    sessionStorage.setItem("theme","dark");
-    e.innerHTML = "light"
 }

@@ -34,7 +34,7 @@ public class GeneratedUserEntity {
     @Column(name = "is_active")
     private Boolean isactive = true;
     @Column(name = "theme")
-    private String theme;
+    private String theme = "light";
     @Version
     private Integer version;
     @Column(name = "orgs")

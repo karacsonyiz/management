@@ -336,6 +336,8 @@ function renderThemeForTable(){
     let theme = sessionStorage.getItem("theme");
     if(theme === "dark"){
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+    } else {
+        document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.remove("darktheme"));
     }
 }
 
@@ -406,17 +408,17 @@ function getUserTheme(){
 
 function setTheme(theme){
     if(theme === "dark"){
-        switchtheme(document.getElementById("themeSwitcher"))
+        document.querySelector("body").classList.add("darktheme");
+        document.querySelector("nav").classList.add("darktheme");
+        document.querySelector(".navbar-brand").classList.add("darktheme");
+        document.querySelector(".table").classList.add("darktheme");
+        document.querySelector(".table").classList.remove("table-striped");
+        document.querySelector("#usercontroltable ").classList.add("darktheme");
+        document.querySelector("#usercontroltable ").classList.remove("table-striped");
+        document.querySelector(".modal-content").classList.add("darktheme");
+        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
+        document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+        sessionStorage.setItem("theme","dark");
+        document.getElementById("themeSwitcher").innerHTML = "light";
     }
-}
-
-function switchtheme(e){
-    document.querySelector("body").classList.add("darktheme");
-    document.querySelector("nav").classList.add("darktheme");
-    document.querySelector(".navbar-brand").classList.add("darktheme");
-    document.querySelector(".table").classList.add("darktheme");
-    document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
-    document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemefornavlink"));
-    sessionStorage.setItem("theme","dark");
-    e.innerHTML = "light"
 }
