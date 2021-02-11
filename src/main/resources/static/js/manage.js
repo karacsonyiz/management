@@ -155,7 +155,6 @@ function getUser(element) {
     } else {
         id = element.id;
     }
-    console.log(id);
     fetch("/getUser/" + id)
         .then(function (response) {
             return response.json();
@@ -320,15 +319,22 @@ function resetTable() {
     location.reload();
 }
 
+function refreshTable() {
+    $('#userTable').DataTable().destroy();
+    generateAjaxDataTable();
+}
+
+
+
 function initButtons() {
     document.querySelector("#closeModalButton").addEventListener("click", function () {
-        location.reload()
+        refreshTable()
     });
     document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
-        deleteSelectedOrgs()
+        deleteSelectedOrgs();
     });
     document.querySelectorAll(".searchButton").forEach(element => element.addEventListener("click", function () {
-        searchField(this.value, this.parentElement.parentElement.firstChild)
+        searchField(this.value, this.parentElement.parentElement.firstChild);
     }));
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
