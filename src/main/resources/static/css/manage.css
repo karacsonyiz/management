@@ -32,3 +32,17 @@
 th {
     cursor : pointer;
 }
+
+.toggle-vis {
+    cursor : pointer;
+    color: black;
+}
+
+.dt-buttons {
+    margin-top : 20px;
+}
+
+.buttons-excel {
+    background-color: #198754 !important;
+    color: white !important;
+}

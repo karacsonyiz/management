@@ -11,6 +11,7 @@ function switchthemeformanage(e){
         document.querySelector(".modal-content").classList.add("darktheme");
         document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+        document.querySelectorAll(".toggle-vis").forEach(element => element.classList.add("darthemewithwhitetextcolor"));
         sessionStorage.setItem("theme","dark");
         e.innerHTML = "light"
         saveThemeForUser("dark");
@@ -25,6 +26,7 @@ function switchthemeformanage(e){
         document.querySelector(".modal-content").classList.remove("darktheme");
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.remove("darktheme"));
         document.querySelectorAll(".nav-link").forEach(element => element.classList.remove("darkthemewithoutbackground"));
+        document.querySelectorAll(".toggle-vis").forEach(element => element.classList.remove("darthemewithwhitetextcolor"));
         sessionStorage.setItem("theme","light");
         e.innerHTML = "dark"
         saveThemeForUser("light");

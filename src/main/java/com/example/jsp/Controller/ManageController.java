@@ -59,8 +59,8 @@ public class ManageController {
      * This method is the backend implementation of the jQuery DataTable paging functionality.
      * Searches for the users to display on the current page.
      *
-     * @param formData incoming parameters from DataTable.
-     * @return The UserEntities according to the current page.
+     * @param formData incoming parameters from the request.
+     * @return A DataTable consisting UserEntities and pageinformation according to the current page.
      */
     @RequestMapping(value = "/getUsersForPage")
     public DataTable getUsersForPage(@RequestBody String formData) {
@@ -175,6 +175,7 @@ public class ManageController {
     public DataTable searchOnFieldForPage(@RequestBody String formData) {
         Map<String, String> params = convertFormDataToMap(formData);
         Map<String, String> criteria = getCriteriaParams(params);
+
         int start = Integer.parseInt(params.getOrDefault("start", "0"));
         int length = Integer.parseInt(params.getOrDefault("length", "10"));
         int draw = Integer.parseInt(params.getOrDefault("draw", "1"));
@@ -197,13 +198,13 @@ public class ManageController {
      */
     private Map<String, String> getCriteriaParams(Map<String, String> params) {
         Map<String, String> result = new HashMap<>();
-        result.put("userid", params.get("userid"));
-        result.put("name", params.get("name"));
-        result.put("email", params.get("email"));
-        result.put("role", params.get("role"));
-        result.put("orgs", params.get("orgs"));
-        result.put("phone", params.get("phone"));
-        result.put("address", params.get("address"));
+        result.put("userid", params.getOrDefault("userid",""));
+        result.put("name", params.getOrDefault("name",""));
+        result.put("email", params.getOrDefault("email",""));
+        result.put("role", params.getOrDefault("role",""));
+        result.put("orgs", params.getOrDefault("orgs",""));
+        result.put("phone", params.getOrDefault("phone",""));
+        result.put("address", params.getOrDefault("address",""));
         return result;
     }
 
@@ -218,17 +219,29 @@ public class ManageController {
                 .collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
     }
 
+    /**
+     * This method makes a Pageable class from form data.
+     *
+     * @param formDataMap A map that contains the necessary data
+     * @return A Pageable class that can be used for querying data.
+     */
     private Pageable makePageAbleFromData(Map<String, String> formDataMap){
-        int start = Integer.parseInt(formDataMap.get( "start"));
-        int length = Integer.parseInt(formDataMap.get( "length"));
-        String direction = formDataMap.get("order[0][dir]");
-        String orderByColumnNum = formDataMap.get("order[0][column]");
-        String orderBy = formDataMap.get("columns["+orderByColumnNum+"][data]");
+        int start = Integer.parseInt(formDataMap.getOrDefault( "start","1"));
+        int length = Integer.parseInt(formDataMap.getOrDefault( "length","10"));
+        String direction = formDataMap.getOrDefault("order[0][dir]","asc");
+        String orderByColumnNum = formDataMap.getOrDefault("order[0][column]","0");
+        String orderBy = formDataMap.getOrDefault("columns["+orderByColumnNum+"][data]","userid");
         String validatedOrderBy = validateOrder(orderBy);
         Sort.Direction dir = direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         return PageRequest.of(start / length, length,dir,validatedOrderBy);
     }
 
+    /**
+     * This method validates the possible malfunctioning data.
+     *
+     * @param orderBy A possible malfunctioning parameter.
+     * @return A valid parameter.
+     */
     private String  validateOrder(String orderBy){
         if(orderBy.equals("function")){
            return  "orgs";

@@ -51,6 +51,9 @@
         <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess"/></h5>
     </div>
     <div class="userTableDiv" style="width: 100%;">
+        <div style="margin-top:15px;margin-bottom: 15px;">
+            <spring:message code="columnvisibility"/> : <a class="toggle-vis" data-column="0">id</a> - <a class="toggle-vis" data-column="1"><spring:message code="name"/></a> - <a class="toggle-vis" data-column="2">email</a> - <a class="toggle-vis" data-column="3"><spring:message code="address"/></a> - <a class="toggle-vis" data-column="4"><spring:message code="phone"/></a> - <a class="toggle-vis" data-column="5"><spring:message code="role"/></a> - <a class="toggle-vis" data-column="6"><spring:message code="orgs"/></a>
+        </div>
         <table id="userTable" class="table table-striped">
             <thead>
             <tr>

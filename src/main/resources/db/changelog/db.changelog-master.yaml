@@ -1000,6 +1000,30 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: felhasználók
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: columnvisibility
+              - column:
+                  name: messagecontent
+                  value: column visibility
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: columnvisibility
+              - column:
+                  name: messagecontent
+                  value: oszlop láthatóság
   - changeSet:
       id: 9
       author: karacsonyiz

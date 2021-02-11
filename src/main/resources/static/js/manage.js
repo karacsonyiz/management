@@ -96,11 +96,7 @@ function generateDataSrcForDataTable(response) {
 }
 
 function generateAjaxDataTable() {
-    $('#userTable').DataTable({
-        "dom": 'Bfrtip',
-        "buttons": [
-            'excel'
-        ],
+    let table = $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
         "stateSave": true,
@@ -134,7 +130,7 @@ function generateAjaxDataTable() {
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
         ]
     });
-
+    InitHideColBarAndButtons(table)
 }
 
 function adduser() {
@@ -273,7 +269,6 @@ function addOrg() {
     })
         .then(function (jsonData) {
             refreshOrgModal(userid);
-
         })
         .catch(error => refreshOrgModal(userid));
     return false;
@@ -350,14 +345,10 @@ function generateAjaxDataTableByCriteria(values) {
 
     $('#userTable').DataTable().destroy();
 
-    $('#userTable').DataTable({
+    let table = $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
         "stateSave": true,
-        "dom": 'Bfrtip',
-        "buttons": [
-            'excel'
-        ],
         "ajax": {
             'type': 'POST',
             "contentType": "application/json; charset=utf-8",
@@ -390,6 +381,7 @@ function generateAjaxDataTableByCriteria(values) {
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
         ]
     });
+    InitHideColBarAndButtons(table)
     removeInputFeedback();
 }
 
@@ -428,7 +420,23 @@ function setTheme(theme){
         document.querySelector(".modal-content").classList.add("darktheme");
         document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+        document.querySelectorAll(".toggle-vis").forEach(element => element.classList.add("darthemewithwhitetextcolor"));
         sessionStorage.setItem("theme","dark");
         document.getElementById("themeSwitcher").innerHTML = "light";
     }
+}
+
+function InitHideColBarAndButtons(table){
+    $('a.toggle-vis').on( 'click', function (e) {
+        e.preventDefault();
+        let column = table.column( $(this).attr('data-column') );
+        column.visible( ! column.visible() );
+    } );
+
+    new $.fn.dataTable.Buttons( table, {
+        "buttons": [
+            {extend:'excel',text:"Save Excel"}
+        ],
+    } );
+    table.buttons().containers().appendTo('.dataTableTfoot');
 }
