@@ -149,12 +149,14 @@ function initAddUserPanel() {
 }
 
 function getUser(element) {
+    console.log(element);
     let id;
     if (element.id === "") {
         id = $(element.parentElement.parentElement.parentElement.previousSibling).closest('tr')[0].id;
     } else {
         id = element.id;
     }
+    console.log(id);
     fetch("/getUser/" + id)
         .then(function (response) {
             return response.json();
@@ -377,8 +379,8 @@ function generateAjaxDataTableByCriteria(values) {
                     return data.orgs.map(org => org.name).join("<br>");
                 }
             },
-            {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement.id)'>delete</button>"},
-            {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement.id)'>update</button>"}
+            {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement)'>delete</button>"},
+            {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
         ]
     });
     InitHideColBarAndButtons(table)
