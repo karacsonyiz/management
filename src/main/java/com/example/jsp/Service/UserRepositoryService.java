@@ -175,7 +175,8 @@ public class UserRepositoryService extends GeneralService {
         return userEntity;
     }
 
-    public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String, String> params, String condition) {
+    public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String, String> params, String condition,
+                                                              String direction,String orderBy) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
@@ -206,6 +207,11 @@ public class UserRepositoryService extends GeneralService {
             finalPredicate = cb.or(predicateList.toArray(new Predicate[0]));
         } else {
             finalPredicate = cb.and(predicateList.toArray(new Predicate[0]));
+        }
+        if(direction.equals("desc")){
+            query.orderBy(cb.desc(root.get(orderBy)));
+        } else {
+            query.orderBy(cb.asc(root.get(orderBy)));
         }
         query.where(finalPredicate);
         CriteriaQuery<GeneratedUserEntity> select = query.select(root);

@@ -175,12 +175,14 @@ public class ManageController {
     public DataTable searchOnFieldForPage(@RequestBody String formData) {
         Map<String, String> params = convertFormDataToMap(formData);
         Map<String, String> criteria = getCriteriaParams(params);
-
+        String direction = params.getOrDefault("order[0][dir]","asc");
+        String orderBy = params.getOrDefault("columns["+params.getOrDefault("order[0][column]","0")+"][data]","userid");
+        orderBy = validateOrder(orderBy);
         int start = Integer.parseInt(params.getOrDefault("start", "0"));
         int length = Integer.parseInt(params.getOrDefault("length", "10"));
         int draw = Integer.parseInt(params.getOrDefault("draw", "1"));
         Set<GeneratedUserEntity> userSet = userRepositoryService
-                .getUsersForPageByCriteria(start, length, criteria, params.getOrDefault("condition", "Or"));
+                .getUsersForPageByCriteria(start, length, criteria, params.getOrDefault("condition", "Or"),direction,orderBy);
         if (userSet == null) {
             Pageable pageable = PageRequest.of(start / length, length);
             Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
@@ -243,11 +245,8 @@ public class ManageController {
      * @return A valid parameter.
      */
     private String  validateOrder(String orderBy){
-        if(orderBy.equals("function")){
-           return  "orgs";
-        }
-        if(orderBy.equals("8") || orderBy.equals("7")){
-            return "userid";
+        if(orderBy.equals("function") || orderBy.equals("8") || orderBy.equals("7")){
+           return  "userid";
         }
         return orderBy;
     }
