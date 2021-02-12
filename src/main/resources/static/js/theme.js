@@ -1,29 +1,14 @@
 function switchthemeformanage(e){
     let theme = sessionStorage.getItem("theme");
     if(theme === "light"){
-        document.querySelector("body").classList.add("darktheme");
-        document.querySelector("nav").classList.add("darktheme");
-        document.querySelector(".navbar-brand").classList.add("darktheme");
-        document.querySelector(".table").classList.add("darktheme");
-        document.querySelector(".table").classList.remove("table-striped");
-        document.querySelector("#usercontroltable ").classList.add("darktheme");
-        document.querySelector("#usercontroltable ").classList.remove("table-striped");
-        document.querySelector(".modal-content").classList.add("darktheme");
-        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
-        document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
-        document.querySelectorAll(".toggle-vis").forEach(element => element.classList.add("darthemewithwhitetextcolor"));
-        sessionStorage.setItem("theme","dark");
+        setDarkThemeForManage();
         e.innerHTML = "light"
         saveThemeForUser("dark");
     } else {
-        document.querySelector("body").classList.remove("darktheme");
-        document.querySelector("nav").classList.remove("darktheme");
-        document.querySelector(".navbar-brand").classList.remove("darktheme");
-        document.querySelector(".table").classList.remove("darktheme");
-        document.querySelector(".table").classList.add("table-striped");
-        document.querySelector("#usercontroltable ").classList.remove("darktheme");
+        let elementsToRemoveTheme = ["body","nav",".navbar-brand",".table","#usercontroltable",".modal-content",];
+        elementsToRemoveTheme.forEach(element =>document.querySelector(element).classList.remove("darktheme"));
         document.querySelector("#usercontroltable ").classList.add("table-striped");
-        document.querySelector(".modal-content").classList.remove("darktheme");
+        document.querySelector(".table").classList.add("table-striped");
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.remove("darktheme"));
         document.querySelectorAll(".nav-link").forEach(element => element.classList.remove("darkthemewithoutbackground"));
         document.querySelectorAll(".toggle-vis").forEach(element => element.classList.remove("darthemewithwhitetextcolor"));
@@ -36,20 +21,14 @@ function switchthemeformanage(e){
 function switchthemeforhello(e){
     let theme = sessionStorage.getItem("theme");
     if(theme === "light"){
-        document.querySelector("body").classList.add("darktheme");
-        document.querySelector("nav").classList.add("darktheme");
-        document.querySelector(".navbar-brand").classList.add("darktheme");
-        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
-        document.querySelector("#imageInput").classList.add("darkthemewithoutbackground");
-        sessionStorage.setItem("theme","dark");
+        setDarkThemeForHello();
         e.innerHTML = "light";
         saveThemeForUser("dark");
     } else {
-        document.querySelector("body").classList.remove("darktheme");
-        document.querySelector("nav").classList.remove("darktheme");
-        document.querySelector(".navbar-brand").classList.remove("darktheme");
-        document.querySelector("#imageInput").classList.remove("darkthemewithoutbackground");
+        let elementsToRemoveTheme = ["body","nav",".navbar-brand"];
+        elementsToRemoveTheme.forEach(element =>document.querySelector(element).classList.remove("darktheme"));
         document.querySelectorAll(".nav-link").forEach(element => element.classList.remove("darkthemewithoutbackground"));
+        document.querySelector("#imageInput").classList.remove("darkthemewithoutbackground");
         sessionStorage.setItem("theme","light");
         e.innerHTML = "dark";
         saveThemeForUser("light");
@@ -66,21 +45,12 @@ function saveThemeForUser(theme){
 function switchthemeformanageorgs(e){
     let theme = sessionStorage.getItem("theme");
     if(theme === "light"){
-        document.querySelector("body").classList.add("darktheme");
-        document.querySelector("nav").classList.add("darktheme");
-        document.querySelector(".navbar-brand").classList.add("darktheme");
-        document.querySelector(".table").classList.add("darktheme");
-        document.querySelector(".table").classList.remove("table-striped");
-        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
-        document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
-        sessionStorage.setItem("theme","dark");
+        setDarkThemeForManageOrgs();
         e.innerHTML = "light"
         saveThemeForUser("dark");
     } else {
-        document.querySelector("body").classList.remove("darktheme");
-        document.querySelector("nav").classList.remove("darktheme");
-        document.querySelector(".navbar-brand").classList.remove("darktheme");
-        document.querySelector(".table").classList.remove("darktheme");
+        let elementsToRemoveTheme = ["body","nav",".navbar-brand",".table"];
+        elementsToRemoveTheme.forEach(element =>document.querySelector(element).classList.remove("darktheme"));
         document.querySelector(".table").classList.add("table-striped");
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.remove("darktheme"));
         document.querySelectorAll(".nav-link").forEach(element => element.classList.remove("darkthemewithoutbackground"));
@@ -88,4 +58,32 @@ function switchthemeformanageorgs(e){
         e.innerHTML = "dark"
         saveThemeForUser("light");
     }
+}
+
+function setDarkThemeForManage(){
+    let elementsToAddTheme = ["body","nav",".navbar-brand",".table","#usercontroltable",".modal-content",];
+    elementsToAddTheme.forEach(element =>document.querySelector(element).classList.add("darktheme"));
+    document.querySelector("#usercontroltable").classList.remove("table-striped");
+    document.querySelector(".table").classList.remove("table-striped");
+    document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
+    document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+    document.querySelectorAll(".toggle-vis").forEach(element => element.classList.add("darthemewithwhitetextcolor"));
+    sessionStorage.setItem("theme","dark");
+}
+
+function setDarkThemeForHello(){
+    let elementsToAddTheme = ["body","nav",".navbar-brand"];
+    elementsToAddTheme.forEach(element =>document.querySelector(element).classList.add("darktheme"));
+    document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
+    document.querySelector("#imageInput").classList.add("darkthemewithoutbackground");
+    sessionStorage.setItem("theme","dark");
+}
+
+function setDarkThemeForManageOrgs(){
+    let elementsToAddTheme = ["body","nav",".navbar-brand",".table"];
+    elementsToAddTheme.forEach(element =>document.querySelector(element).classList.add("darktheme"));
+    document.querySelector(".table").classList.remove("table-striped");
+    document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
+    document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
+    sessionStorage.setItem("theme","dark");
 }

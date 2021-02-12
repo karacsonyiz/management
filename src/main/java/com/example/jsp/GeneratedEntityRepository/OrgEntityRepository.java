@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface OrgEntityRepository extends JpaRepository<GeneratedOrganizationEntity, Integer> {
 
-    @Query(value = "SELECT * FROM ORGANIZATION WHERE name = ?1", nativeQuery = true)
+    @Query(value = "SELECT * FROM organization WHERE name = ?1", nativeQuery = true)
     GeneratedOrganizationEntity findByOrgName(String name);
 }

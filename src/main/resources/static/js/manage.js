@@ -52,9 +52,9 @@ function deleteUser(element) {
     let springMessage = ""
     let lang = sessionStorage.getItem("lang");
     if (lang === "hu") {
-        springMessage = sessionStorage.getItem("deletePrompt,hu")
+        springMessage = sessionStorage.getItem("deletePrompt,hu");
     } else {
-        springMessage = sessionStorage.getItem("deletePrompt,en")
+        springMessage = sessionStorage.getItem("deletePrompt,en");
     }
     let confirm = window.confirm(springMessage);
     if (confirm) {
@@ -130,7 +130,7 @@ function generateAjaxDataTable() {
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
         ]
     });
-    InitHideColBarAndButtons(table)
+    InitHideColBarAndButtons(table);
 }
 
 function adduser() {
@@ -187,7 +187,7 @@ function getDataForModal(userOrgs, userid) {
             return response.json();
         })
         .then(function (orgs) {
-            populateOrgModal(userOrgs, orgs.orgEntities, userid)
+            populateOrgModal(userOrgs, orgs.orgEntities, userid);
         });
 }
 
@@ -209,10 +209,10 @@ function selectDeletableOrg(element, userid) {
     document.querySelector("#deleteSelectedOrgs").userid = userid;
     if (element.getAttribute("value") === "false") {
         element.setAttribute("value", "true");
-        element.style = "background-color : red;"
+        element.style = "background-color : red;";
     } else {
         element.setAttribute("value", "false");
-        element.style = "background-color : green;"
+        element.style = "background-color : green;";
     }
 }
 
@@ -227,7 +227,7 @@ function deleteSelectedOrgs() {
     }
     let confirm = window.confirm("Biztos, hogy törölni szeretné ezeket a szervezeteket?");
     if (confirm) {
-        deleteOrgForUser(orglist, userid)
+        deleteOrgForUser(orglist, userid);
     }
 }
 
@@ -388,7 +388,7 @@ function generateAjaxDataTableByCriteria(values) {
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
         ]
     });
-    InitHideColBarAndButtons(table)
+    InitHideColBarAndButtons(table);
     removeInputFeedback();
 }
 
@@ -417,18 +417,7 @@ function getUserTheme(){
 
 function setTheme(theme){
     if(theme === "dark"){
-        document.querySelector("body").classList.add("darktheme");
-        document.querySelector("nav").classList.add("darktheme");
-        document.querySelector(".navbar-brand").classList.add("darktheme");
-        document.querySelector(".table").classList.add("darktheme");
-        document.querySelector(".table").classList.remove("table-striped");
-        document.querySelector("#usercontroltable ").classList.add("darktheme");
-        document.querySelector("#usercontroltable ").classList.remove("table-striped");
-        document.querySelector(".modal-content").classList.add("darktheme");
-        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
-        document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
-        document.querySelectorAll(".toggle-vis").forEach(element => element.classList.add("darthemewithwhitetextcolor"));
-        sessionStorage.setItem("theme","dark");
+        setDarkThemeForManage();
         document.getElementById("themeSwitcher").innerHTML = "light";
     }
 }

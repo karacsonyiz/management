@@ -62,14 +62,7 @@ function getUserTheme(){
 
 function setTheme(theme){
     if(theme === "dark"){
-        document.querySelector("body").classList.add("darktheme");
-        document.querySelector("nav").classList.add("darktheme");
-        document.querySelector(".navbar-brand").classList.add("darktheme");
-        document.querySelector(".table").classList.add("darktheme");
-        document.querySelector(".table").classList.remove("table-striped");
-        document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
-        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
-        sessionStorage.setItem("theme","dark");
+        setDarkThemeForManageOrgs();
         document.getElementById("themeSwitcher").innerHTML = "light"
     }
 }

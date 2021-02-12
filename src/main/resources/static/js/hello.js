@@ -164,12 +164,7 @@ function getUserTheme(){
 
 function setTheme(theme){
     if(theme === "dark"){
-        document.querySelector("body").classList.add("darktheme");
-        document.querySelector("nav").classList.add("darktheme");
-        document.querySelector(".navbar-brand").classList.add("darktheme");
-        document.querySelector("#imageInput").classList.add("darkthemewithoutbackground");
-        document.querySelectorAll(".nav-link").forEach(element => element.classList.add("darkthemewithoutbackground"));
-        sessionStorage.setItem("theme","dark");
+        setDarkThemeForHello();
         document.getElementById("themeSwitcher").innerHTML = "light"
     }
 }
