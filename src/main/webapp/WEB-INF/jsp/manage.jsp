@@ -64,6 +64,7 @@
                 <th><spring:message code="phone"/></th>
                 <th><spring:message code="role"/></th>
                 <th><spring:message code="orgs"/></th>
+                <th></th>
                 <th><spring:message code="delete"/></th>
                 <th><spring:message code="update"/></th>
             </tr>
@@ -103,12 +104,14 @@
                 <th class="px-0">
                     <div style="display:inline-flex"><input placeholder="Search orgs" class="searchInput"
                                                             id="searchInputForKeyUp" title="orgs">
+                    </div>
+                </th>
+                <th class="px-0">
                         <div>
                             <button style="margin-left: 30px;" class="px-3 searchButton" id="SearchButton" value="orgs">
                                 Go
                             </button>
                         </div>
-                    </div>
                 </th>
                 <th>
                     <button class="btn btn-danger" onclick="resetTable()">reset</button>

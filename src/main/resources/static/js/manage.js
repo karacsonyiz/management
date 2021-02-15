@@ -28,18 +28,24 @@ function initInputFeedback() {
 
 function searchField() {
     let inputValues = document.querySelectorAll(".searchInput");
-    let valuesObject = {};
-
-    if ($('#conditionToggle').prop('checked')) {
-        valuesObject["condition"] = "And";
-    } else {
-        valuesObject["condition"] = "Or";
-    }
+    let datatable = $('#userTable').dataTable().api();
+    let valuesString = "";
 
     for (let i = 0; i < inputValues.length; i++) {
-        valuesObject[inputValues[i].title] = inputValues[i].value;
+        if(i === 0){
+            valuesString += "?"+inputValues[i].title+"="+inputValues[i].value;
+        } else {
+            valuesString += "&"+inputValues[i].title+"="+inputValues[i].value;
+        }
     }
-    generateAjaxDataTableByCriteria(valuesObject);
+    if ($('#conditionToggle').prop('checked')) {
+        valuesString+= "&" + "condition" + "=And";
+    } else {
+        valuesString+= "&" + "condition" + "=Or";
+    }
+
+    datatable.ajax.url( '/getUsersForPageByCriteria'+valuesString).load();
+    removeInputFeedback();
 }
 
 function deleteUser(element) {
@@ -69,8 +75,7 @@ function deleteUser(element) {
 
 function showDeleteSuccessAndReload() {
     document.querySelector("#deleteMessage").setAttribute("style", "display:block;color:green;");
-    $('#userTable').DataTable().destroy();
-    generateAjaxDataTable();
+    $('#userTable').DataTable().ajax.reload();
     setTimeout(function () {
         document.querySelector("#deleteMessage").setAttribute("style", "display:none;");
     }, 4000);
@@ -95,7 +100,8 @@ function generateDataSrcForDataTable(response) {
     return entities;
 }
 
-function generateAjaxDataTable() {
+function generateAjaxDataTable(values) {
+
     let table = $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
@@ -103,11 +109,12 @@ function generateAjaxDataTable() {
         "ajax": {
             'type': 'POST',
             'url': '/getUsersForPage/',
+            "data": values,
             dataSrc: function (response) {
                 return generateDataSrcForDataTable(response)
             },
         },
-        "initComplete": function(){renderThemeForTable()},
+        "initComplete": function(){renderThemeForTable(table);},
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
@@ -126,6 +133,7 @@ function generateAjaxDataTable() {
                     return data.orgs.map(org => org.name).join("<br>");
                 }
             },
+            {"defaultContent": ""},
             {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement)'>delete</button>"},
             {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
         ]
@@ -320,8 +328,7 @@ function resetTable() {
 }
 
 function refreshTable() {
-    $('#userTable').DataTable().destroy();
-    generateAjaxDataTable();
+    $('#userTable').DataTable().ajax.reload();
 }
 
 
@@ -333,63 +340,19 @@ function initButtons() {
     document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
         deleteSelectedOrgs();
     });
-    document.querySelectorAll(".searchButton").forEach(element => element.addEventListener("click", function () {
-        searchField(this.value, this.parentElement.parentElement.firstChild);
-    }));
+    document.querySelector("#SearchButton").addEventListener("click",function () {
+        searchField(this.value, this.parentElement.parentElement.firstChild)});
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
-function renderThemeForTable(){
+function renderThemeForTable(table){
+    table.draw("full-hold")
     let theme = sessionStorage.getItem("theme");
     if(theme === "dark"){
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
     } else {
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.remove("darktheme"));
     }
-}
-
-function generateAjaxDataTableByCriteria(values) {
-
-    $('#userTable').DataTable().destroy();
-
-    let table = $('#userTable').DataTable({
-        "processing": true,
-        "serverSide": true,
-        "stateSave": true,
-        "ajax": {
-            'type': 'POST',
-            "contentType": "application/json; charset=utf-8",
-            'url': '/getUsersForPageByCriteria/',
-            "data": values,
-            dataSrc: function (response) {
-                return generateDataSrcForDataTable(response)
-            }
-        },
-        "initComplete": function(){renderThemeForTable()},
-        "recordsTotal": "recordsTotal",
-        "recordsFiltered": "recordsFiltered",
-        "rowId": "userid",
-        "pagingType": "numbers",
-        "responsive": true,
-        "info": false,
-        columns: [
-            {data: "userid"},
-            {data: "name"},
-            {data: "email"},
-            {data: "address"},
-            {data: "phone"},
-            {data: "role"},
-            {
-                data: function (data) {
-                    return data.orgs.map(org => org.name).join("<br>");
-                }
-            },
-            {"defaultContent": "<button class='btn btn-danger' onclick='deleteUser(this.parentElement.parentElement)'>delete</button>"},
-            {"defaultContent": "<button class='btn btn-warning' onclick='getUser(this.parentElement.parentElement)'>update</button>"}
-        ]
-    });
-    InitHideColBarAndButtons(table);
-    removeInputFeedback();
 }
 
 function removeInputFeedback() {
