@@ -51,9 +51,6 @@
         <h5 style="display:none;" id="deleteMessage"><spring:message code="deletesuccess"/></h5>
     </div>
     <div class="userTableDiv" style="width: 100%;">
-        <div style="margin-top:15px;margin-bottom: 15px;">
-            <spring:message code="columnvisibility"/> : <a class="toggle-vis" data-column="0">id</a> - <a class="toggle-vis" data-column="1"><spring:message code="name"/></a> - <a class="toggle-vis" data-column="2">email</a> - <a class="toggle-vis" data-column="3"><spring:message code="address"/></a> - <a class="toggle-vis" data-column="4"><spring:message code="phone"/></a> - <a class="toggle-vis" data-column="5"><spring:message code="role"/></a> - <a class="toggle-vis" data-column="6"><spring:message code="orgs"/></a>
-        </div>
         <table id="userTable" class="table table-striped">
             <thead>
             <tr>
@@ -64,9 +61,9 @@
                 <th><spring:message code="phone"/></th>
                 <th><spring:message code="role"/></th>
                 <th><spring:message code="orgs"/></th>
-                <th></th>
-                <th><spring:message code="delete"/></th>
-                <th><spring:message code="update"/></th>
+                <th class="ignorecolvis notexport"></th>
+                <th class="ignorecolvis notexport"><spring:message code="delete"/></th>
+                <th class="ignorecolvis notexport"><spring:message code="update"/></th>
             </tr>
             </thead>
             <tbody id="dataTableTbody">
@@ -122,6 +119,7 @@
                 </th>
             </tr>
             </tfoot>
+
         </table>
         <button class="btn btn-success mb-2" id="adduserbutton" onclick="adduser()"><spring:message
                 code="adduser"/></button>
@@ -140,6 +138,8 @@
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.js"></script>
+    <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script>
 </div>
 </body>
 </html>

@@ -114,7 +114,7 @@ function generateAjaxDataTable(values) {
                 return generateDataSrcForDataTable(response)
             },
         },
-        "initComplete": function(){renderThemeForTable(table);},
+        "initComplete": function(){renderThemeForTable();},
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
@@ -331,8 +331,6 @@ function refreshTable() {
     $('#userTable').DataTable().ajax.reload();
 }
 
-
-
 function initButtons() {
     document.querySelector("#closeModalButton").addEventListener("click", function () {
         refreshTable()
@@ -345,8 +343,7 @@ function initButtons() {
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
-function renderThemeForTable(table){
-    table.draw("full-hold")
+function renderThemeForTable(){
     let theme = sessionStorage.getItem("theme");
     if(theme === "dark"){
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
@@ -386,16 +383,12 @@ function setTheme(theme){
 }
 
 function InitHideColBarAndButtons(table){
-    $('a.toggle-vis').on( 'click', function (e) {
-        e.preventDefault();
-        let column = table.column( $(this).attr('data-column') );
-        column.visible( ! column.visible() );
-    } );
-
+    let lang = sessionStorage.getItem("lang");
     new $.fn.dataTable.Buttons( table, {
         "buttons": [
-            {extend:'excel',text:"Save Excel"}
+            {extend:'excel',text:sessionStorage.getItem("saveexcel,"+lang),columns: ':not(.notexport)'},{extend:'colvis',columns: ':not(.ignorecolvis)',text : sessionStorage.getItem("columnvisibility,"+lang)}
         ],
     } );
     table.buttons().containers().appendTo('.dataTableTfoot');
+    document.querySelector(".buttons-excel").parentNode.insertBefore(document.createElement("br"), document.querySelector(".buttons-excel").nextSibling);
 }
