@@ -3,11 +3,10 @@ window.onload = function () {
     initErrorCss();
     hideSuccessMessage();
     initButtons();
-    //initEnterButton();
-    initInputFeedback();
     initLocaleSetter();
     getUserTheme();
     initColSearch();
+    initInputFeedback();
 }
 
 function initLocaleSetter() {
@@ -20,37 +19,12 @@ function initLocaleSetter() {
 }
 
 function initInputFeedback() {
-    $('.searchInput').on('keyup', function () {
-        if (this.value.length >= 0) {
+    $(".dataTableTfoot :input").on('keyup', function () {
+        if (this.value.length > 0) {
             this.classList.add("feedback");
         }
     });
 }
-/*
-
-function searchField() {
-    let inputValues = document.querySelectorAll(".searchInput");
-    let datatable = $('#userTable').dataTable().api();
-    let valuesString = "";
-
-    for (let i = 0; i < inputValues.length; i++) {
-        if(i === 0){
-            valuesString += "?"+inputValues[i].title+"="+inputValues[i].value;
-        } else {
-            valuesString += "&"+inputValues[i].title+"="+inputValues[i].value;
-        }
-    }
-    if ($('#conditionToggle').prop('checked')) {
-        valuesString+= "&" + "condition" + "=And";
-    } else {
-        valuesString+= "&" + "condition" + "=Or";
-    }
-
-    datatable.ajax.url( '/getUsersForPageByCriteria'+valuesString).load();
-    removeInputFeedback();
-}
-
- */
 
 function deleteUser(element) {
     let id;
@@ -78,11 +52,16 @@ function deleteUser(element) {
 }
 
 function initColSearch() {
+    let search = "Search"
+    if (sessionStorage.getItem("lang") === "hu") {
+        search = sessionStorage.getItem("search,hu");
+    }
     $('#userTable tfoot th').each(function () {
         var title = $(this).text();
         let ignore = this.classList.contains("ignorecolvis");
+
         if(ignore === false){
-            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+            $(this).html('<input type="text" placeholder="'+search + " " + title + '" />');
         }
     });
 }
@@ -120,9 +99,8 @@ function generateAjaxDataTable(values) {
     let table = $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
-        colReorder: {
-            allowReorder: true,
-            realtime: false
+        "drawCallback": function( settings ) {
+            removeInputFeedback();
         },
         "ajax": {
             'type': 'POST',
@@ -134,7 +112,6 @@ function generateAjaxDataTable(values) {
         },
         "search":true,
         "initComplete": function(){
-
             this.api().columns().every(function () {
                 var that = this;
                 $('input', this.footer()).on('focusout', function (){
@@ -155,7 +132,7 @@ function generateAjaxDataTable(values) {
                     }
                 });
             });
-            renderThemeForTable();
+
             },
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
@@ -181,6 +158,9 @@ function generateAjaxDataTable(values) {
         ]
     });
     InitHideColBarAndButtons(table);
+    table.on( 'draw', function () {
+        removeInputFeedback();
+    } );
 }
 
 function adduser() {
@@ -365,10 +345,6 @@ function hideSuccessMessage() {
         4000);
 }
 
-function resetTable() {
-    location.reload();
-}
-
 function refreshTable() {
     $('#userTable').DataTable().ajax.reload();
 }
@@ -380,8 +356,6 @@ function initButtons() {
     document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
         deleteSelectedOrgs();
     });
-    //document.querySelector("#SearchButton").addEventListener("click",function () {
-    //    searchField(this.value, this.parentElement.parentElement.firstChild)});
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
@@ -395,18 +369,8 @@ function renderThemeForTable(){
 }
 
 function removeInputFeedback() {
-    document.querySelectorAll(".searchInput").forEach(element => element.classList.remove("feedback"))
+    document.querySelectorAll('input').forEach(element => {if(element.classList.contains("feedback")){console.log(element);element.classList.remove("feedback")}});
 }
-/*
-function initEnterButton() {
-    $(document).on('keydown', document, function (e) {
-        if (e.keyCode === 13) {
-            searchField();
-        }
-    });
-}
-
- */
 
 function getUserTheme(){
     fetch("/getUserTheme")

@@ -1085,4 +1085,32 @@ databaseChangeLog:
               - column:
                   name: messagecontent
                   value: excel mentése
+  - changeSet:
+      id: 12
+      author: karacsonyiz
+      changes:
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: en
+              - column:
+                  name: messagekey
+                  value: search
+              - column:
+                  name: messagecontent
+                  value: Search
+        - insert:
+            tableName: languages
+            columns:
+              - column:
+                  name: locale
+                  value: hu
+              - column:
+                  name: messagekey
+                  value: search
+              - column:
+                  name: messagecontent
+                  value: Keresés
 

@@ -43,12 +43,17 @@ function generate() {
 }
 
 function checkIfFileValid(file) {
+    let lang = sessionStorage.getItem("lang");
+    let uploadMessage = document.querySelector("#uploadMessage");
     if (file === undefined) {
-        let lang = sessionStorage.getItem("lang");
-        let uploadMessage = document.querySelector("#uploadMessage");
         uploadMessage.style = "display:block;color:red;";
         uploadMessage.innerHTML = lang === "en" ? "No file selected!" : "Nincs fájl kiválasztva!";
         throw "No file selected!"
+    }
+    if(file.type !== "image/jpeg"){
+        uploadMessage.style = "display:block;color:red;";
+        uploadMessage.innerHTML = lang === "en" ? "Bad file format!" : "Rossz fájlformátum!";
+        throw "Bad file format!"
     }
 }
 
