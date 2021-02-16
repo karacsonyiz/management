@@ -3,10 +3,11 @@ window.onload = function () {
     initErrorCss();
     hideSuccessMessage();
     initButtons();
-    initEnterButton();
+    //initEnterButton();
     initInputFeedback();
     initLocaleSetter();
     getUserTheme();
+    initColSearch();
 }
 
 function initLocaleSetter() {
@@ -25,6 +26,7 @@ function initInputFeedback() {
         }
     });
 }
+/*
 
 function searchField() {
     let inputValues = document.querySelectorAll(".searchInput");
@@ -47,6 +49,8 @@ function searchField() {
     datatable.ajax.url( '/getUsersForPageByCriteria'+valuesString).load();
     removeInputFeedback();
 }
+
+ */
 
 function deleteUser(element) {
     let id;
@@ -72,6 +76,17 @@ function deleteUser(element) {
         return false;
     }
 }
+
+function initColSearch() {
+    $('#userTable tfoot th').each(function () {
+        var title = $(this).text();
+        let ignore = this.classList.contains("ignorecolvis");
+        if(ignore === false){
+            $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+        }
+    });
+}
+
 
 function showDeleteSuccessAndReload() {
     document.querySelector("#deleteMessage").setAttribute("style", "display:block;color:green;");
@@ -105,7 +120,10 @@ function generateAjaxDataTable(values) {
     let table = $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
-        "stateSave": true,
+        colReorder: {
+            allowReorder: true,
+            realtime: false
+        },
         "ajax": {
             'type': 'POST',
             'url': '/getUsersForPage/',
@@ -114,7 +132,31 @@ function generateAjaxDataTable(values) {
                 return generateDataSrcForDataTable(response)
             },
         },
-        "initComplete": function(){renderThemeForTable();},
+        "search":true,
+        "initComplete": function(){
+
+            this.api().columns().every(function () {
+                var that = this;
+                $('input', this.footer()).on('focusout', function (){
+                    that.search(this.value)
+                }) ;
+                $('label', this.footer()).on('click', function (){
+                    if(this.innerHTML === "Or") {
+                        that.search("And")
+                    } else {
+                        that.search("Or")
+                    }
+                }) ;
+                $('input', this.footer()).on('keypress', function (e) {
+                    if(e.which === 13) {
+                        if (that.search() !== this.value) {
+                            that.search(this.value).draw();
+                        }
+                    }
+                });
+            });
+            renderThemeForTable();
+            },
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
@@ -338,8 +380,8 @@ function initButtons() {
     document.querySelector("#deleteSelectedOrgs").addEventListener("click", function () {
         deleteSelectedOrgs();
     });
-    document.querySelector("#SearchButton").addEventListener("click",function () {
-        searchField(this.value, this.parentElement.parentElement.firstChild)});
+    //document.querySelector("#SearchButton").addEventListener("click",function () {
+    //    searchField(this.value, this.parentElement.parentElement.firstChild)});
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
@@ -355,7 +397,7 @@ function renderThemeForTable(){
 function removeInputFeedback() {
     document.querySelectorAll(".searchInput").forEach(element => element.classList.remove("feedback"))
 }
-
+/*
 function initEnterButton() {
     $(document).on('keydown', document, function (e) {
         if (e.keyCode === 13) {
@@ -363,6 +405,8 @@ function initEnterButton() {
         }
     });
 }
+
+ */
 
 function getUserTheme(){
     fetch("/getUserTheme")

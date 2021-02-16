@@ -70,56 +70,21 @@
             </tbody>
             <tfoot class="dataTableTfoot">
             <tr>
-                <th class="px-0">
-                    <div style="display:inline-flex"><input type="number" placeholder="Search id" class="searchInput"
-                                                            title="userid">
-                    </div>
-                </th>
-                <th class="px-0">
-                    <div style="display:inline-flex"><input placeholder="Search name" class="searchInput" title="name">
-                    </div>
-                </th>
-                <th class="px-0">
-                    <div style="display:inline-flex"><input placeholder="Search email" class="searchInput"
-                                                            title="email">
-                    </div>
-                </th>
-                <th class="px-0">
-                    <div style="display:inline-flex"><input placeholder="Search address" class="searchInput"
-                                                            title="address">
-                    </div>
-                </th>
-                <th class="px-0">
-                    <div style="display:inline-flex"><input placeholder="Search phone" class="searchInput"
-                                                            title="phone">
-                    </div>
-                </th>
-                <th class="px-0">
-                    <div style="display:inline-flex"><input placeholder="Search role" class="searchInput" title="role">
-                    </div>
-                </th>
-                <th class="px-0">
-                    <div style="display:inline-flex"><input placeholder="Search orgs" class="searchInput"
-                                                            id="searchInputForKeyUp" title="orgs">
-                    </div>
-                </th>
-                <th class="px-0">
-                        <div>
-                            <button style="margin-left: 30px;" class="px-3 searchButton" id="SearchButton" value="orgs">
-                                Go
-                            </button>
-                        </div>
-                </th>
-                <th>
-                    <button class="btn btn-danger" onclick="resetTable()">reset</button>
-                </th>
-                <th>
-                    <input type="checkbox" id="conditionToggle" data-toggle="toggle" data-on="And" data-off="Or"
-                           data-onstyle="success" data-offstyle="primary">
+                <th>id</th>
+                <th><spring:message code="name"/></th>
+                <th>email</th>
+                <th><spring:message code="address"/></th>
+                <th><spring:message code="phone"/></th>
+                <th><spring:message code="role"/></th>
+                <th><spring:message code="orgs"/></th>
+                <th class="ignorecolvis notexport" style="display:none;"></th>
+                <th class="ignorecolvis notexport" style="display:none;"></th>
+                <th style="display:block !important;" class="ignorecolvis">
+                    <input type="checkbox" id="conditionToggle" data-toggle="toggle" title="" data-on="And" data-off="Or"
+                           data-onstyle="success" data-offstyle="primary" style="width:15px;">
                 </th>
             </tr>
             </tfoot>
-
         </table>
         <button class="btn btn-success mb-2" id="adduserbutton" onclick="adduser()"><spring:message
                 code="adduser"/></button>
@@ -140,6 +105,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/colreorder/1.5.3/js/dataTables.colReorder.js"></script>
 </div>
 </body>
 </html>

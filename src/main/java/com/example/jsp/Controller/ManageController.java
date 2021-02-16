@@ -65,11 +65,22 @@ public class ManageController {
     @RequestMapping(value = "/getUsersForPage")
     public DataTable getUsersForPage(@RequestBody String formData) {
         Map<String, String> formDataMap = convertFormDataToMap(formData);
+        Map<String, String> criteria = getCriteriaParams2(formDataMap);
+        int start = Integer.parseInt(formDataMap.getOrDefault("start", "0"));
+        int length = Integer.parseInt(formDataMap.getOrDefault("length", "10"));
         int draw = Integer.parseInt(formDataMap.get( "draw"));
-        int start = Integer.parseInt(formDataMap.get( "start"));
-        Pageable pageable = makePageAbleFromData(formDataMap);
-        Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
-        return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
+        String direction = formDataMap.getOrDefault("order[0][dir]","asc");
+        String orderBy = formDataMap.getOrDefault("columns["+formDataMap.getOrDefault("order[0][column]","0")+"][data]","userid");
+        orderBy = validateOrder(orderBy);
+        Set<GeneratedUserEntity> userSet = userRepositoryService
+                .getUsersForPageByCriteria(start, length, criteria, criteria.getOrDefault("condition", "Or"),direction,orderBy);
+        if (userSet == null) {
+            Pageable pageable = makePageAbleFromData(formDataMap);
+            Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
+            return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
+        }
+
+        return new DataTable(draw, userSet.size(), userSet.size(), new ArrayList<>(), new ArrayList<>(userSet), start);
     }
 
     @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
@@ -166,33 +177,6 @@ public class ManageController {
     }
 
     /**
-     * This method returns a list of Users by given field,value and current page.
-     *
-     * @param formData incoming parameters from DataTable.
-     * @return A dataTable consisting UserEntities and pageinformation according to the current page and criteria.
-     */
-    @RequestMapping(value = "/getUsersForPageByCriteria")
-    public DataTable searchOnFieldForPage(@RequestBody String formData) {
-        Map<String, String> params = convertFormDataToMap(formData);
-        Map<String, String> criteria = getCriteriaParams(params);
-        String direction = params.getOrDefault("order[0][dir]","asc");
-        String orderBy = params.getOrDefault("columns["+params.getOrDefault("order[0][column]","0")+"][data]","userid");
-        orderBy = validateOrder(orderBy);
-        int start = Integer.parseInt(params.getOrDefault("start", "0"));
-        int length = Integer.parseInt(params.getOrDefault("length", "10"));
-        int draw = Integer.parseInt(params.getOrDefault("draw", "1"));
-        Set<GeneratedUserEntity> userSet = userRepositoryService
-                .getUsersForPageByCriteria(start, length, criteria, params.getOrDefault("condition", "Or"),direction,orderBy);
-        if (userSet == null) {
-            Pageable pageable = PageRequest.of(start / length, length);
-            Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
-            return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
-        }
-        long userCount = userRepositoryService.countUsers();
-        return new DataTable(draw, userCount, userCount, new ArrayList<>(), new ArrayList<>(userSet), start);
-    }
-
-    /**
      * This method creates a Map from parameter keys and values to pass the service's search function.
      *
      * @return A Hashmap that contains the key and value pairs of thr required criteria parameters.
@@ -207,6 +191,22 @@ public class ManageController {
         result.put("orgs", params.getOrDefault("orgs",""));
         result.put("phone", params.getOrDefault("phone",""));
         result.put("address", params.getOrDefault("address",""));
+        return result;
+    }
+
+    private Map<String, String> getCriteriaParams2(Map<String, String> params) {
+        Map<String, String> result = new HashMap<>();
+        result.put("userid", params.getOrDefault("columns[0][search][value]",""));
+        result.put("name", params.getOrDefault("columns[1][search][value]",""));
+        result.put("email", params.getOrDefault("columns[2][search][value]",""));
+        result.put("address", params.getOrDefault("columns[3][search][value]",""));
+        result.put("phone", params.getOrDefault("columns[4][search][value]",""));
+        result.put("role", params.getOrDefault("columns[5][search][value]",""));
+        result.put("orgs", params.getOrDefault("columns[6][search][value]",""));
+        result.put("condition", params.getOrDefault("columns[9][search][value]",""));
+        if(params.get("columns[9][search][value]").equals("")){
+            result.put("condition","Or");
+        }
         return result;
     }
 
@@ -235,6 +235,9 @@ public class ManageController {
         String orderBy = formDataMap.getOrDefault("columns["+orderByColumnNum+"][data]","userid");
         String validatedOrderBy = validateOrder(orderBy);
         Sort.Direction dir = direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+
+
         return PageRequest.of(start / length, length,dir,validatedOrderBy);
     }
 
