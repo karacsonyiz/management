@@ -39,7 +39,7 @@
             <a class="nav-link" href="hello?lang=en" hreflang="en" id="enLocale">Eng</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="login">Login</a>
+            <a class="nav-link" href="login" id="logout" onclick="logOut()">Logout</a>
         </li>
     </ul>
 </nav>

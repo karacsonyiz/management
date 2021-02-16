@@ -34,9 +34,6 @@
         <li class="nav-item">
             <a class="nav-link" href="manageorgs?lang=en" hreflang="en" id="enLocale">Eng</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="login">Login</a>
-        </li>
     </ul>
 </nav>
 <h1><spring:message code="manageorgs"/></h1>

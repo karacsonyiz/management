@@ -1,11 +1,28 @@
 window.onload = function () {
+    getCurrentUser();
     setDefaultLang();
     getLanguageMap();
     getImages(3);
     autoPage();
     initButtons();
     document.querySelector("#uploadMessage").style = "display:none";
-    getUserTheme()
+    getUserTheme();
+}
+
+function logOut(){
+    fetch("/logout");
+}
+
+function getCurrentUser(){
+    fetch("/getCurrentUser")
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (jsonData) {
+            if(jsonData === "Guest" || jsonData === ""){
+                document.querySelector("#logout").innerHTML = "Login";
+            }
+        });
 }
 
 function getLanguageMap() {

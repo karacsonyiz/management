@@ -52,16 +52,18 @@ function deleteUser(element) {
 }
 
 function initColSearch() {
-    let search = "Search"
+    let search = "Search";
     if (sessionStorage.getItem("lang") === "hu") {
         search = sessionStorage.getItem("search,hu");
     }
     $('#userTable tfoot th').each(function () {
-        var title = $(this).text();
-        let ignore = this.classList.contains("ignorecolvis");
-
-        if(ignore === false){
-            $(this).html('<input type="text" placeholder="'+search + " " + title + '" />');
+        let title = $(this).text();
+        if(this.classList.contains("ignorecolvis") === false){
+            if(this.classList.contains("number")){
+                $(this).html('<input type="number" placeholder="'+search + " " + title + '" />');
+            } else {
+                $(this).html('<input type="text" placeholder="'+search + " " + title + '" />');
+            }
         }
     });
 }

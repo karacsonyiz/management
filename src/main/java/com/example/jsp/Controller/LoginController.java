@@ -3,6 +3,7 @@ package com.example.jsp.Controller;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,8 +38,40 @@ public class LoginController {
         return modelAndView;
     }
 
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if(session != null) {
+            session.invalidate();
+        }
+        return new ModelAndView("/login");
+    }
+
+    @RequestMapping(value = "/getCurrentUser", method = RequestMethod.GET)
+    public String getCurrentUser(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        Session sessionBean = (Session) request.getSession().getAttribute("sessionBean");
+        if (sessionBean == null) {
+            response.sendRedirect("login");
+            return null;
+        }
+        if(sessionBean.getLogin() == null){
+            response.sendRedirect("login");
+            return null;
+        }
+        return sessionBean.getLogin().getUsername();
+    }
+
+
+
     @GetMapping(value = {"/login"})
-    public ModelAndView showLogin() {
+    public ModelAndView showLogin(HttpSession httpSession, HttpServletResponse response) throws IOException  {
+        Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
+        if (sessionBean != null) {
+            if(sessionBean.getLogin() != null){
+                response.sendRedirect("hello");
+                return null;
+            }
+        }
         ModelAndView modelAndView = new ModelAndView("login");
         modelAndView.addObject("login", new Login());
         return modelAndView;

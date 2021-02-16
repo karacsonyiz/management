@@ -65,7 +65,7 @@ public class ManageController {
     @RequestMapping(value = "/getUsersForPage")
     public DataTable getUsersForPage(@RequestBody String formData) {
         Map<String, String> formDataMap = convertFormDataToMap(formData);
-        Map<String, String> criteria = getCriteriaParams2(formDataMap);
+        Map<String, String> criteria = getCriteriaParams(formDataMap);
         int start = Integer.parseInt(formDataMap.getOrDefault("start", "0"));
         int length = Integer.parseInt(formDataMap.getOrDefault("length", "10"));
         int draw = Integer.parseInt(formDataMap.get( "draw"));
@@ -183,18 +183,6 @@ public class ManageController {
      * @params Parameters for search criteria
      */
     private Map<String, String> getCriteriaParams(Map<String, String> params) {
-        Map<String, String> result = new HashMap<>();
-        result.put("userid", params.getOrDefault("userid",""));
-        result.put("name", params.getOrDefault("name",""));
-        result.put("email", params.getOrDefault("email",""));
-        result.put("role", params.getOrDefault("role",""));
-        result.put("orgs", params.getOrDefault("orgs",""));
-        result.put("phone", params.getOrDefault("phone",""));
-        result.put("address", params.getOrDefault("address",""));
-        return result;
-    }
-
-    private Map<String, String> getCriteriaParams2(Map<String, String> params) {
         Map<String, String> result = new HashMap<>();
         result.put("userid", params.getOrDefault("columns[0][search][value]",""));
         result.put("name", params.getOrDefault("columns[1][search][value]",""));

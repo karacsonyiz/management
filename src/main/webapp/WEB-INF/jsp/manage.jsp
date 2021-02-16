@@ -37,9 +37,6 @@
             <li class="nav-item">
                 <a class="nav-link" href="manage?lang=en" hreflang="en" id="enLocale">Eng</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="login">Login</a>
-            </li>
         </ul>
     </nav>
     <h1><spring:message code="manageusers"/></h1>
@@ -70,7 +67,7 @@
             </tbody>
             <tfoot class="dataTableTfoot">
             <tr>
-                <th>id</th>
+                <th class="number">id</th>
                 <th><spring:message code="name"/></th>
                 <th>email</th>
                 <th><spring:message code="address"/></th>
