@@ -9,6 +9,9 @@ import com.example.jsp.Model.Login;
 import com.example.jsp.Model.UserForm;
 import org.springframework.cache.CacheManager;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,11 +59,11 @@ public class UserRepositoryService extends GeneralService {
         return userEntityRepository.findAll();
     }
 
-    public String getUserTheme(String name){
+    public String getUserTheme(String name) {
         return userEntityRepository.getUserThemeByName(name);
     }
 
-    public void setUserTheme(String name,String theme){
+    public void setUserTheme(String name, String theme) {
         GeneratedUserEntity user = userEntityRepository.findByName(name).get(0);
         user.setTheme(theme);
         userEntityRepository.save(user);
@@ -173,13 +176,61 @@ public class UserRepositoryService extends GeneralService {
     }
 
     public Set<GeneratedUserEntity> getUsersForPageByCriteria(int pageNumber, int pageSize, Map<String, String> params, String condition,
-                                                               String direction,String orderBy){
+                                                              String direction, String orderBy) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
         Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
         List<Predicate> predicateList = new ArrayList<>();
         Predicate finalPredicate;
         params.remove("condition");
+        boolean foundOne = false;
+
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (!entry.getValue().isBlank()) {
+                foundOne = true;
+                if (entry.getKey().equals("orgs")) {
+                    GeneratedOrganizationEntity org = orgEntityRepository.findByOrgName(entry.getValue());
+                    predicateList.add(cb.isMember(org, root.get("orgs")));
+                } else {
+                    if (entry.getKey().equals("userid")) {
+                        predicateList.add(cb.equal(root.get(entry.getKey()), entry.getValue()));
+                    } else {
+                        predicateList.add(cb.like(root.get(entry.getKey()), "%" + entry.getValue() + "%"));
+                    }
+                }
+            }
+        }
+
+        if (!foundOne) {
+            return null;
+        }
+        if (condition.equals("Or")) {
+            finalPredicate = cb.or(predicateList.toArray(new Predicate[0]));
+        } else {
+            finalPredicate = cb.and(predicateList.toArray(new Predicate[0]));
+        }
+
+        if (direction.equals("desc")) {
+            query.orderBy(cb.desc(root.get(orderBy)));
+        } else {
+            query.orderBy(cb.asc(root.get(orderBy)));
+        }
+        query.where(finalPredicate);
+        CriteriaQuery<GeneratedUserEntity> select = query.select(root);
+        TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
+        typedQuery.setFirstResult(pageNumber);
+        typedQuery.setMaxResults(pageSize);
+        return new HashSet<>(typedQuery.getResultList());
+    }
+
+    public Page<GeneratedUserEntity> getUsersForPageByCriteria2(Map<String, String> params, String condition, Pageable pageable,
+                                                                String direction, String orderBy) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GeneratedUserEntity> query = cb.createQuery(GeneratedUserEntity.class);
+        Root<GeneratedUserEntity> root = query.from(GeneratedUserEntity.class);
+        List<Predicate> predicateList = new ArrayList<>();
+        Predicate finalPredicate;
         boolean foundOne = false;
 
         for (Map.Entry<String, String> entry : params.entrySet()) {
@@ -207,18 +258,22 @@ public class UserRepositoryService extends GeneralService {
             finalPredicate = cb.and(predicateList.toArray(new Predicate[0]));
         }
 
-        if(direction.equals("desc")){
+        query.where(finalPredicate);
+        CriteriaQuery<GeneratedUserEntity> select = query.select(root);
+        TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
+        typedQuery.setMaxResults(pageable.getPageSize());
+        if (direction.equals("desc")) {
             query.orderBy(cb.desc(root.get(orderBy)));
         } else {
             query.orderBy(cb.asc(root.get(orderBy)));
         }
-
-        query.where(finalPredicate);
-        CriteriaQuery<GeneratedUserEntity> select = query.select(root);
-        TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
-        typedQuery.setFirstResult(pageNumber);
-        typedQuery.setMaxResults(pageSize);
-        return new HashSet<>(typedQuery.getResultList());
+        CriteriaBuilder qb = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = qb.createQuery(Long.class);
+        cq.select(qb.count(cq.from(GeneratedUserEntity.class)));
+        cq.where(finalPredicate);
+        Long total = em.createQuery(cq).getSingleResult();
+        Page<GeneratedUserEntity> results = new PageImpl<>(typedQuery.getResultList(), pageable,total);
+        return results;
     }
 
     /**

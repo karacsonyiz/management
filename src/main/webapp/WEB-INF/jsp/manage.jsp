@@ -29,7 +29,8 @@
         </div>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                <a onclick="switchthemeformanage(this)" class="nav-link" id="themeSwitcher" style="cursor: pointer">dark</a>
+                <a onclick="switchthemeformanage(this)" class="nav-link" id="themeSwitcher"
+                   style="cursor: pointer">dark</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="manage?lang=hu" hreflang="hu" id="huLocale">Hu</a>
@@ -78,9 +79,10 @@
                 <th><spring:message code="role"/></th>
                 <th><spring:message code="orgs"/></th>
                 <th class="ignorecolvis notexport" style="display:none;"></th>
-                <th class="ignorecolvis notexport" style="display:none;"></th>
+                <th class="ignorecolvis notexport"><button class="btn btn-danger" onclick="resetTable()">reset</button></th>
                 <th style="display:block !important;" class="ignorecolvis">
-                    <input type="checkbox" id="conditionToggle" data-toggle="toggle" title="" data-on="And" data-off="Or"
+                    <input type="checkbox" id="conditionToggle" data-toggle="toggle" title="" data-on="And"
+                           data-off="Or"
                            data-onstyle="success" data-offstyle="primary" style="width:15px;">
                 </th>
             </tr>

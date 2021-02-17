@@ -82,16 +82,17 @@ public class HelloController {
 
     /**
      * Checks if user is logged in by checking the session attribute : login.
+     *
      * @return If login is valid, returns the name of the User,if invalid, returns null and redirects to login page.
      */
     @RequestMapping(value = "/getCurrentUser", method = RequestMethod.GET)
-    public String getCurrentUser(HttpServletRequest request,HttpServletResponse response) throws IOException{
+    public String getCurrentUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Session sessionBean = (Session) request.getSession().getAttribute("sessionBean");
         if (sessionBean == null) {
             response.sendRedirect("login");
             return null;
         }
-        if(sessionBean.getLogin() == null){
+        if (sessionBean.getLogin() == null) {
             response.sendRedirect("login");
             return null;
         }

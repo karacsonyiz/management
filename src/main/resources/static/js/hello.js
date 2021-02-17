@@ -9,17 +9,17 @@ window.onload = function () {
     getUserTheme();
 }
 
-function logOut(){
+function logOut() {
     fetch("/logout");
 }
 
-function getCurrentUser(){
+function getCurrentUser() {
     fetch("/getCurrentUser")
         .then(function (response) {
             return response.text();
         })
         .then(function (jsonData) {
-            if(jsonData === "Guest" || jsonData === ""){
+            if (jsonData === "Guest" || jsonData === "") {
                 document.querySelector("#logout").innerHTML = "Login";
             }
         });
@@ -67,7 +67,7 @@ function checkIfFileValid(file) {
         uploadMessage.innerHTML = lang === "en" ? "No file selected!" : "Nincs fájl kiválasztva!";
         throw "No file selected!"
     }
-    if(file.type !== "image/jpeg"){
+    if (file.type !== "image/jpeg") {
         uploadMessage.style = "display:block;color:red;";
         uploadMessage.innerHTML = lang === "en" ? "Bad file format!" : "Rossz fájlformátum!";
         throw "Bad file format!"
@@ -173,19 +173,19 @@ function setDefaultLang() {
     }
 }
 
-function getUserTheme(){
+function getUserTheme() {
     fetch("/getUserTheme")
         .then(function (response) {
             return response.text();
         })
         .then(function (responsetext) {
-            sessionStorage.setItem("theme",responsetext);
+            sessionStorage.setItem("theme", responsetext);
             setTheme(responsetext);
         });
 }
 
-function setTheme(theme){
-    if(theme === "dark"){
+function setTheme(theme) {
+    if (theme === "dark") {
         setDarkThemeForHello();
         document.getElementById("themeSwitcher").innerHTML = "light"
     }

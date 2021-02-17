@@ -15,7 +15,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession();
         Session sessionBean = (Session) session.getAttribute("sessionBean");
-        if(sessionBean == null){
+        if (sessionBean == null) {
             return Optional.of("Guest");
         }
         if (sessionBean.getLogin() != null) {

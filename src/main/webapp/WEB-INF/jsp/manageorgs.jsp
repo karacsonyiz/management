@@ -26,7 +26,8 @@
     </div>
     <ul class="navbar-nav ml-auto">
         <li class="nav-item">
-            <a onclick="switchthemeformanageorgs(this)" class="nav-link" id="themeSwitcher" style="cursor: pointer">dark</a>
+            <a onclick="switchthemeformanageorgs(this)" class="nav-link" id="themeSwitcher"
+               style="cursor: pointer">dark</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="manageorgs?lang=hu" hreflang="hu" id="huLocale">Hu</a>

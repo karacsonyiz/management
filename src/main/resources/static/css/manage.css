@@ -30,18 +30,18 @@
 }
 
 th {
-    cursor : pointer;
+    cursor: pointer;
 }
 
 .toggle-vis {
-    cursor : pointer;
+    cursor: pointer;
     color: black;
 }
 
 .dt-buttons {
-    margin-top : 20px;
+    margin-top: 20px;
     display: flex;
-    align-items:flex-start;
+    align-items: flex-start;
 }
 
 .buttons-excel {

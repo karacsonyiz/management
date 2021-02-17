@@ -4,17 +4,17 @@ window.onload = function () {
     getCurrentUser();
 }
 
-function logOut(){
+function logOut() {
     fetch("/logout");
 }
 
-function getCurrentUser(){
+function getCurrentUser() {
     fetch("/getCurrentUser")
         .then(function (response) {
             return response.text();
         })
         .then(function (jsonData) {
-            if(jsonData === "Guest" || jsonData === ""){
+            if (jsonData === "Guest" || jsonData === "") {
                 document.querySelector("#logout").innerHTML = "Login";
             }
         });
@@ -42,7 +42,9 @@ function generateAjaxDataTable(dataTable) {
         "bLengthChange": false,
         "bInfo": false,
         "responsive": true,
-        "initComplete": function(){renderThemeForTable()},
+        "initComplete": function () {
+            renderThemeForTable()
+        },
         data: dataTable.orgEntities,
         columns: [
             {data: "name"},
@@ -57,28 +59,28 @@ function generateAjaxDataTable(dataTable) {
     });
 }
 
-function renderThemeForTable(){
+function renderThemeForTable() {
     let theme = sessionStorage.getItem("theme");
-    if(theme === "dark"){
+    if (theme === "dark") {
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
     } else {
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.remove("darktheme"));
     }
 }
 
-function getUserTheme(){
+function getUserTheme() {
     fetch("/getUserTheme")
         .then(function (response) {
             return response.text();
         })
         .then(function (responsetext) {
-            sessionStorage.setItem("theme",responsetext);
+            sessionStorage.setItem("theme", responsetext);
             setTheme(responsetext);
         });
 }
 
-function setTheme(theme){
-    if(theme === "dark"){
+function setTheme(theme) {
+    if (theme === "dark") {
         setDarkThemeForManageOrgs();
         document.getElementById("themeSwitcher").innerHTML = "light"
     }

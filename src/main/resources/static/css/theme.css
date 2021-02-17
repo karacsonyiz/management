@@ -1,10 +1,10 @@
 .darktheme {
     background: #444444 !important;
-    color:lightseagreen !important;
+    color: lightseagreen !important;
 }
 
 .darkthemewithoutbackground {
-    color:lightseagreen !important;
+    color: lightseagreen !important;
 }
 
 .navbar {
@@ -12,6 +12,6 @@
 }
 
 .darthemewithwhitetextcolor {
-    color : white !important;
+    color: white !important;
 }
 

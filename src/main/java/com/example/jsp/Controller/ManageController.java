@@ -67,20 +67,18 @@ public class ManageController {
         Map<String, String> formDataMap = convertFormDataToMap(formData);
         Map<String, String> criteria = getCriteriaParams(formDataMap);
         int start = Integer.parseInt(formDataMap.getOrDefault("start", "0"));
-        int length = Integer.parseInt(formDataMap.getOrDefault("length", "10"));
-        int draw = Integer.parseInt(formDataMap.get( "draw"));
-        String direction = formDataMap.getOrDefault("order[0][dir]","asc");
-        String orderBy = formDataMap.getOrDefault("columns["+formDataMap.getOrDefault("order[0][column]","0")+"][data]","userid");
+        int draw = Integer.parseInt(formDataMap.get("draw"));
+        String direction = formDataMap.getOrDefault("order[0][dir]", "asc");
+        String orderBy = formDataMap.getOrDefault("columns[" + formDataMap.getOrDefault("order[0][column]", "0") + "][data]", "userid");
         orderBy = validateOrder(orderBy);
-        Set<GeneratedUserEntity> userSet = userRepositoryService
-                .getUsersForPageByCriteria(start, length, criteria, criteria.getOrDefault("condition", "Or"),direction,orderBy);
-        if (userSet == null) {
-            Pageable pageable = makePageAbleFromData(formDataMap);
+        Pageable pageable = makePageAbleFromData(formDataMap);
+        Page<GeneratedUserEntity> response = userRepositoryService.getUsersForPageByCriteria2(criteria,
+                criteria.getOrDefault("condition", "Or"),pageable,direction,orderBy);
+        if (response == null) {
             Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
             return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
         }
-
-        return new DataTable(draw, userSet.size(), userSet.size(), new ArrayList<>(), new ArrayList<>(userSet), start);
+        return new DataTable(draw, response.getTotalElements(), response.getTotalElements(), new ArrayList<>(), response.getContent(), start);
     }
 
     @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
@@ -156,17 +154,17 @@ public class ManageController {
     }
 
     @RequestMapping(value = "/getUserTheme", method = RequestMethod.GET)
-    public String getUserTheme(HttpSession session){
+    public String getUserTheme(HttpSession session) {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
         String name = sessionBean.getLogin().getUsername();
         return userRepositoryService.getUserTheme(name);
     }
 
     @RequestMapping(value = "/setUserTheme/{theme}", method = RequestMethod.GET)
-    public void setUserTheme(HttpSession session,@PathVariable String theme){
+    public void setUserTheme(HttpSession session, @PathVariable String theme) {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
         String name = sessionBean.getLogin().getUsername();
-        userRepositoryService.setUserTheme(name,theme);
+        userRepositoryService.setUserTheme(name, theme);
     }
 
     @RequestMapping(value = "/resetActionMessage", method = RequestMethod.GET)
@@ -184,17 +182,13 @@ public class ManageController {
      */
     private Map<String, String> getCriteriaParams(Map<String, String> params) {
         Map<String, String> result = new HashMap<>();
-        result.put("userid", params.getOrDefault("columns[0][search][value]",""));
-        result.put("name", params.getOrDefault("columns[1][search][value]",""));
-        result.put("email", params.getOrDefault("columns[2][search][value]",""));
-        result.put("address", params.getOrDefault("columns[3][search][value]",""));
-        result.put("phone", params.getOrDefault("columns[4][search][value]",""));
-        result.put("role", params.getOrDefault("columns[5][search][value]",""));
-        result.put("orgs", params.getOrDefault("columns[6][search][value]",""));
-        result.put("condition", params.getOrDefault("columns[9][search][value]",""));
-        if(params.get("columns[9][search][value]").equals("")){
-            result.put("condition","Or");
-        }
+        result.put("userid", params.getOrDefault("columns[0][search][value]", ""));
+        result.put("name", params.getOrDefault("columns[1][search][value]", ""));
+        result.put("email", params.getOrDefault("columns[2][search][value]", ""));
+        result.put("address", params.getOrDefault("columns[3][search][value]", ""));
+        result.put("phone", params.getOrDefault("columns[4][search][value]", ""));
+        result.put("role", params.getOrDefault("columns[5][search][value]", ""));
+        result.put("orgs", params.getOrDefault("columns[6][search][value]", ""));
         return result;
     }
 
@@ -215,18 +209,15 @@ public class ManageController {
      * @param formDataMap A map that contains the necessary data
      * @return A Pageable class that can be used for querying data.
      */
-    private Pageable makePageAbleFromData(Map<String, String> formDataMap){
-        int start = Integer.parseInt(formDataMap.getOrDefault( "start","1"));
-        int length = Integer.parseInt(formDataMap.getOrDefault( "length","10"));
-        String direction = formDataMap.getOrDefault("order[0][dir]","asc");
-        String orderByColumnNum = formDataMap.getOrDefault("order[0][column]","0");
-        String orderBy = formDataMap.getOrDefault("columns["+orderByColumnNum+"][data]","userid");
+    private Pageable makePageAbleFromData(Map<String, String> formDataMap) {
+        int start = Integer.parseInt(formDataMap.getOrDefault("start", "1"));
+        int length = Integer.parseInt(formDataMap.getOrDefault("length", "10"));
+        String direction = formDataMap.getOrDefault("order[0][dir]", "asc");
+        String orderByColumnNum = formDataMap.getOrDefault("order[0][column]", "0");
+        String orderBy = formDataMap.getOrDefault("columns[" + orderByColumnNum + "][data]", "userid");
         String validatedOrderBy = validateOrder(orderBy);
         Sort.Direction dir = direction.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
-
-
-
-        return PageRequest.of(start / length, length,dir,validatedOrderBy);
+        return PageRequest.of(start / length, length, dir, validatedOrderBy);
     }
 
     /**
@@ -235,9 +226,9 @@ public class ManageController {
      * @param orderBy A possible malfunctioning parameter.
      * @return A valid parameter.
      */
-    private String  validateOrder(String orderBy){
-        if(orderBy.equals("function") || orderBy.equals("8") || orderBy.equals("7")){
-           return  "userid";
+    private String validateOrder(String orderBy) {
+        if (orderBy.equals("function") || orderBy.equals("8") || orderBy.equals("7")) {
+            return "userid";
         }
         return orderBy;
     }

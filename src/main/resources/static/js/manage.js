@@ -10,17 +10,17 @@ window.onload = function () {
     getCurrentUser();
 }
 
-function logOut(){
+function logOut() {
     fetch("/logout");
 }
 
-function getCurrentUser(){
+function getCurrentUser() {
     fetch("/getCurrentUser")
         .then(function (response) {
             return response.text();
         })
         .then(function (jsonData) {
-            if(jsonData === "Guest" || jsonData === ""){
+            if (jsonData === "Guest" || jsonData === "") {
                 document.querySelector("#logout").innerHTML = "Login";
             }
         });
@@ -75,11 +75,11 @@ function initColSearch() {
     }
     $('#userTable tfoot th').each(function () {
         let title = $(this).text();
-        if(this.classList.contains("ignorecolvis") === false){
-            if(this.classList.contains("number")){
-                $(this).html('<input type="number" placeholder="'+search + " " + title + '" />');
+        if (this.classList.contains("ignorecolvis") === false) {
+            if (this.classList.contains("number")) {
+                $(this).html('<input type="number" placeholder="' + search + " " + title + '" />');
             } else {
-                $(this).html('<input type="text" placeholder="'+search + " " + title + '" />');
+                $(this).html('<input type="text" placeholder="' + search + " " + title + '" />');
             }
         }
     });
@@ -118,7 +118,7 @@ function generateAjaxDataTable(values) {
     let table = $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
-        "drawCallback": function( settings ) {
+        "drawCallback": function (settings) {
             removeInputFeedback();
         },
         "ajax": {
@@ -129,22 +129,22 @@ function generateAjaxDataTable(values) {
                 return generateDataSrcForDataTable(response)
             },
         },
-        "search":true,
-        "initComplete": function(){
+        "search": true,
+        "initComplete": function () {
             this.api().columns().every(function () {
                 var that = this;
-                $('input', this.footer()).on('focusout', function (){
+                $('input', this.footer()).on('focusout', function () {
                     that.search(this.value)
-                }) ;
-                $('label', this.footer()).on('click', function (){
-                    if(this.innerHTML === "Or") {
+                });
+                $('label', this.footer()).on('click', function () {
+                    if (this.innerHTML === "Or") {
                         that.search("And")
                     } else {
                         that.search("Or")
                     }
-                }) ;
+                });
                 $('input', this.footer()).on('keypress', function (e) {
-                    if(e.which === 13) {
+                    if (e.which === 13) {
                         if (that.search() !== this.value) {
                             that.search(this.value).draw();
                         }
@@ -152,7 +152,7 @@ function generateAjaxDataTable(values) {
                 });
             });
 
-            },
+        },
         "recordsTotal": "recordsTotal",
         "recordsFiltered": "recordsFiltered",
         "rowId": "userid",
@@ -177,9 +177,9 @@ function generateAjaxDataTable(values) {
         ]
     });
     InitHideColBarAndButtons(table);
-    table.on( 'draw', function () {
+    table.on('draw', function () {
         removeInputFeedback();
-    } );
+    });
 }
 
 function adduser() {
@@ -368,6 +368,10 @@ function refreshTable() {
     $('#userTable').DataTable().ajax.reload();
 }
 
+function resetTable(){
+    location.reload();
+}
+
 function initButtons() {
     document.querySelector("#closeModalButton").addEventListener("click", function () {
         refreshTable()
@@ -378,9 +382,9 @@ function initButtons() {
     document.querySelector("#adduserbutton").addEventListener("click", initAddUserPanel);
 }
 
-function renderThemeForTable(){
+function renderThemeForTable() {
     let theme = sessionStorage.getItem("theme");
-    if(theme === "dark"){
+    if (theme === "dark") {
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
     } else {
         document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.remove("darktheme"));
@@ -388,34 +392,47 @@ function renderThemeForTable(){
 }
 
 function removeInputFeedback() {
-    document.querySelectorAll('input').forEach(element => {if(element.classList.contains("feedback")){console.log(element);element.classList.remove("feedback")}});
+    document.querySelectorAll('input').forEach(element => {
+        if (element.classList.contains("feedback")) {
+            console.log(element);
+            element.classList.remove("feedback")
+        }
+    });
 }
 
-function getUserTheme(){
+function getUserTheme() {
     fetch("/getUserTheme")
         .then(function (response) {
             return response.text();
         })
         .then(function (responsetext) {
-            sessionStorage.setItem("theme",responsetext);
+            sessionStorage.setItem("theme", responsetext);
             setTheme(responsetext);
         });
 }
 
-function setTheme(theme){
-    if(theme === "dark"){
+function setTheme(theme) {
+    if (theme === "dark") {
         setDarkThemeForManage();
         document.getElementById("themeSwitcher").innerHTML = "light";
     }
 }
 
-function InitHideColBarAndButtons(table){
+function InitHideColBarAndButtons(table) {
     let lang = sessionStorage.getItem("lang");
-    new $.fn.dataTable.Buttons( table, {
+    new $.fn.dataTable.Buttons(table, {
         "buttons": [
-            {extend:'excel',text:sessionStorage.getItem("saveexcel,"+lang),columns: ':not(.notexport)'},{extend:'colvis',columns: ':not(.ignorecolvis)',text : sessionStorage.getItem("columnvisibility,"+lang)}
+            {
+                extend: 'excel',
+                text: sessionStorage.getItem("saveexcel," + lang),
+                columns: ':not(.notexport)'
+            }, {
+                extend: 'colvis',
+                columns: ':not(.ignorecolvis)',
+                text: sessionStorage.getItem("columnvisibility," + lang)
+            }
         ],
-    } );
+    });
     table.buttons().containers().appendTo('.dataTableTfoot');
     document.querySelector(".buttons-excel").parentNode.insertBefore(document.createElement("br"), document.querySelector(".buttons-excel").nextSibling);
 }

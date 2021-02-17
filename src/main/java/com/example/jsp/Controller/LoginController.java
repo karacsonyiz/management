@@ -40,17 +40,17 @@ public class LoginController {
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if(session != null) {
+        if (session != null) {
             session.invalidate();
         }
         return new ModelAndView("/login");
     }
 
     @GetMapping(value = {"/login"})
-    public ModelAndView showLogin(HttpSession httpSession, HttpServletResponse response) throws IOException  {
+    public ModelAndView showLogin(HttpSession httpSession, HttpServletResponse response) throws IOException {
         Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
         if (sessionBean != null) {
-            if(sessionBean.getLogin() != null){
+            if (sessionBean.getLogin() != null) {
                 response.sendRedirect("hello");
                 return null;
             }
