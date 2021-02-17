@@ -56,11 +56,11 @@ public class ManageController {
     }
 
     /**
-     * This method is the backend implementation of the jQuery DataTable paging functionality.
+     * This method is the backend implementation of the jQuery DataTable paging,sorting and searching functionality.
      * Searches for the users to display on the current page.
      *
      * @param formData incoming parameters from the request.
-     * @return A DataTable consisting UserEntities and pageinformation according to the current page.
+     * @return A DataTable consisting UserEntities and pageinformation according to the current page and criteria.
      */
     @RequestMapping(value = "/getUsersForPage")
     public DataTable getUsersForPage(@RequestBody String formData) {
@@ -72,7 +72,7 @@ public class ManageController {
         String orderBy = formDataMap.getOrDefault("columns[" + formDataMap.getOrDefault("order[0][column]", "0") + "][data]", "userid");
         orderBy = validateOrder(orderBy);
         Pageable pageable = makePageAbleFromData(formDataMap);
-        Page<GeneratedUserEntity> response = userRepositoryService.getUsersForPageByCriteria2(criteria,
+        Page<GeneratedUserEntity> response = userRepositoryService.getUsersForPageByCriteria(criteria,
                 criteria.getOrDefault("condition", "Or"),pageable,direction,orderBy);
         if (response == null) {
             Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
