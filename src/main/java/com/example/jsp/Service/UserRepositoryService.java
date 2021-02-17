@@ -219,16 +219,17 @@ public class UserRepositoryService extends GeneralService {
         } else {
             finalPredicate = cb.and(predicateList.toArray(new Predicate[0]));
         }
-
-        query.where(finalPredicate);
-        CriteriaQuery<GeneratedUserEntity> select = query.select(root);
-        TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
-        typedQuery.setMaxResults(pageable.getPageSize());
         if (direction.equals("desc")) {
             query.orderBy(cb.desc(root.get(orderBy)));
         } else {
             query.orderBy(cb.asc(root.get(orderBy)));
         }
+
+        query.where(finalPredicate);
+        CriteriaQuery<GeneratedUserEntity> select = query.select(root);
+        TypedQuery<GeneratedUserEntity> typedQuery = em.createQuery(select);
+        typedQuery.setMaxResults(pageable.getPageSize());
+
         CriteriaBuilder qb = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = qb.createQuery(Long.class);
         cq.select(qb.count(cq.from(GeneratedUserEntity.class)));
