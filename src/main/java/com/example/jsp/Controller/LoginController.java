@@ -3,7 +3,6 @@ package com.example.jsp.Controller;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,22 +46,6 @@ public class LoginController {
         return new ModelAndView("/login");
     }
 
-    @RequestMapping(value = "/getCurrentUser", method = RequestMethod.GET)
-    public String getCurrentUser(HttpServletRequest request,HttpServletResponse response) throws IOException{
-        Session sessionBean = (Session) request.getSession().getAttribute("sessionBean");
-        if (sessionBean == null) {
-            response.sendRedirect("login");
-            return null;
-        }
-        if(sessionBean.getLogin() == null){
-            response.sendRedirect("login");
-            return null;
-        }
-        return sessionBean.getLogin().getUsername();
-    }
-
-
-
     @GetMapping(value = {"/login"})
     public ModelAndView showLogin(HttpSession httpSession, HttpServletResponse response) throws IOException  {
         Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
@@ -79,7 +62,6 @@ public class LoginController {
 
     @RequestMapping(value = "/hello", method = RequestMethod.POST)
     public ModelAndView hello(@ModelAttribute("login") Login login, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         ModelAndView modelAndView = null;
         if (!userRepositoryService.validateUserForLogin(login, result)) {
             modelAndView = new ModelAndView("login");

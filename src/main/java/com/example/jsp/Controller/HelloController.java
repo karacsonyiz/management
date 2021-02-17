@@ -18,6 +18,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -78,6 +79,20 @@ public class HelloController {
     @RequestMapping(value = "/getLanguageMap", method = RequestMethod.GET)
     public List<LanguageEntity> getLanguageMap() {
         return languageRepository.findAll();
+    }
+
+    @RequestMapping(value = "/getCurrentUser", method = RequestMethod.GET)
+    public String getCurrentUser(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        Session sessionBean = (Session) request.getSession().getAttribute("sessionBean");
+        if (sessionBean == null) {
+            response.sendRedirect("login");
+            return null;
+        }
+        if(sessionBean.getLogin() == null){
+            response.sendRedirect("login");
+            return null;
+        }
+        return sessionBean.getLogin().getUsername();
     }
 
 }
