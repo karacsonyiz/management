@@ -37,6 +37,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="manage?lang=en" hreflang="en" id="enLocale">Eng</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="login" id="logout" onclick="logOut()">Logout</a>
+            </li>
         </ul>
     </nav>
     <h1><spring:message code="manageusers"/></h1>

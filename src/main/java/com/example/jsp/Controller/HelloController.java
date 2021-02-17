@@ -75,12 +75,15 @@ public class HelloController {
         userRepositoryService.evictAllCaches();
     }
 
-
     @RequestMapping(value = "/getLanguageMap", method = RequestMethod.GET)
     public List<LanguageEntity> getLanguageMap() {
         return languageRepository.findAll();
     }
 
+    /**
+     * Checks if user is logged in by checking the session attribute : login.
+     * @return If login is valid, returns the name of the User,if invalid, returns null and redirects to login page.
+     */
     @RequestMapping(value = "/getCurrentUser", method = RequestMethod.GET)
     public String getCurrentUser(HttpServletRequest request,HttpServletResponse response) throws IOException{
         Session sessionBean = (Session) request.getSession().getAttribute("sessionBean");

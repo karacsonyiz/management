@@ -40,6 +40,8 @@ th {
 
 .dt-buttons {
     margin-top : 20px;
+    display: flex;
+    align-items:flex-start;
 }
 
 .buttons-excel {

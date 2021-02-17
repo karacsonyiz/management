@@ -1,6 +1,23 @@
 window.onload = function () {
     getOrgs();
     getUserTheme();
+    getCurrentUser();
+}
+
+function logOut(){
+    fetch("/logout");
+}
+
+function getCurrentUser(){
+    fetch("/getCurrentUser")
+        .then(function (response) {
+            return response.text();
+        })
+        .then(function (jsonData) {
+            if(jsonData === "Guest" || jsonData === ""){
+                document.querySelector("#logout").innerHTML = "Login";
+            }
+        });
 }
 
 function getOrgs() {

@@ -14,36 +14,37 @@
 </head>
 <body class="container-fluid">
 <nav class="navbar navbar-expand-lg navbar-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".collapseable" aria-controls="collapseable" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
     <a class="navbar-brand" href="hello">Hello ${sessionBean.getLogin().getUsername()}!</a>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="manage"><spring:message code="manageusers"/></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="manageorgs"><spring:message code="manageorgs"/></a>
-            </li>
-            <li>
-                <a class="nav-link"><spring:message code="greeting"/></a>
-            </li>
-        </ul>
-    </div>
-    <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-            <a onclick="switchthemeforhello(this)" class="nav-link" id="themeSwitcher" style="cursor: pointer">dark</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="hello?lang=hu" hreflang="hu" id="huLocale">Hu</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="hello?lang=en" hreflang="en" id="enLocale">Eng</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="login" id="logout" onclick="logOut()">Logout</a>
-        </li>
-    </ul>
+        <div class="collapse navbar-collapse collapseable" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="manage"><spring:message code="manageusers"/></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="manageorgs"><spring:message code="manageorgs"/></a>
+                </li>
+            </ul>
+        </div>
+        <div class="navbar-nav">
+            <ul class="navbar-nav collapseable collapse navbar-collapse ml-auto">
+                <li class="nav-item">
+                    <a onclick="switchthemeforhello(this)" class="nav-link" id="themeSwitcher" style="cursor: pointer">dark</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hello?lang=hu" hreflang="hu" id="huLocale">Hu</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="hello?lang=en" hreflang="en" id="enLocale">Eng</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="login" id="logout" onclick="logOut()">Logout</a>
+                </li>
+            </ul>
+        </div>
 </nav>
-<h2 class="hello-title mt-2"></h2>
 <button onclick="location.href='manage';" class="btn btn-success mt-3">Manage Users</button>
 <br>
 <button onclick="location.href='manageorgs';" class="btn btn-info mt-3">Manage Organizations</button>
