@@ -2,10 +2,7 @@ package com.example.jsp.Model;
 
 import com.example.jsp.GeneratedEntity.GeneratedOrganizationEntity;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +16,7 @@ public class UserForm {
     @NotBlank
     @Size(min = 1, max = 50)
     private String password;
-    @Pattern(regexp = "^(.+)@(.+)$")
+    @Pattern(regexp = "/^([\\w\\.%\\+\\-]+)@([\\w\\-]+\\.)+([\\w]{2,})$/")
     private String email;
     @Size(max = 12)
     private String phone;
