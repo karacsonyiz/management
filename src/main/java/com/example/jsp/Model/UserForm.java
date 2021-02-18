@@ -19,7 +19,7 @@ public class UserForm {
     @NotBlank
     @Size(min = 1, max = 50)
     private String password;
-    @Pattern(regexp = "/^([\\w\\.%\\+\\-]+)@([\\w\\-]+\\.)+([\\w]{2,})$/")
+    @Pattern(regexp = "^([\\w\\.%\\+\\-]+)@([\\w\\-]+\\.)+([\\w]{2,})$")
     private String email;
     @Size(max = 12)
     private String phone;

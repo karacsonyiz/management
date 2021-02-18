@@ -3,6 +3,8 @@ package com.example.jsp.Controller;
 import com.example.jsp.Model.Login;
 import com.example.jsp.Model.Session;
 import com.example.jsp.Service.UserRepositoryService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,15 +39,6 @@ public class LoginController {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public ModelAndView logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        return new ModelAndView("/login");
-    }
-
     @GetMapping(value = {"/login"})
     public ModelAndView showLogin(HttpSession httpSession, HttpServletResponse response) throws IOException {
         Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
@@ -59,6 +52,27 @@ public class LoginController {
         modelAndView.addObject("login", new Login());
         return modelAndView;
     }
+
+
+    /**
+     * This method checks if session exists, if yes, invalidates it.
+     * Then checks it again, and if it is successfully invalidated, throws an IllegalStateException.
+     * @return Returns an OK status if the invalidation is successful,and ERROR status if not.
+     */
+    @RequestMapping(value = "/logOut", method = RequestMethod.GET)
+    public ResponseEntity<String> logout(HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session.getAttributeNames() != null) {
+            session.invalidate();
+        }
+        try {
+            session.getAttributeNames();
+        } catch (IllegalStateException  e){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
     @RequestMapping(value = "/hello", method = RequestMethod.POST)
     public ModelAndView hello(@ModelAttribute("login") Login login, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws IOException {

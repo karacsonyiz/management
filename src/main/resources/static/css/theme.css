@@ -15,3 +15,8 @@
     color: white !important;
 }
 
+#logout {
+    border : none !important;
+    background-color: transparent !important;
+}
+

@@ -22,6 +22,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigInteger;
 import java.util.*;
 
 @Service
@@ -203,7 +204,8 @@ public class UserRepositoryService extends GeneralService {
                     predicateList.add(cb.isMember(org, root.get("orgs")));
                 } else {
                     if (entry.getKey().equals("userid")) {
-                        predicateList.add(cb.equal(root.get(entry.getKey()), entry.getValue()));
+                        BigInteger number = new BigInteger(entry.getValue());
+                        predicateList.add(cb.equal(root.get(entry.getKey()), number));
                     } else {
                         predicateList.add(cb.like(root.get(entry.getKey()), "%" + entry.getValue() + "%"));
                     }

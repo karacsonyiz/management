@@ -9,10 +9,6 @@ window.onload = function () {
     getUserTheme();
 }
 
-function logOut() {
-    fetch("/logout");
-}
-
 function getCurrentUser() {
     fetch("/getCurrentUser")
         .then(function (response) {

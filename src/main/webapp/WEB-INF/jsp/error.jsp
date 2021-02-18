@@ -13,6 +13,6 @@
 <br>
 <h3>${message}</h3>
 <br>
-<a href="hello">Back to main page</a>
+<a href="/hello">Back to main page</a>
 </body>
 </html>

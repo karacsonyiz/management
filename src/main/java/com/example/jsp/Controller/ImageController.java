@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,11 @@ public class ImageController implements HandlerExceptionResolver {
 
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     public ModelAndView uploadImage(@RequestParam(value = "file") MultipartFile multipartImage) throws IOException {
+
+        String type = multipartImage.getContentType();
+
+        System.out.println(type);
+
         ImageEntity dbImage = new ImageEntity();
         dbImage.setName(multipartImage.getName());
         dbImage.setContent(multipartImage.getBytes());

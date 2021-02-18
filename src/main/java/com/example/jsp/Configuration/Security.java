@@ -23,9 +23,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin.html").hasRole("ADMIN")
                 .and()
                 .formLogin()
-                .loginPage("/WEB-INF/jsp/login.jsp")
-                .and()
-                .logout().clearAuthentication(true).permitAll();
+                .loginPage("/WEB-INF/jsp/login.jsp");
     }
 
     @Bean

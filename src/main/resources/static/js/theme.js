@@ -87,3 +87,22 @@ function setDarkThemeForManageOrgs() {
     document.querySelectorAll("#dataTableTbody td").forEach(element => element.classList.add("darktheme"));
     sessionStorage.setItem("theme", "dark");
 }
+
+function logOut() {
+    fetch("/logOut")
+        .then(function (response) {
+            return response;
+        })
+        .then(function (result) {
+            handleResult(result)
+        });
+}
+
+function handleResult(result){
+    if(result.status === 500){
+        alert("Logout unsuccessful!")
+    }
+    if(result.status === 200){
+        window.location.reload();
+    }
+}
