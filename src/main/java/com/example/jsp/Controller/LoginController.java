@@ -53,7 +53,6 @@ public class LoginController {
         return modelAndView;
     }
 
-
     /**
      * This method checks if session exists, if yes, invalidates it.
      * Then checks it again, and if it is successfully invalidated, throws an IllegalStateException.
@@ -73,7 +72,6 @@ public class LoginController {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
     @RequestMapping(value = "/hello", method = RequestMethod.POST)
     public ModelAndView hello(@ModelAttribute("login") Login login, BindingResult result, HttpServletRequest request, HttpServletResponse response) throws IOException {
         ModelAndView modelAndView = null;
@@ -86,5 +84,4 @@ public class LoginController {
         }
         return modelAndView;
     }
-
 }

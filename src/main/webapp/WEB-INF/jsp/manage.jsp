@@ -44,6 +44,9 @@
         </ul>
     </nav>
     <h1><spring:message code="manageusers"/></h1>
+    <div id="errorMsg" style="color:red;text-align: center;">
+        ${sessionBean.getErrorMsg()}
+    </div>
     <div style="text-align: center;">
         <h5 style="${sessionBean.getActionMessage()}" id="successMessage"><spring:message
                 code='${sessionBean.getActionResponse()}' text=""/></h5>

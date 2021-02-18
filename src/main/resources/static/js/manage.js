@@ -178,8 +178,19 @@ function generateAjaxDataTable(values) {
     });
     InitHideColBarAndButtons(table);
     table.on('draw', function () {
+        setErrorMsgAfterSearch();
         removeInputFeedback();
     });
+}
+
+function setErrorMsgAfterSearch(){
+    $("#errorMsg").load(" #errorMsg");
+    setTimeout(function () {
+            fetch("/resetActionMessage")
+            .catch(error => console.log(error));
+            document.querySelector("#errorMsg").innerHTML = "";
+        },
+        4000);
 }
 
 function adduser() {
@@ -394,7 +405,6 @@ function renderThemeForTable() {
 function removeInputFeedback() {
     document.querySelectorAll('input').forEach(element => {
         if (element.classList.contains("feedback")) {
-            console.log(element);
             element.classList.remove("feedback")
         }
     });

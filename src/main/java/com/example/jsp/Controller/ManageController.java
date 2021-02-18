@@ -40,6 +40,8 @@ public class ManageController {
         this.formValidator = formValidator;
     }
 
+
+
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
     public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession httpSession, HttpServletResponse response) throws IOException {
 
@@ -63,9 +65,10 @@ public class ManageController {
      * @return A DataTable consisting UserEntities and pageinformation according to the current page and criteria.
      */
     @RequestMapping(value = "/getUsersForPage")
-    public DataTable getUsersForPage(@RequestBody String formData) {
+    public DataTable getUsersForPage(@RequestBody String formData,Errors errors,HttpSession session) {
         Map<String, String> formDataMap = convertFormDataToMap(formData);
         Map<String, String> criteria = getCriteriaParams(formDataMap);
+        validateParams(criteria,errors,session);
         int start = Integer.parseInt(formDataMap.getOrDefault("start", "0"));
         int draw = Integer.parseInt(formDataMap.get("draw"));
         String direction = formDataMap.getOrDefault("order[0][dir]", "asc");
@@ -74,11 +77,20 @@ public class ManageController {
         Pageable pageable = makePageAbleFromData(formDataMap);
         Page<GeneratedUserEntity> response = userRepositoryService.getUsersForPageByCriteria(criteria,
                 criteria.getOrDefault("condition", "Or"),pageable,direction,orderBy);
-        if (response == null) {
+        if (response == null || errors.hasErrors()) {
             Page<GeneratedUserEntity> responseData = userEntityRepository.findAll(pageable);
             return new DataTable(draw, responseData.getTotalElements(), responseData.getTotalElements(), new ArrayList<>(), responseData.getContent(), start);
         }
         return new DataTable(draw, response.getTotalElements(), response.getTotalElements(), new ArrayList<>(), response.getContent(), start);
+    }
+
+    private void validateParams(Map<String, String> criteria,Errors errors,HttpSession session){
+        if (criteria.getOrDefault("userid","").length() > 55){
+            errors.reject("Userid too long!");
+            Session sessionBean = (Session) session.getAttribute("sessionBean");
+            sessionBean.setErrorMsg("Userid too long!");
+            session.setAttribute("sessionBean",sessionBean);
+        }
     }
 
     @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
@@ -170,6 +182,7 @@ public class ManageController {
     @RequestMapping(value = "/resetActionMessage", method = RequestMethod.GET)
     public void resetActionMessage(HttpSession session) {
         Session sessionBean = (Session) session.getAttribute("sessionBean");
+        sessionBean.setErrorMsg(null);
         sessionBean.setActionMessage("display:none;");
         session.setAttribute("sessionBean", sessionBean);
     }
