@@ -127,8 +127,9 @@ public class ManageController {
     public ModelAndView save(@ModelAttribute("user") UserForm userForm, HttpServletResponse response, Errors errors, HttpServletRequest request) throws IOException {
         ModelAndView modelAndView = new ModelAndView("manage");
         Session sessionBean = (Session) request.getSession().getAttribute("sessionBean");
-        if(sessionBean == null)
-            loginController.logout(request);
+        if(sessionBean == null){
+            loginController.logout(request,response);
+        }
         GeneratedUserEntity user = new GeneratedUserEntity();
         try {
             formValidator.validateForm(userForm, errors);

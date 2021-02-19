@@ -59,7 +59,7 @@ public class LoginController {
      * @return Returns an OK status if the invalidation is successful,and ERROR status if not.
      */
     @RequestMapping(value = "/logOut", method = RequestMethod.GET)
-    public ResponseEntity<String> logout(HttpServletRequest request){
+    public ResponseEntity<String> logout(HttpServletRequest request,HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession(false);
         if (session.getAttributeNames() != null) {
             session.removeAttribute("sessionBean");
@@ -68,6 +68,7 @@ public class LoginController {
         try {
             session.getAttributeNames();
         } catch (IllegalStateException  e){
+            response.sendRedirect("login");
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
