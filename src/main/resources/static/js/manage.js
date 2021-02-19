@@ -10,10 +10,6 @@ window.onload = function () {
     getCurrentUser();
 }
 
-function logOut() {
-    fetch("/logout");
-}
-
 function getCurrentUser() {
     fetch("/getCurrentUser")
         .then(function (response) {

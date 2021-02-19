@@ -20,6 +20,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -33,14 +34,14 @@ public class ManageController {
     private final UserRepositoryService userRepositoryService;
     private final UserEntityRepository userEntityRepository;
     private final FormValidator formValidator;
+    private final LoginController loginController;
 
-    public ManageController(UserRepositoryService userRepositoryService, UserEntityRepository userEntityRepository, FormValidator formValidator) {
+    public ManageController(UserRepositoryService userRepositoryService, UserEntityRepository userEntityRepository, FormValidator formValidator,LoginController loginController) {
         this.userRepositoryService = userRepositoryService;
         this.userEntityRepository = userEntityRepository;
         this.formValidator = formValidator;
+        this.loginController = loginController;
     }
-
-
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)
     public ModelAndView manage(@ModelAttribute("user") GeneratedUserEntity user, Model model, HttpSession httpSession, HttpServletResponse response) throws IOException {
@@ -123,8 +124,11 @@ public class ManageController {
 
     @Transactional
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public ModelAndView save(@ModelAttribute("user") UserForm userForm, HttpServletResponse response, Errors errors, HttpSession httpSession) throws IOException {
+    public ModelAndView save(@ModelAttribute("user") UserForm userForm, HttpServletResponse response, Errors errors, HttpServletRequest request) throws IOException {
         ModelAndView modelAndView = new ModelAndView("manage");
+        Session sessionBean = (Session) request.getSession().getAttribute("sessionBean");
+        if(sessionBean == null)
+            loginController.logout(request);
         GeneratedUserEntity user = new GeneratedUserEntity();
         try {
             formValidator.validateForm(userForm, errors);
@@ -136,22 +140,20 @@ public class ManageController {
         } catch (Exception e) {
             userRepositoryService.handleErrors(errors, user, e);
         }
-        createErrorMessages(modelAndView, errors, httpSession, response);
+        createErrorMessages(modelAndView, errors, request.getSession(),sessionBean, response);
         return modelAndView;
     }
 
-    private void createErrorMessages(ModelAndView modelAndView, Errors errors, HttpSession httpSession, HttpServletResponse response) throws IOException {
+    private void createErrorMessages(ModelAndView modelAndView, Errors errors, HttpSession httpSession,Session sessionBean, HttpServletResponse response) throws IOException {
         if (errors.hasErrors()) {
             ModelMap modelMap = new ModelMap()
                     .addAttribute("userTableStyle", "display:block;")
                     .addAttribute("errorMsg", "Error: " + errors.getAllErrors().get(0).getDefaultMessage());
             modelAndView.addAllObjects(modelMap);
-            Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
             sessionBean.setActionMessage("display:none;");
             httpSession.setAttribute("sessionBean", sessionBean);
         } else {
             modelAndView.addObject("userTableStyle", "display:none;");
-            Session sessionBean = (Session) httpSession.getAttribute("sessionBean");
             sessionBean.setActionResponse("savesuccess");
             sessionBean.setActionMessage("display:block;color:green;");
             httpSession.setAttribute("sessionBean", sessionBean);

@@ -62,6 +62,7 @@ public class LoginController {
     public ResponseEntity<String> logout(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session.getAttributeNames() != null) {
+            session.removeAttribute("sessionBean");
             session.invalidate();
         }
         try {

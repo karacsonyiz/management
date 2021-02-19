@@ -5,6 +5,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+    <meta http-equiv="content-language" content="hu" />
     <link rel="stylesheet" href="/css/manage.css">
     <link rel="stylesheet" href="/css/theme.css">
     <link href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
