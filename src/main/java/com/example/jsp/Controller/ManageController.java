@@ -85,15 +85,6 @@ public class ManageController {
         return new DataTable(draw, response.getTotalElements(), response.getTotalElements(), new ArrayList<>(), response.getContent(), start);
     }
 
-    private void validateParams(Map<String, String> criteria,Errors errors,HttpSession session){
-        if (criteria.getOrDefault("userid","").length() > 55){
-            errors.reject("Userid too long!");
-            Session sessionBean = (Session) session.getAttribute("sessionBean");
-            sessionBean.setErrorMsg("Userid too long!");
-            session.setAttribute("sessionBean",sessionBean);
-        }
-    }
-
     @RequestMapping(value = "/getAllUsers", method = RequestMethod.GET)
     public List<GeneratedUserEntity> getAllUsers() {
         return userRepositoryService.getAllUsers();
@@ -247,5 +238,14 @@ public class ManageController {
             return "userid";
         }
         return orderBy;
+    }
+
+    private void validateParams(Map<String, String> criteria,Errors errors,HttpSession session){
+        if (criteria.getOrDefault("userid","").length() > 55){
+            errors.reject("Userid too long!");
+            Session sessionBean = (Session) session.getAttribute("sessionBean");
+            sessionBean.setErrorMsg("Userid too long!");
+            session.setAttribute("sessionBean",sessionBean);
+        }
     }
 }

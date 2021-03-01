@@ -186,7 +186,6 @@ public class UserRepositoryService extends GeneralService {
      * @param orderBy The field for sorting order by.
      * @return A Page of UserEntities.
      */
-
     public Page<GeneratedUserEntity> getUsersForPageByCriteria(Map<String, String> params, String condition, Pageable pageable,
                                                                 String direction, String orderBy) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
