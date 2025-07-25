@@ -1,5 +1,3 @@
-ZoliTeszt
-
 //TODO : refactor ManageController,GeneratedEntity rewrite simple to Entity,Make constants class,Spring security rewrite,
 //TODO : delete unused classes,make Toast,better Session handling,refactor managecontroller,rewrite classnames
 //TODO : spring session,transaction-propagation,optimistic lock,criteriabuilder,lazy load,pagination,auditing from abstract class,
